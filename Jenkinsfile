@@ -24,7 +24,7 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 // Install Python dependencies
-                sh 'pip install django'
+                sh 'sudo pip install -i https://mirrors.aliyun.com/pypi/simple/ django'
             }
         }
 
