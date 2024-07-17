@@ -16,8 +16,8 @@ pipeline {
 
         stage('Check environment') {
             steps {
-                /bin/sh 'which bash'
-                /bin/sh 'which python3'
+                sh '/bin/sh which bash'
+                sh '/bin/sh which python3'
             }
             }
 
