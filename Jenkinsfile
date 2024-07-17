@@ -4,7 +4,7 @@ pipeline {
     environment {
     http_proxy='http://10.187.215.117:3128'
     https_proxy='https://10.187.215.117:3128'
-    PATH = "/usr/local/lib/python3.9;$PATH"
+    PATH = "/usr/local/lib/python3.9;"
     }
 
     stages {
