@@ -14,10 +14,17 @@ pipeline {
             }
         }
 
-        stage('Install dependencies') {
+//         stage('Install dependencies') {
+//             steps {
+//                 // Install Python dependencies
+//                 sh 'pip install -r requirements.txt'
+//             }
+//         }
+
+        stage('Run echo') {
             steps {
-                // Install Python dependencies
-                sh 'pip install -r requirements.txt'
+                // Run Django tests
+                sh 'echo manage.py'
             }
         }
 
