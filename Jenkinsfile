@@ -14,19 +14,12 @@ pipeline {
             }
         }
 
-//         stage('Check environment') {
-//             steps {
-//                 sh '/bin/sh which bash'
-//                 sh '/bin/sh which python3'
-//             }
-//             }
-
-//         stage('Install dependencies') {
-//             steps {
-//                 // Install Python dependencies
-//                 sh 'pip install -r requirements.txt'
-//             }
-//         }
+        stage('Install dependencies') {
+            steps {
+                // Install Python dependencies
+                sh 'pip install -r requirements.txt'
+            }
+        }
 
         stage('Run tests') {
             steps {
