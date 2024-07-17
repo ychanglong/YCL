@@ -14,12 +14,12 @@ pipeline {
             }
         }
 
-        stage('Check environment') {
-            steps {
-                sh '/bin/sh which bash'
-                sh '/bin/sh which python3'
-            }
-            }
+//         stage('Check environment') {
+//             steps {
+//                 sh '/bin/sh which bash'
+//                 sh '/bin/sh which python3'
+//             }
+//             }
 
 //         stage('Install dependencies') {
 //             steps {
