@@ -1,20 +1,21 @@
-# 使用官方的Python基础镜像
-FROM python:3.9
+# Use an official Python runtime as a parent image
+FROM python:3.8-slim
 
-# 设置工作目录
-WORKDIR /usr/src/app
+# Set environment variables
+ENV PYTHONUNBUFFERED 1
 
-# 复制项目依赖文件
-COPY requirements.txt ./
+# Set work directory
+WORKDIR /app
 
-# 安装项目依赖
+# Install dependencies
+COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 复制项目文件
-COPY . .
+# Copy project files
+COPY . /app/
 
-# 暴露Django运行的端口
-EXPOSE 8000
+# Collect static files (if needed)
+# RUN python manage.py collectstatic --noinput
 
-# 运行Django开发服务器
+# Run the application
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

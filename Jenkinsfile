@@ -5,17 +5,16 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // 使用 Docker 构建镜像
-                    docker.build('OA-project')
+                    docker.build('my-django-app')
                 }
             }
         }
+
+
         stage('Deploy') {
             steps {
                 script {
-                    // 使用 docker-compose 部署
-                    sh 'docker-compose down'
-                    sh 'docker-compose up -d'
+                    docker.image('my-django-app').run('-p 8000:8000 --name django-app-container')
                 }
             }
         }
