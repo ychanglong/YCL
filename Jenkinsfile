@@ -15,18 +15,18 @@ pipeline {
             }
         }
 
-         stage('Install pip') {
-            steps {
-                sh 'sudo apt-get update && sudo apt-get install -y python3-pip'
-            }
-        }
-
-//         stage('Install dependencies') {
+//          stage('Install pip') {
 //             steps {
-//                 // Install Python dependencies
-//                 sh 'pip install -r requirements.txt'
+//                 sh 'sudo apt-get update && sudo apt-get install -y python3-pip'
 //             }
 //         }
+
+        stage('Install dependencies') {
+            steps {
+                // Install Python dependencies
+                sh 'pip install -r requirements.txt'
+            }
+        }
 
         stage('Run echo') {
             steps {
