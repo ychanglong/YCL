@@ -2,20 +2,35 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                script {
-                    docker.build('my-django-app')
-                }
+                // Checkout code from Git
+                git 'https://github.com/ychanglong/YCL.git'
             }
         }
 
+        stage('Install dependencies') {
+            steps {
+                // Install Python dependencies
+                sh 'pip install -r requirements.txt'
+            }
+        }
+
+        stage('Run tests') {
+            steps {
+                // Run Django tests
+                sh 'python manage.py test'
+            }
+        }
 
         stage('Deploy') {
             steps {
-                script {
-                    docker.image('my-django-app').run('-p 8000:8000 --name django-app-container')
-                }
+                // Run Django migrations and collect static files
+                sh 'python manage.py migrate'
+                sh 'python manage.py collectstatic --noinput'
+
+                // Restart Django server or use WSGI/Gunicorn
+                sh 'python manage.py runserver 0.0.0.0:8000 &'
             }
         }
     }
