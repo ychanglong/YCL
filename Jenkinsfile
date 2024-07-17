@@ -19,6 +19,7 @@ pipeline {
                 sh 'which bash'
                 sh 'which python3'
             }
+            }
 
 //         stage('Install dependencies') {
 //             steps {
