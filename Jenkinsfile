@@ -14,12 +14,12 @@ pipeline {
             }
         }
 
-        stage('Install dependencies') {
-            steps {
-                // Install Python dependencies
-                sh 'pip install -r requirements.txt'
-            }
-        }
+//         stage('Install dependencies') {
+//             steps {
+//                 // Install Python dependencies
+//                 sh 'pip install -r requirements.txt'
+//             }
+//         }
 
         stage('Run tests') {
             steps {
