@@ -40,18 +40,18 @@ pipeline {
         stage('Run tests') {
             steps {
                 // Run Django tests
-                sh '/usr/bin/python3.9 manage.py test'
+                sh 'python3 manage.py test'
             }
         }
 
         stage('Deploy') {
             steps {
                 // Run Django migrations and collect static files
-                sh '/usr/bin/python3.9 manage.py migrate'
-                sh '/usr/bin/python3.9 manage.py collectstatic --noinput'
+                sh 'python3 manage.py migrate'
+                sh 'python3 manage.py collectstatic --noinput'
 
                 // Restart Django server or use WSGI/Gunicorn
-                sh '/usr/bin/python3.9 manage.py runserver 0.0.0.0:8000 &'
+                sh 'python3 manage.py runserver 0.0.0.0:8000 &'
             }
         }
     }
