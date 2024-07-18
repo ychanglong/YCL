@@ -23,11 +23,8 @@ pipeline {
 //         }
         stage('Install dependencies') {
             steps {
-                sh 'mkdir -p /usr/venv'
-                sh 'chmod 777 /usr/venv'  // 临时权限更改，用完即删
-
                 // Install Python dependencies
-                sh 'python3 -m venv /usr/venv'
+                sh 'sudo python3 -m venv /usr/venv'
                 sh 'source /usr/venv/bin/activate'
                 sh 'pip install django'
             }
