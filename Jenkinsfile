@@ -17,7 +17,7 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 // Install Python dependencies
-                sh 'sudo python3 -m venv /usr/venv'
+                sh 'echo 123456 | sudo python3 -m venv /usr/venv'
                 sh 'source /usr/venv/bin/activate'
                 sh 'pip install django'
             }
