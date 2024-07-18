@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        PATH = "/usr/venv/bin:$PATH"
+    }
+
     stages {
         stage('Checkout') {
             steps {
