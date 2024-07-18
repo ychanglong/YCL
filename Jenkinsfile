@@ -28,6 +28,13 @@ pipeline {
             }
         }
 
+        stage('Check nohup.out') {
+            steps {
+                sh 'ls -l nohup.out'
+                sh 'cat nohup.out'
+            }
+        }
+
         stage('Run echo') {
             steps {
                 // Run Django tests
