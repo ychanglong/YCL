@@ -1,13 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-    http_proxy='http://10.187.215.117:3128'
-    https_proxy='https://10.187.215.117:3128'
-    PATH = ""
-    PYTHONPATH = "/usr/venv/bin"
-    }
-
     stages {
         stage('Checkout') {
             steps {
