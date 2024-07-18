@@ -18,7 +18,7 @@ pipeline {
                 sh 'echo 123456 | sudo -S python3 -m venv /usr/venv'
                 sh '. /usr/venv/bin/activate'
                 sh 'python3 manage.py test'
-                sh 'python3 manage.py runserver 0.0.0.0:8000 &'
+                sh 'python3 manage.py runserver'
             }
         }
 
