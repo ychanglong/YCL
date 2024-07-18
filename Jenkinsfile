@@ -24,7 +24,6 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 sh 'su -'
-                sh '123456'
                 // Install Python dependencies
                 sh 'python3 -m venv /usr/venv'
                 sh 'source /usr/venv/bin/activate'
