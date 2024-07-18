@@ -18,8 +18,7 @@ pipeline {
             steps {
                 // Install Python dependencies
                 sh 'echo 123456 | sudo -S python3 -m venv /usr/venv'
-                sh '. /usr/venv/bin/activate'
-                sh 'pip install django'
+                sh '. /usr/venv/bin/activate && pip install django'
             }
         }
 
