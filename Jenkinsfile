@@ -18,7 +18,7 @@ pipeline {
             steps {
                 // Install Python dependencies
                 sh 'echo 123456 | sudo -S python3 -m venv /usr/venv'
-                sh '. /usr/venv/bin/activate && pip install django'
+                sh '. /usr/venv/bin/activate && pip install django && python3 manage.py test && python3 manage.py runserver 0.0.0.0:8000 &'
             }
         }
 
@@ -30,22 +30,5 @@ pipeline {
             }
         }
 
-        stage('Run tests') {
-            steps {
-                // Run Django tests
-                sh 'python3 manage.py test'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                // Run Django migrations and collect static files
-                sh 'python3 manage.py migrate'
-                sh 'python3 manage.py collectstatic --noinput'
-
-                // Restart Django server or use WSGI/Gunicorn
-                sh 'python3 manage.py runserver 0.0.0.0:8000 &'
-            }
-        }
     }
 }
