@@ -20,15 +20,14 @@ pipeline {
 //                 sh 'sudo apt-get update && sudo apt-get install -y python3-pip'
 //             }
 //         }
-
-        stage('Install dependencies') {
-            steps {
-                // Install Python dependencies
-                sh 'python3 -m venv /usr/venv'
-                sh 'source /usr/venv'
-                sh 'pip install django'
-            }
-        }
+//         stage('Install dependencies') {
+//             steps {
+//                 // Install Python dependencies
+//                 sh 'python3 -m venv /usr/venv'
+//                 sh 'source /usr/venv'
+//                 sh 'pip install django'
+//             }
+//         }
 
         stage('Run echo') {
             steps {
