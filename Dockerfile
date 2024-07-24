@@ -9,7 +9,7 @@ WORKDIR /app
 
 # Install dependencies
 RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install Django==3.2.5
 
 # Copy project files
 COPY . /app/
