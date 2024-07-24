@@ -1,10 +1,5 @@
 pipeline {
     agent any
-
-    environment {
-        DOCKER_COMPOSE_VERSION = '1.29.2'
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -16,7 +11,7 @@ pipeline {
             steps {
                 script {
                     // 使用 Docker Compose 构建和启动服务
-                    sh 'echo "123456" | sudo -S docker-compose -f docker-compose.yml up -d --build'
+                    sh 'echo "123456" | sudo -S docker compose -f docker-compose.yml up -d --build'
                 }
             }
         }
@@ -25,7 +20,7 @@ pipeline {
             steps {
                 script {
                     // 部署步骤
-                    sh 'echo "123456" | sudo -S docker-compose -f docker-compose.yml up -d'
+                    sh 'echo "123456" | sudo -S docker compose -f docker-compose.yml up -d'
                 }
             }
         }
@@ -35,7 +30,7 @@ pipeline {
         always {
             // 清理步骤
             script {
-                sh 'echo "123456" | sudo -S docker-compose down'
+                sh 'echo "123456" | sudo -S docker compose down'
             }
         }
     }
