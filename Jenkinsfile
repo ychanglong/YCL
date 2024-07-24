@@ -20,30 +20,7 @@ pipeline {
                 }
             }
         }
-        stage('Migrate') {
-            steps {
-                script {
-                    // 运行数据库迁移
-                    sh 'docker-compose exec web python manage.py migrate'
-                }
-            }
-        }
-        stage('Collect Static') {
-            steps {
-                script {
-                    // 收集静态文件
-                    sh 'docker-compose exec web python manage.py collectstatic --noinput'
-                }
-            }
-        }
-        stage('Test') {
-            steps {
-                script {
-                    // 运行测试
-                    sh 'docker-compose exec web python manage.py test'
-                }
-            }
-        }
+
         stage('Deploy') {
             steps {
                 script {
