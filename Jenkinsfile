@@ -2,55 +2,63 @@ pipeline {
     agent any
 
     environment {
-    http_proxy='http://10.187.215.117:3128'
-    https_proxy='https://10.187.215.117:3128'
-    PATH = ""
+        DOCKER_COMPOSE_VERSION = '1.29.2'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Checkout code from Git
+                // 检出项目代码
                 git 'https://github.com/ychanglong/YCL.git'
             }
         }
-
-//          stage('Install pip') {
-//             steps {
-//                 sh 'sudo apt-get update && sudo apt-get install -y python3-pip'
-//             }
-//         }
-
-        stage('Install dependencies') {
+        stage('Build') {
             steps {
-                // Install Python dependencies
-                sh 'sudo pip install -i https://mirrors.aliyun.com/pypi/simple/ django'
+                script {
+                    // 使用 Docker Compose 构建和启动服务
+                    sh 'docker-compose -f docker-compose.yml up -d --build'
+                }
             }
         }
-
-        stage('Run echo') {
+        stage('Migrate') {
             steps {
-                // Run Django tests
-                sh 'echo manage.py'
-                sh 'echo $path'
+                script {
+                    // 运行数据库迁移
+                    sh 'docker-compose exec web python manage.py migrate'
+                }
             }
         }
-
-        stage('Run tests') {
+        stage('Collect Static') {
             steps {
-                // Run Django tests
-                sh '/usr/bin/python3.9 manage.py test'
+                script {
+                    // 收集静态文件
+                    sh 'docker-compose exec web python manage.py collectstatic --noinput'
+                }
             }
         }
-
+        stage('Test') {
+            steps {
+                script {
+                    // 运行测试
+                    sh 'docker-compose exec web python manage.py test'
+                }
+            }
+        }
         stage('Deploy') {
             steps {
-                // Run Django migrations and collect static files
-                sh '/usr/bin/python3.9 manage.py migrate'
-                sh '/usr/bin/python3.9 manage.py collectstatic --noinput'
+                script {
+                    // 部署步骤
+                    sh 'docker-compose -f docker-compose.yml up -d'
+                }
+            }
+        }
+    }
 
-                // Restart Django server or use WSGI/Gunicorn
-                sh '/usr/bin/python3.9 manage.py runserver 0.0.0.0:8000 &'
+    post {
+        always {
+            // 清理步骤
+            script {
+                sh 'docker-compose down'
             }
         }
     }

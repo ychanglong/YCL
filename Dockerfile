@@ -8,11 +8,13 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /app
 
 # Install dependencies
-COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 
 # Copy project files
 COPY . /app/
+
+EXPOSE 8000
 
 # Collect static files (if needed)
 # RUN python manage.py collectstatic --noinput
