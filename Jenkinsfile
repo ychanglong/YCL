@@ -1,12 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
-//             steps {
-//                 // 检出项目代码
-//                 git 'https://github.com/ychanglong/YCL.git'
-//             }
-//         }
         stage('Build') {
             steps {
                 script {
