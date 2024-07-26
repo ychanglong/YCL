@@ -1,6 +1,17 @@
 pipeline {
     agent any
+
+    environment {
+        DOCKER_COMPOSE_VERSION = '1.29.2'
+    }
+
     stages {
+        stage('Checkout') {
+            steps {
+                // 检出项目代码
+                git 'https://github.com/ychanglong/YCL.git'
+            }
+        }
         stage('Build') {
             steps {
                 script {
@@ -14,17 +25,8 @@ pipeline {
             steps {
                 script {
                     // 部署步骤
-                    sh 'docker-compose -f docker-compose.yml up -d'
+                    sh 'sudo docker-compose -f docker-compose.yml up -d'
                 }
-            }
-        }
-    }
-
-    post {
-        always {
-            // 清理步骤
-            script {
-                sh 'docker-compose down'
             }
         }
     }
