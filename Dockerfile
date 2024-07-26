@@ -12,8 +12,8 @@ COPY . /app/
 
 
 # 安装虚拟环境包
-RUN pip install --upgrade pip
-RUN pip install virtualenv
+RUN pip install --upgrade pip -i https://mirrors.aliyun.com/pypi/simple/
+RUN pip install virtualenv -i https://mirrors.aliyun.com/pypi/simple/
 
 # 创建并激活虚拟环境
 RUN python -m virtualenv venv
@@ -22,7 +22,7 @@ RUN python -m virtualenv venv
 RUN . /app/venv/bin/activate
 
 # 在虚拟环境中安装依赖
-RUN pip install django
+RUN pip install django -i https://mirrors.aliyun.com/pypi/simple/
 
 # 设置环境变量以使用虚拟环境中的 Python 和 pip
 ENV PATH="/app/venv/bin:$PATH"
