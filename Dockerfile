@@ -10,6 +10,11 @@ WORKDIR /app
 # Copy project files
 COPY . /app/
 
+RUN mkdir -p /etc/pip.conf.d \
+    && echo "[global]" > /etc/pip.conf \
+    && echo "index-url = https://anu9rng:AP6eY5xuhS1MqAdy5jedftw3ndQq7MHjXL8Rpb@rb-artifactory.bosch.com/artifactory/api/pypi/python-virtual/simple" >> /etc/pip.conf \
+    && echo "[index]" >> /etc/pip.conf \
+    && echo "index = https://anu9rng:AP6eY5xuhS1MqAdy5jedftw3ndQq7MHjXL8Rpb@rb-artifactory.bosch.com/artifactory/api/pypi/python-virtual/" >> /etc/pip.conf
 
 # 安装虚拟环境包
 RUN pip install --upgrade pip
