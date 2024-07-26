@@ -22,7 +22,7 @@ RUN python -m virtualenv venv
 RUN . /app/venv/bin/activate
 
 # 在虚拟环境中安装依赖
-pip install django
+RUN pip install django
 
 # 设置环境变量以使用虚拟环境中的 Python 和 pip
 ENV PATH="/app/venv/bin:$PATH"
