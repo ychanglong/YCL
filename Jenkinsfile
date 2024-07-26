@@ -30,13 +30,4 @@ pipeline {
             }
         }
     }
-
-    post {
-        always {
-            // 清理步骤
-            script {
-                bat 'docker-compose down'
-            }
-        }
-    }
 }
