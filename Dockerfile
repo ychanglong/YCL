@@ -35,10 +35,10 @@ RUN pip install django
 # 设置环境变量以使用虚拟环境中的 Python 和 pip
 ENV PATH="/app/venv/bin:$PATH"
 
-EXPOSE 8000
+EXPOSE 8111
 
 # Collect static files (if needed)
 # RUN python manage.py collectstatic --noinput
 
 # Run the application
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8111"]
