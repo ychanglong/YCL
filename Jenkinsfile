@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script {
                     // 使用 Docker Compose 构建和启动服务
-                    sh 'docker-compose -f docker-compose.yml up -d --build'
+                    sh 'sudo docker-compose -f docker-compose.yml up -d --build'
                 }
             }
         }
@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     // 部署步骤
-                    sh 'docker-compose -f docker-compose.yml up -d'
+                    sh 'sudo docker-compose -f docker-compose.yml up -d'
                 }
             }
         }
