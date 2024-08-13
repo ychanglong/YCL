@@ -21,10 +21,10 @@ COPY . /app/
 #
 ## 安装虚拟环境包
 #RUN pip install --upgrade pip
-RUN pip install virtualenv
+RUN #pip install virtualenv
 
 # 创建并激活虚拟环境
-RUN python -m virtualenv venv
+RUN #python -m virtualenv venv
 
 # 使用 shell 执行命令以激活虚拟环境
 RUN . /app/venv/bin/activate
