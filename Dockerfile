@@ -27,7 +27,7 @@ RUN #pip install virtualenv
 RUN #python -m virtualenv venv
 
 # 使用 shell 执行命令以激活虚拟环境
-RUN . /app/venv/bin/activate
+RUN . /etc/docker/venv/bin/activate
 
 # 在虚拟环境中安装依赖
 RUN pip install django
