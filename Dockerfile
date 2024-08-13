@@ -33,7 +33,7 @@ RUN . /etc/docker/venv/bin/activate
 RUN pip install django
 
 # 设置环境变量以使用虚拟环境中的 Python 和 pip
-ENV PATH="/app/venv/bin:$PATH"
+ENV PATH="/etc/docker/venv/bin:$PATH"
 
 EXPOSE 8111
 
