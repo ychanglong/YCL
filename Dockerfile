@@ -1,7 +1,7 @@
 # Use an official Python runtime as a parent image
 FROM python:3.9
-ENV HTTP_PROXY=http://10.187.215.117:3128
-ENV HTTPS_PROXY=http://10.187.215.117:3128
+#ENV HTTP_PROXY=http://10.187.215.117:3128
+#ENV HTTPS_PROXY=http://10.187.215.117:3128
 
 
 # Set environment variables
