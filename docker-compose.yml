@@ -1,7 +1,4 @@
 services:
-  dns:
-    - 10.54.12.44
-    - 10.187.50.203
   web:
     build: .
     command: 'python manage.py runserver 0.0.0.0:8111'
@@ -12,3 +9,6 @@ services:
     environment:
       - DEBUG=0
       - DJANGO_ALLOWED_HOSTS=localhost
+    dns:
+      - 10.54.12.44
+      - 10.187.50.203
