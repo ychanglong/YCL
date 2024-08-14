@@ -1,7 +1,7 @@
 services:
-  django_test:
+  web:
     build: .
-    command: 'python manage.py runserver 0.0.0.0:8111'
+    command: 'python3 manage.py runserver 0.0.0.0:8111'
     ports:
       - "8111:8111"
     volumes:
