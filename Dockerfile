@@ -21,8 +21,10 @@ RUN mkdir -p /etc/pip.conf.d \
     && echo "index = https://anu9rng:AP6eY5xuhS1MqAdy5jedftw3ndQq7MHjXL8Rpb@rb-artifactory.bosch.com/artifactory/api/pypi/python-virtual/" >> /etc/pip.conf
 
 # 安装虚拟环境包
-RUN echo '{"dns": ["10.54.12.44", "10.187.50.203"]}' | tee /etc/docker/daemon.json > /dev/null
-RUN systemctl restart docker
+RUN mkdir -p /etc/docker/daemon.json.d \
+ && echo '{"dns": ["10.54.12.44", "10.187.50.203"]}' | tee /etc/docker/daemon.json > /dev/null \
+ && systemctl restart docker
+
 RUN pip install --upgrade pip
 RUN pip install virtualenv
 
