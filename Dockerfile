@@ -15,12 +15,18 @@ WORKDIR /app
 # Copy project files
 COPY . /app/
 
+RUN mkdir -p /etc/pip.conf.d \
+    && echo "[global]" > /etc/pip.conf \
+    && echo "index-url = https://anu9rng:AP6eY5xuhS1MqAdy5jedftw3ndQq7MHjXL8Rpb@rb-artifactory.bosch.com/artifactory/api/pypi/python-virtual/simple" >> /etc/pip.conf \
+    && echo "[index]" >> /etc/pip.conf \
+    && echo "index = https://anu9rng:AP6eY5xuhS1MqAdy5jedftw3ndQq7MHjXL8Rpb@rb-artifactory.bosch.com/artifactory/api/pypi/python-virtual/" >> /etc/pip.conf
+
+
 # 创建 Docker Daemon 配置目录
 RUN mkdir -p /etc/docker/daemon.json.d
 
 # 创建 daemon.json 文件，确保 JSON 格式正确
-RUN echo '{"dns": ["10.54.12.44", "10.187.50.203"]}' > /etc/docker/daemon.json
-
+RUN echo '{"http-proxy": "http://10.187.215.117:3128","https-proxy": "http://10.187.215.117:3128","dns": ["10.54.12.44", "10.187.50.203"]}' > /etc/docker/daemon.json
 
 RUN cat /etc/docker/daemon.json
 RUN cat /etc/resolv.conf
