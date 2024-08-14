@@ -41,7 +41,7 @@ RUN #pip install virtualenv --proxy http://10.187.215.117:3128 -v
 RUN #python3 -m virtualenv venv
 
 # 使用 shell 执行命令以激活虚拟环境
-RUN . /etc/docker/venv/bin/activate
+RUN #. /etc/docker/venv/bin/activate
 
 # 在虚拟环境中安装依赖
 RUN #pip install django --proxy http://10.187.215.117:3128 -v
