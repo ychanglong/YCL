@@ -17,9 +17,9 @@ COPY . /app/
 
 RUN mkdir -p /etc/pip.conf.d \
     && echo "[global]" > /etc/pip.conf \
-    && echo "index-url = https://anu9rng:AP6eY5xuhS1MqAdy5jedftw3ndQq7MHjXL8Rpb@rb-artifactory.bosch.com/artifactory/api/pypi/python-virtual/simple" >> /etc/pip.conf \
+    && echo "index-url = https://pypi.org/simple/" >> /etc/pip.conf \
     && echo "[index]" >> /etc/pip.conf \
-    && echo "index = https://anu9rng:AP6eY5xuhS1MqAdy5jedftw3ndQq7MHjXL8Rpb@rb-artifactory.bosch.com/artifactory/api/pypi/python-virtual/" >> /etc/pip.conf \
+    && echo "index = https://pypi.org/simple/" >> /etc/pip.conf \
     && echo "proxy = http://10.187.215.117:3128" >> /etc/pip.conf
 
 RUN pip config list
