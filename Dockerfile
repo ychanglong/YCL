@@ -22,7 +22,7 @@ RUN mkdir -p /etc/pip.conf.d \
     && echo "index = https://anu9rng:AP6eY5xuhS1MqAdy5jedftw3ndQq7MHjXL8Rpb@rb-artifactory.bosch.com/artifactory/api/pypi/python-virtual/" >> /etc/pip.conf \
     && echo "proxy = http://10.187.215.117:3128" >> /etc/pip.conf
 
-
+RUN pip config list
 # 创建 Docker Daemon 配置目录
 RUN mkdir -p /etc/docker/daemon.json.d
 
@@ -36,7 +36,7 @@ RUN cat /etc/resolv.conf
 RUN echo $(cat /etc/resolv.conf)
 
 # 安装虚拟环境包
-RUN pip install virtualenv
+RUN pip install virtualenv --proxy http://10.187.215.117:3128 -v
 
 # 创建并激活虚拟环境
 RUN python3 -m virtualenv venv
@@ -45,7 +45,7 @@ RUN python3 -m virtualenv venv
 RUN . /app/venv/bin/activate
 
 # 在虚拟环境中安装依赖
-RUN pip install django
+RUN pip install django --proxy http://10.187.215.117:3128 -v
 
 # 设置环境变量以使用虚拟环境中的 Python 和 pip
 ENV PATH="/app/venv/bin:$PATH"
