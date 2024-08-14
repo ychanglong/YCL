@@ -15,13 +15,19 @@ WORKDIR /app
 # Copy project files
 COPY . /app/
 
-# 安装虚拟环境包
-RUN mkdir -p /etc/docker/daemon.json.d && echo '{"dns": ["'"${DNS_SERVERS}"'"]}' > /etc/docker/daemon.json
+# 创建 Docker Daemon 配置目录
+RUN mkdir -p /etc/docker/daemon.json.d
+
+# 创建 daemon.json 文件，确保 JSON 格式正确
+RUN echo '{"dns": ["10.54.12.44", "10.187.50.203"]}' > /etc/docker/daemon.json
+
+
 RUN cat /etc/docker/daemon.json
 RUN cat /etc/resolv.conf
 
 RUN echo $(cat /etc/resolv.conf)
 
+# 安装虚拟环境包
 RUN pip install virtualenv
 
 # 创建并激活虚拟环境
