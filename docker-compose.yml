@@ -9,6 +9,3 @@ services:
     environment:
       - DEBUG=0
       - DJANGO_ALLOWED_HOSTS=localhost
-    dns:
-      - 10.54.12.44
-      - 10.187.50.203
