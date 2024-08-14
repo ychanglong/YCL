@@ -22,7 +22,12 @@ RUN mkdir -p /etc/pip.conf.d \
 
 # 安装虚拟环境包
 RUN mkdir -p /etc/docker/daemon.json.d \
- && echo '{"dns": ["10.54.12.44", "10.187.50.203"]}' | tee /etc/docker/daemon.json > /dev/null
+ && echo '{"dns": ["10.54.12.44", "10.187.50.203"]}' | tee /etc/docker/daemon.json > /dev/null \
+ && echo '{"dns": ["10.54.12.44", "10.187.50.203"]}' | tee /etc/resolv.conf > /dev/null
+
+RUN docker run --rm busybox cat /etc/resolv.conf
+
+RUN cat /etc/resolv.conf
 
 RUN pip install --upgrade pip
 RUN pip install virtualenv
