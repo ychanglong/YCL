@@ -17,7 +17,7 @@ COPY . /app/
 
 # 安装虚拟环境包
 RUN mkdir -p /etc/docker/daemon.json.d && echo '{"dns": ["'"${DNS_SERVERS}"'"]}' > /etc/docker/daemon.json
-
+RUN cat /etc/docker/daemon.json
 RUN cat /etc/resolv.conf
 
 RUN echo $(cat /etc/resolv.conf)
