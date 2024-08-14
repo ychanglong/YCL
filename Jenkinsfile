@@ -18,7 +18,7 @@ pipeline {
             steps {
                 script {
                     // 使用 Docker Compose 构建和启动服务
-                    sh 'sudo docker-compose -f docker-compose.yml up -d --build'
+                    sh 'docker build --build-arg DNS_SERVERS="10.54.12.44,10.187.50.203" -t django_test .'
                 }
             }
         }

@@ -1,3 +1,4 @@
+ARG DNS_SERVERS
 # Use an official Python runtime as a parent image
 FROM python:3.9
 
@@ -21,9 +22,7 @@ RUN mkdir -p /etc/pip.conf.d \
     && echo "index = https://anu9rng:AP6eY5xuhS1MqAdy5jedftw3ndQq7MHjXL8Rpb@rb-artifactory.bosch.com/artifactory/api/pypi/python-virtual/" >> /etc/pip.conf
 
 # 安装虚拟环境包
-RUN mkdir -p /etc/docker/daemon.json.d \
- && echo '{"dns": ["10.54.12.44", "10.187.50.203"]}' | tee /etc/docker/daemon.json > /dev/null \
- && echo '{"dns": ["10.54.12.44", "10.187.50.203"]}' | tee /etc/resolv.conf > /dev/null
+RUN mkdir -p /etc/docker/daemon.json.d && echo '{"dns": ["'"${DNS_SERVERS}"'"]}' > /etc/docker/daemon.json
 
 RUN docker run --rm busybox cat /etc/resolv.conf
 
