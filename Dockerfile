@@ -22,8 +22,7 @@ RUN mkdir -p /etc/pip.conf.d \
 
 # 安装虚拟环境包
 RUN mkdir -p /etc/docker/daemon.json.d \
- && echo '{"dns": ["10.54.12.44", "10.187.50.203"]}' | tee /etc/docker/daemon.json > /dev/null \
- && systemctl restart docker
+ && echo '{"dns": ["10.54.12.44", "10.187.50.203"]}' | tee /etc/docker/daemon.json > /dev/null
 
 RUN pip install --upgrade pip
 RUN pip install virtualenv
