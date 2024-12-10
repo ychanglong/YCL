@@ -15,10 +15,10 @@ services:
   
   db:
     image: mysql:8.0
-    container_name: mysql_mike
+    container_name: mysql_goc
     environment:
       MYSQL_ROOT_PASSWORD: '123456'
-      MYSQL_DATABASE: 'mike'
+      MYSQL_DATABASE: 'goc'
       MYSQL_USER: 'myuser'
       MYSQL_PASSWORD: 'mypassword'
     ports:
@@ -34,7 +34,7 @@ services:
       - DJANGO_ALLOWED_HOSTS=localhost
       - DATABASE_URL=mysql://root:123456@db:3306/goc
     ports:
-      - "8222:8222"
+      - "8333:8333"
     depends_on:
       - db
       - redis
