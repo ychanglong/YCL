@@ -1,0 +1,1731 @@
+{% load static %}
+<!doctype html>
+<html id="printArea" lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+	<title>GOC Automation Platform</title>
+	<!-- CSS files -->
+    <link href="{% static 'plugin/layui/css/layui.css' %}" rel="stylesheet"/>
+	<link href="{% static 'plugin/tabler/css/tabler-vendors.min.css' %}" rel="stylesheet"/>
+	<link href="{% static 'plugin/tabler/css/tabler.min.css' %}" rel="stylesheet"/>
+	<style>
+      @import url('{% static 'plugin/tabler/css/inter.css' %}');
+      :root {
+          --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+      }
+      body {
+          font-feature-settings: "cv03", "cv04", "cv11";
+      }
+	</style>
+</head>
+<body>
+  <div class="page">
+	<div class="page-wrapper">
+		<!-- Page header -->
+		<div class="page-header d-print-none">
+			<div class="container-xl">
+				<div class="row g-2 align-items-center">
+					<div class="col">
+						<!-- Page pre-title -->
+						<div class="page-pretitle">
+							PMC Tools
+						</div>
+						<h2 class="page-title">
+                            <a href="#" onclick="window.history.back()">Edit Request</a>
+						</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Page Body -->
+
+		<div class="page-body">
+			<div class="container-xl">
+				<div class="row row-cards">
+                    <div class="col-md-12">
+                        <div id="saveLoadingDiv" class="card">
+                            <div id="printTittle" class="card-header">
+                              <h3 class="card-title">Edit PMC request / activity plan</h3>
+                            </div>
+                            <div class="card-body">
+                                <!-- New PMC Request Form -->
+                                <form id="editPMCActivityForm">
+                                    {% csrf_token %}
+                                    <div class="row row-cards">
+                                        <div class="col-md-3 printHiddenArea">
+                                            <div class="mb-3">
+                                                <label class="form-label required">PMC Status</label>
+                                                <input id="pmcID" name="pmcID" type="text" class="form-control visually-hidden">
+                                                <select id="pmcStatus" name="pmcStatus" class="form-select">
+                                                    <option value="0">New</option>
+                                                    <option value="1">In Progress</option>
+                                                    <option value="2">Pending</option>
+                                                    <option value="3">Scheduled</option>
+                                                    <option value="4">Completed</option>
+                                                    <option value="5">Cancelled</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 printHiddenArea">
+                                            <div class="mb-3">
+                                                <label class="form-label required" onclick="copyText(this)">Change Number</label>
+                                                <div class="input-group input-group-flat">
+                                                  <input id="changeNumber" name="changeNumber" type="text" class="form-control searchArea" placeholder="Change Number">
+                                                  <span class="input-group-text">
+                                                    <a href="#" class="link-secondary clearSearch" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/x -->
+                                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                                                    </a>
+                                                  </span>
+                                                </div>
+                                                <div class="invalid-feedback">Change number is not valid!</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 printHiddenArea">
+                                            <div class="mb-3">
+                                                <label class="form-label">Change Class</label>
+                                                <select id="changeClass" name="changeClass" class="form-control form-select">
+                                                    <option value="0">0</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">EM</option>
+                                                    <option value="4">-</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 printHiddenArea">
+                                            <div class="mb-3">
+                                                <label class="form-label">Start With Shutdown</label>
+                                                <div class="input-group input-group-flat">
+                                                  <input id="startWithShutdown" name="startWithShutdown" type="text" class="form-control searchArea">
+                                                  <span class="input-group-text">
+                                                    <a href="#" class="link-secondary clearSearch" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/x -->
+                                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                                                    </a>
+                                                  </span>
+                                                </div>
+                                                <div class="invalid-feedback">Start With Shutdown code is not valid!</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label class="form-label" onclick="copyText(this)">Start Time (Power Cut Time)</label>
+                                                <div class="input-icon">
+                                                      <span class="input-icon-addon"><!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                                             stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+                                                                d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path><path
+                                                                d="M16 3l0 4"></path><path d="M8 3l0 4"></path><path d="M4 11l16 0"></path><path
+                                                                d="M11 15l1 0"></path><path d="M12 15l0 3"></path></svg>
+                                                      </span>
+                                                      <input id="pmcStartTime" name="pmcStartTime" class="form-control" placeholder="Select a date">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label class="form-label" onclick="copyText(this)">End Time (Power Back Time)</label>
+                                                <div class="input-icon">
+                                                  <span class="input-icon-addon"><!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                                         viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                                         stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+                                                            d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path><path
+                                                            d="M16 3l0 4"></path><path d="M8 3l0 4"></path><path d="M4 11l16 0"></path><path
+                                                            d="M11 15l1 0"></path><path d="M12 15l0 3"></path></svg>
+                                                  </span>
+                                                  <input id="pmcEndTime" name="pmcEndTime" class="form-control" placeholder="Select a date">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 printHiddenArea">
+                                            <div class="mb-3">
+                                                <label class="form-label">Region</label>
+                                                <select id="region" name="region" class="form-select">
+                                                    <option value="EMEA">EMEA</option>
+                                                    <option value="AP">AP</option>
+                                                    <option value="AM">AM</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 printHiddenArea">
+                                            <div class="mb-3">
+                                                <label class="form-label">Location Code</label>
+                                                <div class="input-group input-group-flat">
+                                                  <input id="locationCode" name="locationCode" type="text" class="form-control searchArea">
+                                                  <span class="input-group-text">
+                                                    <a href="#" class="link-secondary clearSearch" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/x -->
+                                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                                                    </a>
+                                                  </span>
+                                                </div>
+                                                <div class="invalid-feedback">Location Code is not valid!</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label class="form-label">People Onsite</label>
+                                                <div class="input-group input-group-flat">
+                                                  <input id="peopleOnSite" name="peopleOnSite" type="text" class="form-control searchArea">
+                                                  <span class="input-group-text">
+                                                    <a href="#" class="link-secondary clearSearch" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/x -->
+                                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                                                    </a>
+                                                  </span>
+                                                </div>
+                                                <div class="invalid-feedback">People Onsite is not valid!</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 printHiddenArea">
+                                            <div class="mb-3">
+                                                <label class="form-label">Engineer Address</label>
+                                                <div class="input-group input-group-flat">
+                                                  <input id="emailAddress" name="emailAddress" type="text" class="form-control searchArea">
+                                                  <span class="input-group-text">
+                                                    <a href="#" class="link-secondary clearSearch" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/x -->
+                                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                                                    </a>
+                                                  </span>
+                                                </div>
+                                                <div class="invalid-feedback">Engineer Email address is not valid!</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label class="form-label">Contact Information</label>
+                                                <div class="input-group input-group-flat">
+                                                  <input id="contactInformation" name="contactInformation" type="text" class="form-control searchArea">
+                                                  <span class="input-group-text">
+                                                    <a href="#" class="link-secondary clearSearch" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/x -->
+                                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                                                    </a>
+                                                  </span>
+                                                </div>
+                                                <div class="invalid-feedback">Contact Information is not valid!</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 printHiddenArea">
+                                            <div class="mb-3">
+                                                <label class="form-label">Addition People</label>
+                                                <div class="input-group input-group-flat">
+                                                  <input id="additionalPeople" name="additionalPeople" type="text" class="form-control searchArea">
+                                                  <span class="input-group-text">
+                                                    <a href="#" class="link-secondary clearSearch" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/x -->
+                                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                                                    </a>
+                                                  </span>
+                                                </div>
+                                                <div class="invalid-feedback">Addition People Information is not valid!</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 printHiddenArea">
+                                            <div class="mb-3">
+                                                <label class="form-label required">Power Off Assignee</label>
+                                                <select id="powerOffAssignee" name="powerOffAssignee" type="text" class="form-select">
+                                                  <option value="">Not assigned</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 printHiddenArea">
+                                            <div class="mb-3">
+                                                <label class="form-label required">Power On Assignee</label>
+                                                <select id="powerOnAssignee" name="powerOnAssignee" type="text" class="form-select">
+                                                  <option value="">Not assigned</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label class="form-label" onclick="copyText(this)">DCR</label>
+                                                <div class="input-group input-group-flat">
+                                                  <input id="dataCenterRoom" name="dataCenterRoom" type="text" class="form-control searchArea">
+                                                  <span class="input-group-text">
+                                                    <a href="#" class="link-secondary clearSearch" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/x -->
+                                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                                                    </a>
+                                                  </span>
+                                                </div>
+                                                <div class="invalid-feedback">DCR code is not valid!</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 printHiddenArea">
+                                            <div class="mb-3">
+                                                <label class="form-label required">PMC Coordinator</label>
+                                                <select id="pmcCoordinator" name="pmcCoordinator" type="text" class="form-select">
+                                                  <option value="">Not assigned</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 printHiddenArea">
+                                            <div class="mb-3">
+                                                <label class="form-label">SAN</label>
+                                                <select id="sanSelection" name="sanSelection" class="form-select" multiple>
+                                                    <option value="TOBECHECKED" selected>-</option>
+                                                    <option value="NO">NO</option>
+                                                    <option value="VNX">VNX</option>
+                                                    <option value="UNITY">UNITY</option>
+                                                    <option value="VPLEX">VPLEX</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 printHiddenArea">
+                                            <div class="mb-3">
+                                                <label class="form-label">NAS</label>
+                                                <select id="nasSelection" name="nasSelection" class="form-control form-select">
+                                                    <option value="2">-</option>
+                                                    <option value="1">YES</option>
+                                                    <option value="0">NO</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 printHiddenArea">
+                                            <div class="mb-3">
+                                                <label class="form-label">Backup</label>
+                                                <select id="backupSelection" name="backupSelection" class="form-control form-select" onchange="backupSelectionOnchange(this)">
+                                                    <option value="2">-</option>
+                                                    <option value="1">Yes</option>
+                                                    <option value="0">NO</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 printHiddenArea">
+                                            <div class="mb-3">
+                                                <label class="form-label">Backup Assignee</label>
+                                                <select id="backupAssignee" name="backupAssignee" type="text" class="form-select">
+                                                  <option value="">Not assigned</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 printHiddenArea">
+                                            <div class="mb-3">
+                                                <label class="form-label">Oracle DB</label>
+                                                <select id="oracleDBSelection" name="oracleDBSelection" class="form-control form-select" onchange="oracleDBSelectionOnchange(this)">
+                                                    <option value="2">-</option>
+                                                    <option value="1">YES</option>
+                                                    <option value="0">NO</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 printHiddenArea">
+                                            <div class="mb-3">
+                                                <label class="form-label">Oracle DB Assignee</label>
+                                                <select id="oracleDBAssignee" name="oracleDBAssignee" type="text" class="form-select">
+                                                  <option value="">Not assigned</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 printHiddenArea">
+                                            <div class="mb-3">
+                                                <label class="form-label">High Availbility</label>
+                                                <select id="highAvailbilitySelection" name="highAvailbilitySelection" class="form-control form-select" onchange="highAvailbilitySelectionOnchange(this)">
+                                                    <option value="2">-</option>
+                                                    <option value="1">YES</option>
+                                                    <option value="0">NO</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 printHiddenArea">
+                                            <div class="mb-3">
+                                                <label class="form-label">HA Server Room</label>
+                                                <div class="input-group input-group-flat">
+                                                  <input id="serverRoomToFailover" name="serverRoomToFailover" type="text" class="form-control" placeholder="Server room to failover">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 printHiddenArea">
+                                            <div class="mb-3">
+                                                <label class="form-label">HA Service</label>
+                                                <div class="input-group input-group-flat">
+                                                  <input id="serviceToFailover" name="serviceToFailover" type="text" class="form-control" placeholder="Service to failover">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 printHiddenArea">
+                                            <label class="form-label">Reason</label>
+                                            <textarea id="reason" name="reason" rows="5" class="form-control" placeholder="Reason" style="resize: none"></textarea>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <!-- Activity Plan Area-->
+                                <div id="activeplan" style="margin-top: 20px">
+                                    <h5 style="display: inline; margin-bottom: 10px">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-notes" width="24" height="24"
+                                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                                 stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M5 3m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z"></path>
+                                            <path d="M9 7l6 0"></path>
+                                            <path d="M9 11l6 0"></path>
+                                            <path d="M9 15l4 0"></path>
+                                        </svg>
+                                        Activity Plan
+                                    </h5>
+
+                                    <!-- Initiate Activity Plan Button -->
+                                    <button id="generatePlanBtn" type="button" class="btn btn-secondary btn-sm printHiddenArea" style="float: right; margin-bottom: 10px">Generate/Refresh Plan</button>
+
+                                    <!-- Activity Plan Table -->
+                                    <div id="pmcActivityTable" v-show="status">
+                                        <table class="table table-hover table-bordered table-striped table-sm" id="pmcActivityPlan">
+                                            <thead>
+                                                <tr>
+                                                    <!-- id col1 --><th>Date Start</th>
+                                                    <!-- id col2 --><th>Start time (UTC+0)</th>
+                                                    <th>Description of the activities</th>
+                                                    <th>Execution</th>
+                                                    <!-- id col3 --><th>Responsible Team/Person</th>
+                                                    <!-- id col4 --><th>Give Information To</th>
+                                                    <!-- id col5 --><th class="printHiddenArea">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="pmcActivityTableContent">
+                                                <tr id="lineNumber0">
+                                                    <td contenteditable="true">-</td>
+                                                    <td contenteditable="true"><br></td>
+                                                    <td contenteditable="true" data-label="Execution">Stop of Applications</td>
+                                                    <td contenteditable="true">Automatically done by: Shutdown Server</td>
+                                                    <td contenteditable="true">-</td>
+                                                    <td contenteditable="true">-</td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="lineNumber1">
+                                                    <td contenteditable="true">-</td>
+                                                    <td contenteditable="true"><br></td>
+                                                    <td contenteditable="true" data-label="Execution">Stop of Databases MS-SQL</td>
+                                                    <td contenteditable="true">Automatically done by: Shutdown Server</td>
+                                                    <td contenteditable="true">-</td>
+                                                    <td contenteditable="true">-</td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="lineNumber2">
+                                                    <td contenteditable="true">-</td>
+                                                    <td contenteditable="true"><br></td>
+                                                    <td contenteditable="true" data-label="Execution">Shutdown Backup</td>
+                                                    <td contenteditable="true">BD/ISA-SSP</td>
+                                                    <td id="shutdownBackup_3" contenteditable="true">-</td>
+                                                    <td id="shutdownBackup_4" contenteditable="true">-</td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="lineNumber3">
+                                                    <td contenteditable="true">-</td>
+                                                    <td contenteditable="true"><br></td>
+                                                    <td contenteditable="true" data-label="Execution">Shutdown Databases ORACLE</td>
+                                                    <td contenteditable="true">BD/ISA-DPS</td>
+                                                    <td id="shutdownOracleDB_3" contenteditable="true">-</td>
+                                                    <td id="shutdownOracleDB_4" contenteditable="true">-</td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="lineNumber4">
+                                                    <td id="shutdownServer_1" contenteditable="true">-</td>
+                                                    <td id="shutdownServer_2" contenteditable="true"></td>
+                                                    <td contenteditable="true" data-label="Execution">Shutdown Server</td>
+                                                    <td contenteditable="true">BD/ISA-GOC</td>
+                                                    <td id="shutdownServer_3" contenteditable="true">-</td>
+                                                    <td id="shutdownServer_4" contenteditable="true">-</td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="lineNumber5">
+                                                    <td contenteditable="true">-</td>
+                                                    <td contenteditable="true"><br></td>
+                                                    <td contenteditable="true" data-label="Execution">Shutdown Storage(NAS/File)</td>
+                                                    <td contenteditable="true">BD/ISA-SSP</td>
+                                                    <td id="shutdownStorageNAS_3" contenteditable="true">-</td>
+                                                    <td id="shutdownStorageNAS_4" contenteditable="true">-</td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="lineNumber6">
+                                                    <td contenteditable="true">-</td>
+                                                    <td contenteditable="true"><br></td>
+                                                    <td contenteditable="true" data-label="Execution">Shutdown Storage(SAN)</td>
+                                                    <td contenteditable="true">BD/ISA-SSP</td>
+                                                    <td id="shutdownStorageSAN_3" contenteditable="true">-</td>
+                                                    <td id="shutdownStorageSAN_4" contenteditable="true">-</td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="lineNumber7">
+                                                    <td contenteditable="true">-</td>
+                                                    <td contenteditable="true"><br></td>
+                                                    <td contenteditable="true" data-label="Execution">Un-Plug Power Cable for SAN</td>
+                                                    <td contenteditable="true">BD/SLP</td>
+                                                    <td id="unplugPowerCable_3" contenteditable="true">-</td>
+                                                    <td id="unplugPowerCable_4" contenteditable="true">-</td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="lineNumber8">
+                                                    <td contenteditable="true">-</td>
+                                                    <td contenteditable="true"><br></td>
+                                                    <td contenteditable="true" data-label="Execution">Network WAN&amp;LAN&amp;Avaya</td>
+                                                    <td contenteditable="true">Automatically done by: Power off</td>
+                                                    <td contenteditable="true">-</td>
+                                                    <td contenteditable="true">-</td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="lineNumber9">
+                                                    <td id="clearanceForPowerOff_1" contenteditable="true">-</td>
+                                                    <td id="clearanceForPowerOff_2" contenteditable="true">-</td>
+                                                    <td contenteditable="true" data-label="Execution"><font color="red">Clearence for Power off</font></td>
+                                                    <td contenteditable="true">FCM</td>
+                                                    <td id="clearanceForPowerOff_3" contenteditable="true">-</td>
+                                                    <td id="clearanceForPowerOff_4" contenteditable="true">-</td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="lineNumber10">
+                                                    <td id="clearanceForPowerOn_1" contenteditable="true">-</td>
+                                                    <td id="clearanceForPowerOn_2" contenteditable="true">-</td>
+                                                    <td contenteditable="true" data-label="Execution"><font color="red">Clearence for Power on</font></td>
+                                                    <td contenteditable="true">FCM</td>
+                                                    <td id="clearanceForPowerOn_3" contenteditable="true">-</td>
+                                                    <td id="clearanceForPowerOn_4" contenteditable="true">-</td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="lineNumber11">
+                                                    <td contenteditable="true">-</td>
+                                                    <td contenteditable="true"><br></td>
+                                                    <td contenteditable="true" data-label="Execution">Network WAN &amp; LAN &amp; Avaya</td>
+                                                    <td contenteditable="true">Automatically done by: Power on (BOC to inform NOC to confirm network status)</td>
+                                                    <td contenteditable="true">BD/ISA-GOC</td>
+                                                    <td contenteditable="true">NOC</td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="lineNumber12">
+                                                    <td contenteditable="true">-</td>
+                                                    <td contenteditable="true"><br></td>
+                                                    <td contenteditable="true" data-label="Execution">Plug-In Power Cable for SAN</td>
+                                                    <td contenteditable="true">BD/SLP</td>
+                                                    <td id="plugInPowerCable_3" contenteditable="true">-</td>
+                                                    <td id="plugInPowerCable_4" contenteditable="true">-</td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="lineNumber13">
+                                                    <td contenteditable="true">-</td>
+                                                    <td contenteditable="true"><br></td>
+                                                    <td contenteditable="true" data-label="Execution">Startup/Check Storage(SAN)</td>
+                                                    <td contenteditable="true">BD/ISA-SSP</td>
+                                                    <td id="startupStorageSAN_3" contenteditable="true">-</td>
+                                                    <td id="startupStorageSAN_4" contenteditable="true">-</td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="lineNumber14">
+                                                    <td contenteditable="true">-</td>
+                                                    <td contenteditable="true"><br></td>
+                                                    <td contenteditable="true" data-label="Execution">Startup/Check Storage(NAS/File)</td>
+                                                    <td contenteditable="true">BD/ISA-SSP</td>
+                                                    <td id="startupStorageNAS_3" contenteditable="true">-</td>
+                                                    <td id="startupStorageNAS_4" contenteditable="true">-</td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="lineNumber15">
+                                                    <td id="startupServer_1" contenteditable="true">-</td>
+                                                    <td contenteditable="true"></td>
+                                                    <td contenteditable="true" data-label="Execution">Startup Server</td>
+                                                    <td contenteditable="true">BD/ISA-GOC</td>
+                                                    <td id="startupServer_3" contenteditable="true">-</td>
+                                                    <td id="startupServer_4" contenteditable="true">-</td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="lineNumber16">
+                                                    <td contenteditable="true">-</td>
+                                                    <td contenteditable="true"><br></td>
+                                                    <td contenteditable="true" data-label="Execution">Startup Databases ORACLE</td>
+                                                    <td contenteditable="true">BD/ISA-DPS</td>
+                                                    <td id="startupOracleDB_3" contenteditable="true">-</td>
+                                                    <td id="startupOracleDB_4" contenteditable="true">-</td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="lineNumber17">
+                                                    <td contenteditable="true">-</td>
+                                                    <td contenteditable="true"><br></td>
+                                                    <td contenteditable="true" data-label="Execution">Startup Backup</td>
+                                                    <td contenteditable="true">BD/ISA-SSP</td>
+                                                    <td id="startupBackup_3" contenteditable="true">-</td>
+                                                    <td id="startupBackup_4" contenteditable="true">-</td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="lineNumber18">
+                                                    <td contenteditable="true">-</td>
+                                                    <td contenteditable="true"><br></td>
+                                                    <td contenteditable="true" data-label="Execution">Startup Databases MS-SQL</td>
+                                                    <td contenteditable="true">Automatically done by: Startup Server</td>
+                                                    <td contenteditable="true">-</td>
+                                                    <td contenteditable="true">-</td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="lineNumber19">
+                                                    <td contenteditable="true">-</td>
+                                                    <td contenteditable="true"><br></td>
+                                                    <td contenteditable="true" data-label="Execution">Startup Applications</td>
+                                                    <td contenteditable="true">Automatically done by: Startup Server
+                                                    </td>
+                                                    <td contenteditable="true">-</td>
+                                                    <td contenteditable="true">-</td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="lineNumber20">
+                                                    <td id="mainCheck_1" contenteditable="true">-</td>
+                                                    <td contenteditable="true"></td>
+                                                    <td contenteditable="true" data-label="Execution">Main Check WAN/LAN/Intranet acces/Exchange/File server/ Applications)</td>
+                                                    <td contenteditable="true">Local Support Team/User</td>
+                                                    <td id="mainCheck_3" contenteditable="true">-</td>
+                                                    <td id="mainCheck_4" contenteditable="true">-</td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr id="lineNumber21">
+                                                    <td contenteditable="true"><br></td>
+                                                    <td contenteditable="true"><br></td>
+                                                    <td contenteditable="true" data-label="Execution">Completion message</td>
+                                                    <td contenteditable="true"><br></td>
+                                                    <td contenteditable="true"><br></td>
+                                                    <td contenteditable="true"><br></td>
+                                                    <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Card footer -->
+                            <div class="card-footer text-end printHiddenArea">
+                                <button id="deviceListBtn" type="button" class="btn btn-primary" style="float: left; margin-right: 20px; border-radius: 5px">Download device list</button>
+                                <button id="viewDeviceListBtn" type="button" class="btn btn-primary" style="float: left; margin-right: 20px; border-radius: 5px">View device list</button>
+                                <button id="pmcConfirmedBtn" type="button" class="btn btn-success" style="float: left; margin-right: 20px; border-radius: 5px">Confirm</button>
+                                <button id="activityPlanSave" type="button" class="btn btn-primary" style="float: right; margin-right: 20px; border-radius: 5px">Save</button>
+                                <button id="activityPlanPrint" type="button" class="btn btn-primary" style="float: right; margin-right: 20px; border-radius: 5px">Print</button>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+<!-- Load JS -->
+<script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+<script src="{% static 'plugin/layui/layui.js' %}"></script>
+<script src="{% static 'plugin/tabler/libs/tom-select/dist/js/tom-select.base.min.js' %}"></script>
+<script src="{% static 'plugin/tabler/js/tabler.min.js' %}"></script>
+<!-- Auto adjust iFrame height -->
+<script type="text/javascript">
+    var pmc_data = {{ pmc_activity | safe }}
+    var pmc_activity_plan = {{ pmc_activity_plan | safe }}
+    // Initiate function
+    $(function () {
+        insertValueToForm();
+        // iFrame height refresh
+        refreshHeight();
+        // PMC Activity Table Resize
+        pmcActivityTableResize();
+        // Date time initiation
+        datetimeInitiate();
+        // Power on/off selector initiation
+        pmcAssigneeInitiate();
+        // PMC coordinator selector initiation
+        pmcCoordinatorInitiate();
+        // Print activity plan
+        activityPlanPrint();
+        // PMC activity edit page save
+        pmcActivitySave();
+        // Generate activity plan by PMC form
+        generateAactivityPlan();
+        // Get device list initiation
+        deviceListRetrieve();
+        // Clear input text initiation
+        clearSearch();
+        // PMC Activity confirm
+        pmcActivityConfirm();
+        // PMC View device list
+        pmcViewDeviceList();
+    });
+
+    // iFrame height initiation
+    function refreshHeight() {
+        top.postMessage(document.body.scrollHeight, '*');
+    }
+
+    // iFrame height resize according to hostStatusTable height
+    function pmcActivityTableResize() {
+        let originalBodyHeight = document.body.scrollHeight;
+        let originalActivityTableHeight = document.getElementById('pmcActivityTable').clientHeight;
+        let resizeTimer = null;
+        const pmcActivityTableObserver = new ResizeObserver(entries => {
+            entries.forEach(entry => {
+                if (resizeTimer) {
+                    clearTimeout(resizeTimer);
+                }
+                resizeTimer = setTimeout(function () {
+                    let differenceHeight = entry.contentRect.height - originalActivityTableHeight;
+                    top.postMessage(originalBodyHeight + differenceHeight, '*');
+                }, 100)
+            });
+        });
+
+        const pmcActivityTable = document.getElementById('pmcActivityTable');
+        pmcActivityTableObserver.observe(pmcActivityTable);
+    }
+
+    // Clear button initiation
+    function clearSearch(){
+        $('.clearSearch').on('click', function (){
+            let inputItsp = $(this).parents()[0]
+            $(inputItsp).prev().val('').focus();
+        });
+    }
+
+    function copyText(ele){
+        let copyipt = document.createElement("input");
+        let copyContent;
+        if ($(ele).html().indexOf('Time') !== -1) {
+            copyContent = $(ele).next().children(':last-child').val();
+        } else {
+            copyContent = $(ele).next().children(':first-child').val();
+        }
+
+        copyipt.setAttribute("value", copyContent);
+        document.body.appendChild(copyipt);
+        copyipt.select();
+        document.execCommand("copy");
+        document.body.removeChild(copyipt);
+        layer.msg($(ele).text() + ' copied.', { offset: ['20%', '45%'] });
+    }
+
+    var backupSelectionSelector;
+    var oracledbSelectionSelector;
+    // Control div when backup type change
+    function backupSelectionOnchange(obj) {
+        let select_value = obj.options[obj.selectedIndex].value;
+        if (select_value == '1') {
+            backupSelectionSelector.enable();
+        } else {
+            backupSelectionSelector.setValue('');
+            backupSelectionSelector.disable();
+        }
+    }
+
+    // Control div when oracle DB selection change
+    function oracleDBSelectionOnchange(obj) {
+        let select_value = obj.options[obj.selectedIndex].value;
+        if (select_value == '1') {
+            oracledbSelectionSelector.enable();
+        } else {
+            oracledbSelectionSelector.setValue('');
+            oracledbSelectionSelector.disable();
+        }
+        
+    }
+
+    // Control div when high availbility selection change
+    function highAvailbilitySelectionOnchange(obj) {
+        let select_value = obj.options[obj.selectedIndex].value;
+        if (select_value == '1') {
+            $('#serverRoomToFailover').removeAttr('disabled');
+            $('#serviceToFailover').removeAttr('disabled');
+        } else {
+            $('#serverRoomToFailover').val('');
+            $('#serviceToFailover').val('');
+            $('#serverRoomToFailover').attr('disabled', 'disabled');
+            $('#serviceToFailover').attr('disabled', 'disabled');
+        }
+    }
+    
+    // Load activity data
+    function insertValueToForm(){
+        if (pmc_data['pmc_confirmed'] == 1) {
+            $('#pmcConfirmedBtn').addClass('disabled').html('Confirmed');
+            $('#viewDeviceListBtn').addClass('disabled');
+        }
+
+        $('#pmcID').val(pmc_data['pmc_id']);
+        $('#changeNumber').val(pmc_data['change_number']);
+        $('#itspNumber').val(pmc_data['itsp_no']);
+
+        $('#pmcStatus').val(pmc_data['status']);
+        $('#changeClass').val(pmc_data['change_class']);
+        if (pmc_data['region'] == 'NA' || pmc_data['region'] == 'LA') {
+            $('#region').val('AM');
+        } else {
+            $('#region').val(pmc_data['region']);
+        }
+        $('#startWithShutdown').val(pmc_data['start_with_shutdown']);
+        $('#locationCode').val(pmc_data['location_code']);
+        $('#dataCenterRoom').val(pmc_data['data_center_room']);
+
+        $('#pmcStartTime').val(pmc_data['start_time']);
+        $('#pmcEndTime').val(pmc_data['end_time']);
+
+        $('#peopleOnSite').val(pmc_data['people_onsite']);
+        $('#emailAddress').val(pmc_data['engineer_address']);
+        $('#contactInformation').val(pmc_data['contact_information']);
+        $('#additionalPeople').val(pmc_data['additional_people']);
+
+        $('#nasSelection').val(pmc_data['nas']);
+        $('#backupSelection').val(pmc_data['backup']);
+        $('#oracleDBSelection').val(pmc_data['oracle_db']);
+
+        if (pmc_data['high_availability'] == 1) {
+            $('#highAvailbilitySelection').val(pmc_data['high_availability']);
+            $('#serverRoomToFailover').val(pmc_data['server_room_to_failover']);
+            $('#serviceToFailover').val(pmc_data['service_to_failover']);
+        } else {
+            $('#highAvailbilitySelection').val(pmc_data['high_availability']);
+            $('#serverRoomToFailover').val('');
+            $('#serviceToFailover').val('');
+            $('#serverRoomToFailover').attr('disabled', 'disabled');
+            $('#serviceToFailover').attr('disabled', 'disabled');
+        }
+        
+
+        $('#reason').val(pmc_data['reason']);
+
+        // Insert activity plan data to table
+        if (pmc_activity_plan.length > 0) {
+            let pmcActivityTableContent = $('#pmcActivityTableContent');
+            pmcActivityTableContent.empty();
+            $.each(pmc_activity_plan, (index, activity_item) => {
+                let tr = $('<tr>');
+                tr.attr('id', 'lineNumber' + activity_item['line_number']);
+                tr.append(`<td contenteditable="true" style="width: 100px">${ activity_item['date_start'] }</td>`);
+                tr.append(`<td contenteditable="true">${ activity_item['start_time'] }</td>`);
+                tr.append(`<td contenteditable="true">${ activity_item['description_of_activity'] }</td>`);
+                tr.append(`<td contenteditable="true">${ activity_item['execution'] }</td>`);
+                tr.append(`<td contenteditable="true">${ activity_item['responsible'] }</td>`);
+                tr.append(`<td contenteditable="true">${ activity_item['information_to'] }</td>`);
+                tr.append(`<td class="printHiddenArea">
+                                <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                </a>
+                                <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                </a>
+                          </td>`);
+
+                if (activity_item['description_of_activity'].trim().toUpperCase() === 'SHUTDOWN BACKUP'){
+                    $(tr).find("td:eq(4)").attr('id', 'shutdownBackup_3');
+                    $(tr).find("td:eq(5)").attr('id', 'shutdownBackup_4');
+                } else if (activity_item['description_of_activity'].trim().toUpperCase() === 'SHUTDOWN DATABASES ORACLE'){
+                    $(tr).find("td:eq(4)").attr('id', 'shutdownOracleDB_3');
+                    $(tr).find("td:eq(5)").attr('id', 'shutdownOracleDB_4');
+                } else if (activity_item['description_of_activity'].trim().toUpperCase() === 'SHUTDOWN SERVER'){
+                    $(tr).find("td:eq(0)").attr('id', 'shutdownServer_1');
+                    $(tr).find("td:eq(1)").attr('id', 'shutdownServer_2');
+                    $(tr).find("td:eq(4)").attr('id', 'shutdownServer_3');
+                    $(tr).find("td:eq(5)").attr('id', 'shutdownServer_4');
+                } else if (activity_item['description_of_activity'].trim().toUpperCase() === 'SHUTDOWN STORAGE(NAS/FILE)'){
+                    $(tr).find("td:eq(4)").attr('id', 'shutdownStorageNAS_3');
+                    $(tr).find("td:eq(5)").attr('id', 'shutdownStorageNAS_4');
+                } else if (activity_item['description_of_activity'].trim().toUpperCase() === 'SHUTDOWN STORAGE(SAN)'){
+                    $(tr).find("td:eq(4)").attr('id', 'shutdownStorageSAN_3');
+                    $(tr).find("td:eq(5)").attr('id', 'shutdownStorageSAN_4');
+                } else if (activity_item['description_of_activity'].trim().toUpperCase() === 'UN-PLUG POWER CABLE FOR SAN'){
+                    $(tr).find("td:eq(4)").attr('id', 'unplugPowerCable_3');
+                    $(tr).find("td:eq(5)").attr('id', 'unplugPowerCable_4');
+                } else if (activity_item['description_of_activity'].trim().toUpperCase() === '<FONT COLOR="RED">CLEARENCE FOR POWER OFF</FONT>'){
+                    $(tr).find("td:eq(0)").attr('id', 'clearanceForPowerOff_1');
+                    $(tr).find("td:eq(1)").attr('id', 'clearanceForPowerOff_2');
+                    $(tr).find("td:eq(4)").attr('id', 'clearanceForPowerOff_3');
+                    $(tr).find("td:eq(5)").attr('id', 'clearanceForPowerOff_4');
+                } else if (activity_item['description_of_activity'].trim().toUpperCase() === '<FONT COLOR="RED">CLEARENCE FOR POWER ON</FONT>'){
+                    $(tr).find("td:eq(0)").attr('id', 'clearanceForPowerOn_1');
+                    $(tr).find("td:eq(1)").attr('id', 'clearanceForPowerOn_2');
+                    $(tr).find("td:eq(4)").attr('id', 'clearanceForPowerOn_3');
+                    $(tr).find("td:eq(5)").attr('id', 'clearanceForPowerOn_4');
+                } else if (activity_item['description_of_activity'].trim().toUpperCase() === 'PLUG-IN POWER CABLE FOR SAN'){
+                    $(tr).find("td:eq(4)").attr('id', 'plugInPowerCable_3');
+                    $(tr).find("td:eq(5)").attr('id', 'plugInPowerCable_4');
+                } else if (activity_item['description_of_activity'].trim().toUpperCase() === 'STARTUP/CHECK STORAGE(SAN)'){
+                    $(tr).find("td:eq(4)").attr('id', 'startupStorageSAN_3');
+                    $(tr).find("td:eq(5)").attr('id', 'startupStorageSAN_4');
+                } else if (activity_item['description_of_activity'].trim().toUpperCase() === 'STARTUP/CHECK STORAGE(NAS/FILE)'){
+                    $(tr).find("td:eq(4)").attr('id', 'startupStorageNAS_3');
+                    $(tr).find("td:eq(5)").attr('id', 'startupStorageNAS_4');
+                } else if (activity_item['description_of_activity'].trim().toUpperCase() === 'STARTUP SERVER'){
+                    $(tr).find("td:eq(0)").attr('id', 'startupServer_1');
+                    $(tr).find("td:eq(4)").attr('id', 'startupServer_3');
+                    $(tr).find("td:eq(5)").attr('id', 'startupServer_4');
+                } else if (activity_item['description_of_activity'].trim().toUpperCase() === 'STARTUP DATABASES ORACLE'){
+                    $(tr).find("td:eq(4)").attr('id', 'startupOracleDB_3');
+                    $(tr).find("td:eq(5)").attr('id', 'startupOracleDB_4');
+                } else if (activity_item['description_of_activity'].trim().toUpperCase() === 'STARTUP BACKUP'){
+                    $(tr).find("td:eq(4)").attr('id', 'startupBackup_3');
+                    $(tr).find("td:eq(5)").attr('id', 'startupBackup_4');
+                } else if (activity_item['description_of_activity'].trim().toUpperCase() === 'MAIN CHECK WAN/LAN/INTRANET ACCES/EXCHANGE/FILE SERVER/ APPLICATIONS)'){
+                    $(tr).find("td:eq(0)").attr('id', 'mainCheck_1');
+                    $(tr).find("td:eq(4)").attr('id', 'mainCheck_3');
+                    $(tr).find("td:eq(5)").attr('id', 'mainCheck_4');
+                }
+
+                $(tr).appendTo(pmcActivityTableContent);
+            });
+        }
+    }
+
+    // Initiate datetime plugin
+    function datetimeInitiate() {
+        layui.use(['laydate'], function () {
+            let laydate = layui.laydate;
+
+            // Maintenance date time
+            laydate.render({
+                elem: '#pmcStartTime',
+                type: 'datetime',
+                lang: 'en'
+            });
+            laydate.render({
+                elem: '#pmcEndTime',
+                type: 'datetime',
+                lang: 'en'
+            });
+        })
+    }
+
+    // Load PMC assignee data
+    function pmcAssigneeInitiate(){
+        // Get assignee information by ajax
+        $.ajax({
+            url: "{% url 'new_request_get_assignee' %}",
+            method: 'POST',
+            data: $('#editPMCActivityForm').serialize(),
+            dataType: 'json',
+            success: function (res) {
+                if (res.status) {
+                    // Add search results
+                    if (res.data.length > 0) {
+                        // Append options for assignee selector
+                        $.each(res.data, (index, assignee) => {
+                            if (assignee.responsible == 'Server;Storage') {
+                                $('#powerOffAssignee').append(`<option value="${assignee.name}"> ${assignee.name} </option>`);
+                                $('#powerOnAssignee').append(`<option value="${assignee.name}"> ${assignee.name} </option>`);
+                            } else if (assignee.responsible == 'Backup') {
+                                $('#backupAssignee').append(`<option value="${assignee.name}"> ${assignee.name} </option>`);
+                            } else if (assignee.responsible == 'OracleDB') {
+                                $('#oracleDBAssignee').append(`<option value="${assignee.name}"> ${assignee.name} </option>`);
+                            } else {
+                                console.log('No reponsibility assigned:' + assignee.name)
+                            }
+                        });
+                        formSelectInitiate();
+                    }
+                } else {
+                    layer.msg('Error retrieving assignee list:' + res.error)
+                }
+            }
+        });
+    }
+
+    // Load PMC coordinator data
+    function pmcCoordinatorInitiate(){
+        // Get coordinator list
+        $.ajax({
+            url: "{% url 'new_request_get_pmc_coordinator' %}",
+            method: 'POST',
+            data: $('#editPMCActivityForm').serialize(),
+            dataType: 'json',
+            success: function (res) {
+                if (res.status) {
+                    // Add search results
+                    if (res.data.length > 0) {
+                        // Append options for assignee selector
+                        $.each(res.data, (index, assignee) => {
+                            $('#pmcCoordinator').append(`<option value="${assignee}"> ${assignee} </option>`);
+                        });
+                        
+                        let el;
+                        let pmcCoordinatorSelector = new TomSelect(el = $('#pmcCoordinator'), {
+                            copyClassesToDropdown: false,
+                            dropdownParent: 'body',
+                            controlInput: '<input>',
+                            render:{
+                                item: function(data,escape) {
+                                    if( data.customProperties ){
+                                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                                    }
+                                    return '<div>' + escape(data.text) + '</div>';
+                                },
+                                option: function(data,escape){
+                                    if( data.customProperties ){
+                                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                                    }
+                                    return '<div>' + escape(data.text) + '</div>';
+                                },
+                            },
+                        });
+                        
+                        console.log(pmc_data['pmc_coordinator']);
+                        pmcCoordinatorSelector.setValue(pmc_data['pmc_coordinator']);
+                    }
+                } else {
+                    layer.msg('Error retrieving coordinator list.')
+                }
+            }
+        });
+    }
+
+    // Selector initiation
+    function formSelectInitiate(){
+        let el;
+    	powerOffAssigneeSelector = new TomSelect(el = $('#powerOffAssignee'), {
+    		copyClassesToDropdown: false,
+    		dropdownParent: 'body',
+    		controlInput: '<input>',
+    		render:{
+    			item: function(data,escape) {
+    				if( data.customProperties ){
+    					return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+    				}
+    				return '<div>' + escape(data.text) + '</div>';
+    			},
+    			option: function(data,escape){
+    				if( data.customProperties ){
+    					return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+    				}
+    				return '<div>' + escape(data.text) + '</div>';
+    			},
+    		},
+    	});
+
+        powerOnAssigneeSelector = new TomSelect(el = $('#powerOnAssignee'), {
+    		copyClassesToDropdown: false,
+    		dropdownParent: 'body',
+    		controlInput: '<input>',
+    		render:{
+    			item: function(data,escape) {
+    				if( data.customProperties ){
+    					return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+    				}
+    				return '<div>' + escape(data.text) + '</div>';
+    			},
+    			option: function(data,escape){
+    				if( data.customProperties ){
+    					return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+    				}
+    				return '<div>' + escape(data.text) + '</div>';
+    			},
+    		},
+    	});
+
+        sanSelectionSelector = new TomSelect(el = $('#sanSelection'), {
+    		copyClassesToDropdown: false,
+    		dropdownParent: 'body',
+    		controlInput: '<input>',
+    		render:{
+    			item: function(data,escape) {
+    				if( data.customProperties ){
+    					return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+    				}
+    				return '<div>' + escape(data.text) + '</div>';
+    			},
+    			option: function(data,escape){
+    				if( data.customProperties ){
+    					return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+    				}
+    				return '<div>' + escape(data.text) + '</div>';
+    			},
+    		},
+    	});
+
+        backupSelectionSelector = new TomSelect(el = $('#backupAssignee'), {
+    		copyClassesToDropdown: false,
+    		dropdownParent: 'body',
+    		controlInput: '<input>',
+    		render:{
+    			item: function(data,escape) {
+    				if( data.customProperties ){
+    					return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+    				}
+    				return '<div>' + escape(data.text) + '</div>';
+    			},
+    			option: function(data,escape){
+    				if( data.customProperties ){
+    					return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+    				}
+    				return '<div>' + escape(data.text) + '</div>';
+    			},
+    		},
+    	});
+
+        oracledbSelectionSelector = new TomSelect(el = $('#oracleDBAssignee'), {
+    		copyClassesToDropdown: false,
+    		dropdownParent: 'body',
+    		controlInput: '<input>',
+    		render:{
+    			item: function(data,escape) {
+    				if( data.customProperties ){
+    					return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+    				}
+    				return '<div>' + escape(data.text) + '</div>';
+    			},
+    			option: function(data,escape){
+    				if( data.customProperties ){
+    					return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+    				}
+    				return '<div>' + escape(data.text) + '</div>';
+    			},
+    		},
+    	});
+
+        // Load SAN selection
+        sanSelectionSelector.clear();
+        if (pmc_data['san_vnx'] == 2 && pmc_data['san_unity'] == 2 && pmc_data['san_vplex'] == 2) {
+            sanSelectionSelector.addItem('TOBECHECKED');
+        } else if (pmc_data['san_vnx'] == 0 && pmc_data['san_unity'] == 0 && pmc_data['san_vplex'] == 0) {
+            sanSelectionSelector.addItem('NO');
+        } else {
+            if (pmc_data['san_vnx'] == 1) {
+                sanSelectionSelector.addItem('VNX');
+            }
+            if (pmc_data['san_unity'] == 1) {
+                sanSelectionSelector.addItem('UNITY');
+            }
+            if (pmc_data['san_vplex'] == 1) {
+                sanSelectionSelector.addItem('VPLEX');
+            }
+        }
+
+        // Load power off assignee
+        powerOffAssigneeSelector.clear();
+        powerOffAssigneeSelector.setValue(pmc_data['power_off_assignee']);
+
+        // Load power on assignee
+        powerOnAssigneeSelector.clear();
+        powerOnAssigneeSelector.setValue(pmc_data['power_on_assignee']);
+
+        // Load backup assignee
+        if (pmc_data['backup'] == 1) {
+            backupSelectionSelector.clear();
+            backupSelectionSelector.setValue(pmc_data['backup_assignee']);
+        } else {
+            backupSelectionSelector.setValue('');
+            backupSelectionSelector.disable();
+        }
+        
+        // Load oracle db assignees
+        if (pmc_data['oracle_db'] == 1) {
+            oracledbSelectionSelector.clear();
+            oracledbSelectionSelector.setValue(pmc_data['oracle_db_assignee']);
+        } else {
+            oracledbSelectionSelector.setValue('');
+            oracledbSelectionSelector.disable();
+        }
+    }
+
+    // Print activity plan
+    function activityPlanPrint() {
+        $('#activityPlanPrint').on('click', function (){
+            let originalTittle = $('#printTittle').html();
+            $('.printHiddenArea').addClass('visually-hidden');
+            $('#printTittle').html('<h1 style="margin: auto">Power Maintenance Activity Plan</h1>');
+            parent.window.pmcActivityPrint();
+            $('#printTittle').html(originalTittle);
+            $('.printHiddenArea').removeClass('visually-hidden');
+        });
+    }
+
+    // Generate PMC activity plan
+    function generateAactivityPlan(){
+        $('#generatePlanBtn').on('click', function (){
+            // Get PMC start&end date time
+            let powerOffTimeArray = $('#pmcStartTime').val().split(" ") ;
+            let powerOnTimeArray = $('#pmcEndTime').val().split(" ");
+
+            // Shutdown Backup
+            if ($('#backupSelection').val() == 1) {
+                console.log($('#backupSelection').val())
+                console.log($('#backupAssignee').val())
+                $('#shutdownBackup_3').html($('#backupAssignee').val());
+                $('#shutdownBackup_4').html($('#powerOffAssignee').val());
+            } else {
+                $('#shutdownBackup_3').html('-');
+                $('#shutdownBackup_4').html('-');
+            }
+
+            // Shutdown OracleDB
+            if ($('#oracleDBSelection').val() == 1) {
+                $('#shutdownOracleDB_3').html($('#oracleDBAssignee').val());
+                $('#shutdownOracleDB_4').html($('#powerOffAssignee').val());
+            } else {
+                $('#shutdownOracleDB_3').html('-');
+                $('#shutdownOracleDB_4').html('-');
+            }
+
+            // Shutdown Server
+            $('#shutdownServer_1').html(powerOffTimeArray[0]);
+            if ($('#powerOffAssignee').val() != '') {
+                $('#shutdownServer_3').html($('#powerOffAssignee').val());
+                // If NAS or SAN yes
+                if ($('#nasSelection').val() == '1' || ($('#sanSelection').val().indexOf('TOBECHECKED') == -1 && $('#sanSelection').val().indexOf('NO') == -1)) {
+                    $('#shutdownServer_4').html($('#powerOffAssignee').val());
+                // If NAS or SAN both NO
+                } else {
+                    if ($('#peopleOnSite').val() != '') {
+                        $('#shutdownServer_4').html($('#peopleOnSite').val());
+                    } else {
+                        $('#shutdownServer_4').html('-');
+                    }
+                }
+            } else {
+                $('#shutdownServer_3').html('-');
+                $('#shutdownServer_4').html('-');
+            }
+
+            // Shutdown Storage NAS
+            if ($('#powerOffAssignee').val() != '') {
+                // Check if NAS yes
+                if ($('#nasSelection').val() == '1') {
+                    $('#shutdownStorageNAS_3').html($('#powerOffAssignee').val());
+                    // Check if SAN yes
+                    if ($('#sanSelection').val().indexOf('TOBECHECKED') == -1 && $('#sanSelection').val().indexOf('NO') == -1) {
+                        $('#shutdownStorageNAS_4').html($('#powerOffAssignee').val());
+                    } else {
+                        if ($('#peopleOnSite').val() != '') {
+                            $('#shutdownStorageNAS_4').html($('#peopleOnSite').val());
+                        } else {
+                            $('#shutdownStorageNAS_4').html('-');
+                        }
+                    }
+                } else {
+                    $('#shutdownStorageNAS_3').html('-');
+                    $('#shutdownStorageNAS_4').html('-');
+                }
+            } else {
+                $('#shutdownStorageNAS_3').html('-');
+                $('#shutdownStorageNAS_4').html('-');
+            }
+
+            // Shutdown Storage SAN
+            if ($('#powerOffAssignee').val() != '') {
+                // Check if SAN yes
+                if ($('#sanSelection').val().indexOf('TOBECHECKED') == -1 && $('#sanSelection').val().indexOf('NO') == -1) {
+                    $('#shutdownStorageSAN_3').html($('#powerOffAssignee').val());
+                } else {
+                    $('#shutdownStorageSAN_3').html('-');
+                }
+            } else {
+                $('#shutdownStorageSAN_3').html('-');
+            }
+
+            if ($('#peopleOnSite').val() != '') {
+                // Check if SAN yes
+                if ($('#sanSelection').val().indexOf('TOBECHECKED') == -1 && $('#sanSelection').val().indexOf('NO') == -1) {
+                    $('#shutdownStorageSAN_4').html($('#peopleOnSite').val());
+                } else {
+                    $('#shutdownStorageSAN_4').html('-');
+                }
+            } else {
+                $('#shutdownStorageSAN_4').html('-');
+            }
+
+            // Unplug power cable
+            // Check if SAN yes
+            if ($('#sanSelection').val().indexOf('TOBECHECKED') == -1 && $('#sanSelection').val().indexOf('NO') == -1) {
+                $('#unplugPowerCable_3').html($('#peopleOnSite').val());
+                $('#unplugPowerCable_4').html($('#peopleOnSite').val());
+            } else {
+                $('#unplugPowerCable_3').html('-');
+                $('#unplugPowerCable_4').html('-');
+            }
+
+            // Clearance for power off
+            $('#clearanceForPowerOff_1').html(powerOffTimeArray[0]);
+            $('#clearanceForPowerOff_2').html(powerOffTimeArray[1].substring(0, powerOffTimeArray[1].length - 3));
+            if ($('#peopleOnSite').val() != '') {
+                $('#clearanceForPowerOff_3').html($('#peopleOnSite').val());
+                $('#clearanceForPowerOff_4').html($('#peopleOnSite').val());
+            } else {
+                $('#clearanceForPowerOff_3').html('-');
+                $('#clearanceForPowerOff_4').html('-');
+            }
+
+            // Clearance for power on
+            $('#clearanceForPowerOn_1').html(powerOnTimeArray[0]);
+            $('#clearanceForPowerOn_2').html(powerOnTimeArray[1].substring(0, powerOnTimeArray[1].length - 3));
+            if ($('#peopleOnSite').val() != '') {
+                $('#clearanceForPowerOn_3').html($('#peopleOnSite').val());
+                // If SAN yes
+                if ($('#sanSelection').val().indexOf('TOBECHECKED') == -1 && $('#sanSelection').val().indexOf('NO') == -1) {
+                    $('#clearanceForPowerOn_4').html($('#peopleOnSite').val());
+                } else {
+                    $('#clearanceForPowerOn_4').html('-');
+                }
+            } else {
+                $('#clearanceForPowerOn_3').html('-');
+                $('#clearanceForPowerOn_4').html('-');
+            }
+
+            // Plug in power cable
+            if ($('#peopleOnSite').val() != '') {
+                // Check if SAN yes
+                if ($('#sanSelection').val().indexOf('TOBECHECKED') == -1 && $('#sanSelection').val().indexOf('NO') == -1) {
+                    $('#plugInPowerCable_3').html($('#peopleOnSite').val());
+                } else {
+                    $('#plugInPowerCable_3').html('-');
+                }
+            } else {
+                $('#plugInPowerCable_3').html('-');
+            }
+
+            if ($('#powerOnAssignee').val() != '0') {
+                // Check if SAN yes
+                if ($('#sanSelection').val().indexOf('TOBECHECKED') == -1 && $('#sanSelection').val().indexOf('NO') == -1) {
+                    $('#plugInPowerCable_4').html($('#powerOnAssignee').val());
+                } else {
+                    $('#plugInPowerCable_4').html('-');
+                }
+            } else {
+                $('#plugInPowerCable_4').html('-');
+            }
+
+            // Startup storage SAN
+            if ($('#powerOnAssignee').val() != '') {
+                // Check if SAN yes
+                if ($('#sanSelection').val().indexOf('TOBECHECKED') == -1 && $('#sanSelection').val().indexOf('NO') == -1) {
+                    $('#startupStorageSAN_3').html($('#powerOnAssignee').val());
+                    $('#startupStorageSAN_4').html($('#powerOnAssignee').val());
+                } else {
+                    $('#startupStorageSAN_3').html('-');
+                    $('#startupStorageSAN_4').html('-');
+                }
+            } else {
+                $('#startupStorageSAN_3').html('-');
+                $('#startupStorageSAN_4').html('-');
+            }
+
+            // Startup storage NAS
+            if ($('#powerOnAssignee').val() != '') {
+                // Check if NAS yes
+                if ($('#nasSelection').val() == '1') {
+                    $('#startupStorageNAS_3').html($('#powerOnAssignee').val());
+                    $('#startupStorageNAS_4').html($('#powerOnAssignee').val());
+                } else {
+                    $('#startupStorageNAS_3').html('-');
+                    $('#startupStorageNAS_4').html('-');
+                }
+            } else {
+                $('#startupStorageNAS_3').html('-');
+                $('#startupStorageNAS_4').html('-');
+            }
+
+            // Startup server
+            $('#startupServer_1').html(powerOnTimeArray[0]);
+            if ($('#powerOnAssignee').val() != '') {
+                $('#startupServer_3').html($('#powerOnAssignee').val());
+            } else {
+                $('#startupServer_3').html('-');
+            }
+
+            if ($('#peopleOnSite').val() != '') {
+                $('#startupServer_4').html($('#peopleOnSite').val());
+            } else {
+                $('#startupServer_4').html('-');
+            }
+
+            // Startup Backup
+            if ($('#backupSelection').val() == 1) {
+                $('#startupBackup_3').html($('#backupAssignee').val());
+                $('#startupBackup_4').html($('#powerOnAssignee').val());
+            } else {
+                $('#startupBackup_3').html('-');
+                $('#startupBackup_4').html('-');
+            }
+
+            // Startup Oracle DB
+            if ($('#oracleDBSelection').val() == 1) {
+                $('#startupOracleDB_3').html($('#oracleDBAssignee').val());
+                $('#startupOracleDB_4').html($('#powerOnAssignee').val());
+            } else {
+                $('#startupOracleDB_3').html('-');
+                $('#startupOracleDB_4').html('-');
+            }
+
+            // Main check
+            if ($('#peopleOnSite').val() != '') {
+                $('#mainCheck_1').html(powerOnTimeArray[0]);
+                $('#mainCheck_3').html($('#peopleOnSite').val());
+                $('#mainCheck_4').html($('#peopleOnSite').val());
+            } else {
+                $('#mainCheck_1').html('-');
+                $('#mainCheck_3').html('-');
+                $('#mainCheck_4').html('-');
+            }
+
+        });
+    }
+
+    // Validate PMC activity input
+    function pmcActivityInputValidate(){
+        // Clear error msg
+        $('#changeNumber,#emailAddress,#startWithShutdown,#locationCode,#peopleOnSite,#contactInformation,#additionalPeople,#dataCenterRoom').removeAttr('style');
+        $('#changeNumber,#emailAddress,#startWithShutdown,#locationCode,#peopleOnSite,#contactInformation,#additionalPeople,#dataCenterRoom').next().removeAttr('style');
+        $('#changeNumber,#emailAddress,#startWithShutdown,#locationCode,#peopleOnSite,#contactInformation,#additionalPeople,#dataCenterRoom').parent().next().removeAttr('style');
+        // Validate if the input is number
+        let charNumberValidate = new RegExp('^[A-Za-z0-9 ]*$');
+        // Validate if the input is Email address
+        let emailValidate = new RegExp('^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$');
+        // Validate if the input is location code
+        let locationCodeValidate = new RegExp('^[A-Za-z0-9\-]+$');
+        // Validate if the input is English name
+        let englishNameValidate = new RegExp('^[a-zA-Z ]+$');
+
+        let validateFlag = true;
+
+        if ($('#changeNumber').val() == '' || !charNumberValidate.test($('#changeNumber').val())) {
+            $('#changeNumber').prop('style', 'border-color: var(--tblr-danger)');
+            $('#changeNumber').next().prop('style', 'border-color: var(--tblr-danger)');
+            $('#changeNumber').parent().next().prop('style','display: inline');
+            validateFlag = false;
+        }
+
+        if ($('#startWithShutdown').val() == '' || !charNumberValidate.test($('#startWithShutdown').val())) {
+            $('#startWithShutdown').prop('style', 'border-color: var(--tblr-danger)');
+            $('#startWithShutdown').next().prop('style', 'border-color: var(--tblr-danger)');
+            $('#startWithShutdown').parent().next().prop('style','display: inline');
+            validateFlag = false;
+        }
+
+        if ($('#locationCode').val() == '' || !locationCodeValidate.test($('#locationCode').val())) {
+            $('#locationCode').prop('style', 'border-color: var(--tblr-danger)');
+            $('#locationCode').next().prop('style', 'border-color: var(--tblr-danger)');
+            $('#locationCode').parent().next().prop('style','display: inline');
+            validateFlag = false;
+        }
+
+        // if ($('#peopleOnSite').val() == '' || !englishNameValidate.test($('#peopleOnSite').val())) {
+        //     $('#peopleOnSite').prop('style', 'border-color: var(--tblr-danger)');
+        //     $('#peopleOnSite').next().prop('style', 'border-color: var(--tblr-danger)');
+        //     $('#peopleOnSite').parent().next().prop('style','display: inline');
+        //     validateFlag = false;
+        // }
+
+        // if ($('#emailAddress').val() == '' || !emailValidate.test($('#emailAddress').val())) {
+        //     $('#emailAddress').prop('style', 'border-color: var(--tblr-danger)');
+        //     $('#emailAddress').next().prop('style', 'border-color: var(--tblr-danger)');
+        //     $('#emailAddress').parent().next().prop('style','display: inline');
+        //     validateFlag = false;
+        // }
+
+        if ($('#dataCenterRoom').val() == '') {
+            $('#dataCenterRoom').prop('style', 'border-color: var(--tblr-danger)');
+            $('#dataCenterRoom').next().prop('style', 'border-color: var(--tblr-danger)');
+            $('#dataCenterRoom').parent().next().prop('style','display: inline');
+            validateFlag = false;
+        }
+
+        return validateFlag;
+    }
+
+    // View request edit activity
+    function pmcActivitySave(){
+        $('#activityPlanSave').on('click', function (){
+            if (pmcActivityInputValidate()) {
+
+                // Get the device list from table
+                let pmcActivityPlanTable = document.getElementById("pmcActivityPlan");
+
+                // 创建一个空数组来保存字典数据
+                let pmcActivityPlanListData = [];
+
+                // 遍历表格的行（除去表头）
+                for (let i = 1; i < pmcActivityPlanTable.rows.length; i++) {
+                  let row = pmcActivityPlanTable.rows[i];
+                  let rowData = {};
+
+                  // 遍历行的每一列
+                  for (let j = 0; j < row.cells.length; j++) {
+                    let cell = row.cells[j];
+                    let header = pmcActivityPlanTable.rows[0].cells[j].innerHTML; // 假设表头数据在第一行
+
+                    // 使用表头作为键，单元格内容作为值，构建字典数据
+                    rowData[header] = cell.innerHTML;
+                  }
+
+                  // 将字典数据添加到数组中
+                  pmcActivityPlanListData.push(rowData);
+                }
+
+                let formData = new FormData($('#editPMCActivityForm')[0]);
+                formData.append('pmcActivityPlan', JSON.stringify(pmcActivityPlanListData))
+                formData.append('csrfmiddlewaretoken', '{{ csrf_token }}')
+
+                $.ajax({
+                    url: "{% url 'edit_request_save_activity' %}",
+                    method: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (res) {
+                        if (res.status) {
+                            layer.msg('PMC avtivity update successfully. ');
+                        } else {
+                            layer.msg('Error saving PMC avtivity: ' + res.error);
+                        }
+                    }
+                });
+            }
+
+        });
+    }
+
+    // Retrieve device list function
+    function deviceListRetrieve(){
+        $('#deviceListBtn').on('click', function (){
+            $('#deviceListBtn').addClass('btn-loading');
+            let csrf=$('input[name="csrfmiddlewaretoken"]').val();
+            const req = new XMLHttpRequest();
+            req.open('POST', '{% url 'edit_request_get_device_list' %}', true);
+            req.responseType = 'blob';
+            req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); //设置请求头
+            req.send('dataCenterRoom='+$('#dataCenterRoom').val()+"&&csrfmiddlewaretoken="+csrf); //输入参数
+            req.onload = function() {
+                const data = req.response;
+                const a = document.createElement('a');
+                const blob = new Blob([data]);
+                const blobUrl = window.URL.createObjectURL(blob);
+                download(blobUrl) ;
+                $('#deviceListBtn').removeClass('btn-loading');
+            };
+        });
+    }
+
+    // Download device list csv function
+    function download(blobUrl) {
+        let dataCenterRoom = $("input[name='dataCenterRoom']").val();
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.download = dataCenterRoom + '.csv';
+        a.href = blobUrl;
+        a.click();
+        a.remove();
+    }
+
+    // PMC Activity Confirm function
+    function pmcActivityConfirm(){
+        $('#pmcConfirmedBtn').on('click', function (){
+            $('#pmcConfirmedBtn').addClass('btn-loading');
+            $.ajax({
+                    url: "{% url 'edit_request_pmc_confirm' %}",
+                    method: 'POST',
+                    data: $('#editPMCActivityForm').serialize(),
+                    dataType: 'json',
+                    success: function (res) {
+                        $('#pmcConfirmedBtn').removeClass('btn-loading');
+                        if (res.status) {
+                            layer.msg('PMC avtivity confirmed. ');
+                            $('#pmcConfirmedBtn').addClass('disabled');
+                            $('#pmcConfirmedBtn').html('Confirmed');
+                            $('#viewDeviceListBtn').addClass('disabled');
+                        } else {
+                            layer.msg('Error confirming PMC avtivity: ' + res.error);
+                        }
+                    }
+            });
+        });
+    }
+
+    // PMC View device list
+    function pmcViewDeviceList(){
+        $('#viewDeviceListBtn').on('click', function (){
+            $('#viewDeviceListBtn').addClass('btn-loading');
+            $.ajax({
+                url: '{% url 'edit_request_view_device_list' %}',
+                method: 'POST',
+                data: {
+                    "csrfmiddlewaretoken": "{{ csrf_token }}",
+                    'pmc_id': $('#pmcID').val(),
+                    'data_center_room':$('#dataCenterRoom').val(),
+                },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.status) {
+                        window.parent.pmcViewDeviceListModal(res.device_list, $('#pmcID').val(), 'write');
+                    }
+                    $('#viewDeviceListBtn').removeClass('btn-loading');
+                },
+                error: function (xhr, status, error) {
+                    $('#viewDeviceListBtn').removeClass('btn-loading');
+                }
+            });
+
+        });
+    }
+
+    // Delete a row
+    function deleteRow(button) {
+      let row = button.parentNode.parentNode;
+      let table = row.parentNode.parentNode;
+      table.deleteRow(row.rowIndex);
+    }
+
+    // Add a new row
+    function addRow(button) {
+        let row = button.parentNode.parentNode;
+
+        let newRowHtml = document.createElement('tr');
+        newRowHtml.innerHTML = `<tr><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td>
+                                                        <td class="printHiddenArea">
+                                                        <a href="javascript:;" style="color: green;float: left" onclick="addRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        <a href="javascript:;" style="color: red;float: left" onclick="deleteRow(this)">
+                                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
+                                                        </a>
+                                                        </td></tr>`
+        row.insertAdjacentElement("afterend", newRowHtml);
+    }
+</script>
+</html>

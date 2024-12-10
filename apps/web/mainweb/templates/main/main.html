@@ -1,0 +1,1909 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>GOC Automation Platform</title>
+    <link rel="shortcut icon"  href="{% static 'image/goc_favicon.ico' %}" >
+    <!-- CSS files -->
+    <link href="{% static 'plugin/layui/css/layui.css' %}" rel="stylesheet"/>
+    <link href="{% static 'plugin/tabler/css/tabler.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'plugin/tabler/css/tabler-flags.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'plugin/tabler/css/tabler-vendors.min.css' %}" rel="stylesheet"/>
+    <style>
+      @import url('{% static 'plugin/tabler/css/inter.css' %}');
+      :root {
+      	--tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+      }
+      body {
+      	font-feature-settings: "cv03", "cv04", "cv11";
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <!-- Top Navbar -->
+      <header class="navbar navbar-expand-md navbar-light d-print-none printHiddenArea">
+        <div class="container-xl">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+            <a href=".">
+              <!-- BOSCH LOGO -->
+              <img src="{% static 'image/bosch_logo.png' %}" width="110" height="32" alt="Tabler" class="navbar-brand-image">
+            </a>
+          </h1>
+          <div class="navbar-nav flex-row order-md-last">
+
+            <!-- Top contacts buttons -->
+            <div class="nav-item d-none d-md-flex me-3">
+              <div class="btn-list">
+                <a href="https://sourcecode.socialcoding.bosch.com/users/maa9szh/repos/goc_automation/browse" class="btn" target="_blank" rel="noreferrer">
+                  <!-- Download SVG icon from http://tabler-icons.io/i/brand-bitbucket -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-bitbucket"
+                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M3.648 4a.64 .64 0 0 0 -.64 .744l3.14 14.528c.07 .417 .43 .724 .852 .728h10a.644 .644 0 0 0 .642 -.539l3.35 -14.71a.641 .641 0 0 0 -.64 -.744l-16.704 -.007z"></path>
+                        <path d="M14 15h-4l-1 -6h6z"></path>
+                    </svg>
+                    Social coding
+                </a>
+                <a href="mailto:CI-Server-Operation-Center@cn.bosch.com" class="btn" rel="noreferrer">
+                  <!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mail" width="24"
+                         height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M3 5m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
+                        <path d="M3 7l9 6l9 -6"></path>
+                    </svg>
+                    Contact
+                </a>
+              </div>
+            </div>
+
+            <!-- Top functional buttons -->
+            <div class="d-none d-md-flex">
+                <!-- Dark mode/Light mode -->
+                <!-- <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode" data-bs-toggle="tooltip" data-bs-placement="bottom"> -->
+                <a href="#" class="nav-link px-0 hide-theme-dark" title="Enable dark mode" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/moon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                         stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                         stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"/>
+                    </svg>
+                </a>
+                <!-- <a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode" data-bs-toggle="tooltip" data-bs-placement="bottom"> -->
+                <a href="#" class="nav-link px-0 hide-theme-light" title="Enable light mode" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/sun -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                         stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                         stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/>
+                        <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"/>
+                    </svg>
+                </a>
+
+                <!-- Notification -->
+                <div class="nav-item dropdown d-none d-md-flex me-3">
+                    <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1"
+                       aria-label="Show notifications">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/bell -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                             stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                             stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6"/>
+                            <path d="M9 17v1a3 3 0 0 0 6 0v-1"/>
+                        </svg>
+                    </a>
+                <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
+                  <div class="card">
+                    <div class="card-header">
+                      <h3 class="card-title">Last updates</h3>
+                    </div>
+                    <div class="list-group list-group-flush list-group-hoverable">
+                      <div class="list-group-item">
+                        <div class="row align-items-center">
+                          <div class="col-auto"><span class="status-dot status-dot-animated bg-red d-block"></span></div>
+                          <div class="col text-truncate">
+                            <a href="#" class="text-body d-block">Hola</a>
+                            <div class="d-block text-muted text-truncate mt-n1">
+                              Web UI 2.0 released! Feel free to give feedback to us! :)
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                              <a href="#" class="list-group-item-actions">
+                                  <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24"
+                                       viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                       stroke-linecap="round" stroke-linejoin="round">
+                                      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                      <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"/>
+                                  </svg>
+                              </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Personal -->
+            <div class="nav-item dropdown">
+              <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
+                {% if request.user_account.avatar == 'empty.empty' %}
+                    <span class="avatar avatar-sm">
+                      {{ request.user_account.name_abb }}
+                    </span>
+                {% else %}
+                    <span class="avatar avatar-sm" style="background-image: url({% static request.user_account.avatar %})">
+                    </span>
+                {% endif %}
+                <div class="d-none d-xl-block ps-2">
+                  <div id="personalName">{{ request.user_account.name }}</div>
+                  <div id="personalDepartment" class="mt-1 small text-muted">{{ request.user_account.department }}</div>
+                </div>
+              </a>
+              <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <a href="javascript:;" id="selfProfile" class="dropdown-item">Profile</a>
+                <a href="mailto:jared.ma@cn.bosch.com" class="dropdown-item">Feedback</a>
+                {% if request.user_account.admin == 1 %}
+                <a href="https://rb-goc-automation.bosch.com/admin" class="dropdown-item" target="_blank" >Admin Platform</a>
+                {% endif %}
+                <div class="dropdown-divider"></div>
+                <a href="{% url 'user_logout' %}" class="dropdown-item">Logout</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </header>
+
+      <!-- Second Navbar -->
+      <header class="navbar-expand-md printHiddenArea">
+        <div class="collapse navbar-collapse" id="navbar-menu">
+          <div class="navbar navbar-light">
+            <div class="container-xl">
+              <ul class="navbar-nav">
+                <!-- Home  -->
+                <li id="homeNavbar" class="nav-item secondNavbar">
+                  <a id="mainHomeIndex" class="nav-link" href="javascript:;" >
+                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                           stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                           stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path
+                              d="M5 12l-2 0l9 -9l9 9l-2 0"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"/><path
+                              d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"/></svg>
+                    </span>
+                    <span class="nav-link-title">
+                      Home
+                    </span>
+                  </a>
+                </li>
+
+                <!-- Monitoring -->
+                <li id="monitoringNavbar" class="nav-item secondNavbar dropdown">
+                  <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="true" role="button" aria-expanded="false" >
+                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/heart-rate-monitor -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart-rate-monitor"
+                           width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                           stroke-linecap="round" stroke-linejoin="round">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M3 4m0 1a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1z"></path>
+                          <path d="M7 20h10"></path>
+                          <path d="M9 16v4"></path>
+                          <path d="M15 16v4"></path>
+                          <path d="M7 10h2l2 3l2 -6l1 3h3"></path>
+                      </svg>
+                    </span>
+                    <span class="nav-link-title">
+                      Monitoring
+                    </span>
+                  </a>
+                  <div class="dropdown-menu">
+                    <div class="dropdown-menu-columns">
+
+                      <!-- First column -->
+                      <div class="dropdown-menu-column">
+                        <a href="javascript:;" id="hostStatusIndex" class="dropdown-item">
+                          Host status
+                        </a>
+                        {% if request.user_account.guest_account != 1 %}
+                        <a href="javascript:;" id="maintenanceIndex" class="dropdown-item">
+                          Maintenance mode
+                        </a>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+                <!-- Operation Tools -->
+                <li id="operationNavbar" class="nav-item secondNavbar dropdown">
+                  <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="true" role="button" aria-expanded="false" >
+                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                           stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                           stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path
+                              d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"/><path d="M12 12l8 -4.5"/><path
+                              d="M12 12l0 9"/><path d="M12 12l-8 -4.5"/><path d="M16 5.25l-8 4.5"/></svg>
+                    </span>
+                    <span class="nav-link-title">
+                      Operation Tools
+                    </span>
+                  </a>
+                  <div class="dropdown-menu">
+                    <div class="dropdown-menu-columns">
+
+                      <!-- First column -->
+                      <div class="dropdown-menu-column">
+                        <a href="javascript:;" id="cmdbSearchIndex" class="dropdown-item">
+                          CMDB search
+                        </a>
+                        {% if request.user_account.guest_account != 1 %}
+                        <a href="javascript:;" id="emailServiceIndex" class="dropdown-item">
+                          Email service
+                        </a>
+                        <a href="javascript:;" id="pamCredentialIndex" class="dropdown-item">
+                          PAM credentials
+                        </a>
+                        <a href="javascript:;" id="iloHealthCheckIndex" class="dropdown-item">
+                          iLO health check &nbsp;&nbsp;
+                        </a>
+                        <a href="javascript:;" id="diskUtilizationCheckIndex" class="dropdown-item">
+                          Disk utilization check&nbsp;&nbsp;
+                        </a>
+                        <a href="javascript:;" id="osServiceCheckIndex" class="dropdown-item">
+                          OS service check&nbsp;&nbsp;
+                          <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+                        </a>
+                        <a href="javascript:;" id="winHotfixCheckIndex" class="dropdown-item">
+                          Windows hotfix check&nbsp;&nbsp;
+                          <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+                        </a>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+                <!-- PMC Tools -->
+                <li id="pmcToolsNavbar" class="nav-item secondNavbar dropdown">
+                  <a id="nav-pmc-tools" class="nav-link dropdown-toggle nav-pmc-tools" href="#pmc-tools" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-server-bolt" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                           <path d="M3 4m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z"></path>
+                           <path d="M15 20h-9a3 3 0 0 1 -3 -3v-2a3 3 0 0 1 3 -3h12"></path>
+                           <path d="M7 8v.01"></path>
+                           <path d="M7 16v.01"></path>
+                           <path d="M20 15l-2 3h3l-2 3"></path>
+                      </svg>
+                    </span>
+                    <span class="nav-link-title">
+                      PMC Tools
+                    </span>
+                  </a>
+                  <div id="menu-pmc-tools" class="dropdown-menu nav-pmc-tools">
+                    <div class="dropdown-menu-columns">
+                      <!-- First column -->
+                      <div class="dropdown-menu-column">
+                        <!--{% if request.user_account.pmc_operator == 1 or request.user_account.admin == 1 %}
+                        <a href="javascript:;" id="pmcOperationIndex" class="dropdown-item dropdown-pmc-coordination">
+                          PMC operation
+                          <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+                        </a>
+                        {% endif %}-->
+                        {% if request.user_account.pmc_coordinator == 1 or request.user_account.admin == 1 or request.user_account.guest_account == 1 %}
+                            <div class="dropend">
+                              <a class="dropdown-item dropdown-toggle" href="#pmc-tools" data-bs-toggle="dropdown" data-bs-auto-close="true" role="button" aria-expanded="false" >
+                                PMC coordination
+                              </a>
+                              <div class="dropdown-menu">
+                                {% if request.user_account.pmc_coordinator == 1 or request.user_account.admin == 1 %}
+                                <a href="javascript:;" id="pmcNewRequestIndex" class="dropdown-item dropdown-pmc-coordination">
+                                  New request
+                                </a>
+                                {% endif %}
+                                <a href="javascript:;" id="pmcViewRequestIndex" class="dropdown-item dropdown-pmc-coordination">
+                                  View request
+                                </a>
+                              </div>
+                            </div>
+                        {% endif %}
+                        <a href="javascript:;" id="pmcHardwareSearchIndex" class="dropdown-item dropdown-pmc-coordination">
+                          Hardware search &nbsp;&nbsp;
+                          <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+                        </a>
+                        <a href="javascript:;" id="pmcBackupScheduleIndex" class="dropdown-item dropdown-pmc-coordination">
+                          Backup schedule &nbsp;&nbsp;
+                          <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+                <!-- NOC Tools -->
+                <li id="helpNavbar" class="nav-item secondNavbar dropdown">
+                  <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown" data-bs-auto-close="true" role="button" aria-expanded="false" >
+                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from https://tabler.io/icons/icon/network -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-network" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 9a6 6 0 1 0 12 0a6 6 0 0 0 -12 0" /><path d="M12 3c1.333 .333 2 2.333 2 6s-.667 5.667 -2 6" /><path d="M12 3c-1.333 .333 -2 2.333 -2 6s.667 5.667 2 6" /><path d="M6 9h12" /><path d="M3 20h7" /><path d="M14 20h7" /><path d="M10 20a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M12 15v3" /></svg>
+                    </span>
+                    <span class="nav-link-title">
+                      NOC Tools
+                    </span>
+                  </a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="https://noc-aia-web-ci-pio5-nocaia.apps.de1pro.osh.ipz001.internal.bosch.cloud/nocaia/" target="_blank" rel="noopener">
+                      NOC AIA
+                      <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+                    </a>
+                    <a class="dropdown-item" href="https://rb-wam-ap.bosch.com/rmp/admin/" target="_blank" rel="noopener">
+                      RMP
+                      <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+                    </a>
+                  </div>
+                </li>
+
+                <!-- Teammates -->
+                <li id="teammatesNavbar" class="nav-item secondNavbar">
+                  <a href="javascript:;" id="teammatesIndex" class="nav-link">
+                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/users -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users" width="24"
+                           height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                           stroke-linecap="round" stroke-linejoin="round">
+                           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                           <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
+                           <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                           <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                           <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+                      </svg>
+                    </span>
+                    <span class="nav-link-title">
+                      Teammates
+                    </span>
+                  </a>
+                </li>
+
+                <!-- Help -->
+                <li id="helpNavbar" class="nav-item secondNavbar dropdown">
+                  <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown" data-bs-auto-close="true" role="button" aria-expanded="false" >
+                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/lifebuoy -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"  stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/><path d="M15 15l3.35 3.35"/><path d="M9 15l-3.35 3.35"/><path d="M5.65 5.65l3.35 3.35"/><path d="M18.35 5.65l-3.35 3.35"/></svg>
+                    </span>
+                    <span class="nav-link-title">
+                      Help
+                    </span>
+                  </a>
+                  <div class="dropdown-menu">
+                    <a id="faqIndex" class="dropdown-item" href="javascript:;">
+                      FAQ
+                    </a>
+                    <a id="changeLogIndex" class="dropdown-item" href="javascript:;" >
+                      Changelog
+                      <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+                    </a>
+                    <a class="dropdown-item" href="https://sourcecode.socialcoding.bosch.com/users/maa9szh/repos/goc_automation/browse" target="_blank" rel="noopener">
+                      Source code
+                    </a>
+                  </div>
+                </li>
+              </ul>
+
+              <!-- Search -->
+              <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
+                <form action="./" method="get" autocomplete="off" novalidate>
+                  <div class="input-icon">
+                    <span class="input-icon-addon">
+                      <!-- Download SVG icon from http://tabler-icons.io/i/search -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                           stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                           stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path
+                              d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M21 21l-6 -6"/></svg>
+                    </span>
+                    <input type="text" value="" class="form-control" placeholder="Search…" aria-label="Search in website">
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Page Content -->
+      <div class="page-wrapper">
+
+            <!-- Page body iFrame content -->
+            <iframe id="pageBodyFrame" name="pageBodyFrame" scrolling="no"></iframe>
+
+            <!-- Footer -->
+            <footer class="footer footer-transparent d-print-none">
+              <div class="container-xl">
+                <div class="row text-center align-items-center flex-row-reverse">
+                  <div class="col-lg-auto ms-lg-auto">
+                    <ul class="list-inline list-inline-dots mb-0">
+                      <li class="list-inline-item"><a href="javascript:;" class="link-secondary">Documentation</a></li>
+                      <li class="list-inline-item"><a href="javascript:;" class="link-secondary">License</a></li>
+                      <li class="list-inline-item"><a href="https://sourcecode.socialcoding.bosch.com/users/maa9szh/repos/goc_automation/browse" target="_blank" class="link-secondary" rel="noopener">Source code</a></li>
+                    </ul>
+                  </div>
+                  <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+                    <ul class="list-inline list-inline-dots mb-0">
+                      <li class="list-inline-item">
+                        Copyright &copy; 2023
+                        <a href="." class="link-secondary">BOSCH</a>.
+                        All rights reserved.
+                      </li>
+                      <li class="list-inline-item">
+                        <a href="#" class="link-secondary" rel="noopener">
+                          v1.2.4
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </footer>
+
+      </div>
+    </div>
+    </div>
+
+    <!-- Create New User Modal -->
+    <div class="modal modal-blur fade" id="newUserModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New user</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="newUserForm">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label">Login ID</label>
+              <input id="newLoginid" name="newLoginid" type="text" class="form-control" placeholder="NT account">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Password</label>
+              <input id="newLoginpwd" name="newLoginpwd" type="password" class="form-control" placeholder="Login password">
+            </div>
+            <label class="form-label">User type</label>
+            <div class="form-selectgroup-boxes row mb-3">
+              <div class="col-lg-4">
+                <label class="form-selectgroup-item">
+                  <input type="radio" name="newUserType" value="general" class="form-selectgroup-input" checked>
+                  <span class="form-selectgroup-label d-flex align-items-center p-3">
+                    <span class="me-3">
+                      <span class="form-selectgroup-check"></span>
+                    </span>
+                    <span class="form-selectgroup-label-content">
+                      <span class="form-selectgroup-title strong mb-1">General</span>
+                      <span class="d-block text-muted">Provide only basic permissions for the Automation Tools</span>
+                    </span>
+                  </span>
+                </label>
+              </div>
+              <div class="col-lg-4">
+                <label class="form-selectgroup-item">
+                  <input type="radio" name="newUserType" value="admin" class="form-selectgroup-input">
+                  <span class="form-selectgroup-label d-flex align-items-center p-3">
+                    <span class="me-3">
+                      <span class="form-selectgroup-check"></span>
+                    </span>
+                    <span class="form-selectgroup-label-content">
+                      <span class="form-selectgroup-title strong mb-1">Admin</span>
+                      <span class="d-block text-muted">Could use some admin functions in Automation Platform</span>
+                    </span>
+                  </span>
+                </label>
+              </div>
+              <div class="col-lg-4">
+                <label class="form-selectgroup-item">
+                  <input type="radio" name="newUserType" value="guest" class="form-selectgroup-input">
+                  <span class="form-selectgroup-label d-flex align-items-center p-3">
+                    <span class="me-3">
+                      <span class="form-selectgroup-check"></span>
+                    </span>
+                    <span class="form-selectgroup-label-content">
+                      <span class="form-selectgroup-title strong mb-1">Guest</span>
+                      <span class="d-block text-muted">Provide readonly permissions in Automation Platform</span>
+                    </span>
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label">Name</label>
+                  <div class="input-group input-group-flat">
+                    <input id="newUserName" name="newUserName" type="text" class="form-control" >
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label">Department</label>
+                  <input id="newUserDepartment" name="newUserDepartment" type="text" class="form-control" >
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label">Email address</label>
+                  <div class="input-group input-group-flat">
+                    <input id="newUserEmail" name="newUserEmail" type="text" class="form-control" >
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label">Location</label>
+                  <input id="newUserLocation" name="newUserLocation" type="text" class="form-control">
+                </div>
+              </div>
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-link link-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button id="createNewUserBtn" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+          <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+          Create new user
+        </button>
+      </div>
+    </div>
+    </div>
+    </div>
+
+    <!-- PMC Activity Delete Modal -->
+    <div class="modal modal-blur fade" id="pmcActivityDeleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="modal-title">Are you sure?</div>
+            <div>You are proceed to delete this PMC activity data.</div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">Cancel</button>
+            <button id="pmcActivityDeleteBtn" type="button" class="btn btn-danger" data-bs-dismiss="modal">Yes, delete the activity</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PMC Activity Saved Modal -->
+    <div id="pmcActivitySaveModal" class="modal modal-blur fade" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="modal-status bg-success"></div>
+          <div class="modal-body text-center py-4">
+            <!-- Download SVG icon from http://tabler-icons.io/i/circle-check -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-green icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M9 12l2 2l4 -4" /></svg>
+            <h3>Saved successfully</h3>
+              <div class="text-secondary">Your PMC activity has been successfully saved. You can edit it directly by click <b>View activity</b>.</div>
+          </div>
+          <div class="modal-footer">
+            <div class="w-100">
+              <div class="row">
+                <div class="col">
+                    <button type="button" class="btn w-100" data-bs-dismiss="modal">
+                    Close
+                    </button>
+                </div>
+                <div class="col">
+                    <button id="pmcActivityEditBtn" type="button" class="btn btn-success w-100">
+                    View activity
+                    </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- iLO Details Modal -->
+    <div id="iloDetailModal" class="modal modal-blur fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Healthy Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="iloDetailContent" class="modal-body">
+                    <!-- 嵌套标签页的样式 -->
+                    <div class="card">
+                        <div class="card-header">
+                            <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs">
+                                <li class="nav-item">
+                                    <a href="#tabs-bios" id="bios_tab" class="nav-link active" data-bs-toggle="tab">BIOS</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#tabs-fans" id="fans_tab" class="nav-link" data-bs-toggle="tab">Fans
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#tabs-temperature" id="temperature_tab" class="nav-link" data-bs-toggle="tab">Temp</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#tabs-power" id="power_tab" class="nav-link" data-bs-toggle="tab">Power</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#tabs-processor" id="processor_tab" class="nav-link" data-bs-toggle="tab">Proc</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#tabs-memory" id="memory_tab" class="nav-link" data-bs-toggle="tab">Memory</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#tabs-network" id="network_tab" class="nav-link" data-bs-toggle="tab">Network</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#tabs-storage" id="storage_tab" class="nav-link" data-bs-toggle="tab">Storage</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <!-- BIOS Hardware 标签页内容 -->
+                                <div class="tab-pane active show" id="tabs-bios">
+                                    <div class="mb-3">
+                                        <h4>BIOS Hardware</h4>
+                                        <p>Status: <span id="biosStatus"></span></p>
+                                    </div>
+                                </div>
+                                <!-- Fans 标签页内容 -->
+                                <div class="tab-pane" id="tabs-fans">
+                                    <div class="mb-3">
+                                        <h4>Fans</h4>
+                                        <p>Status: <span id="fansStatus"></span></p>
+                                        <p>Redundancy: <span id="fansRedundancy"></span></p>
+                                        <ul id="fansList"></ul>
+                                    </div>
+                                </div>
+                                <!-- Temperature 标签页内容 -->
+                                <div class="tab-pane" id="tabs-temperature">
+                                    <div class="mb-3">
+                                        <h4>Temperature</h4>
+                                        <p>Status: <span id="temperatureStatus"></span></p>
+                                    </div>
+                                </div>
+                                <!-- Power Supplies 标签页 -->
+                                <div class="tab-pane" id="tabs-power">
+                                    <div class="mb-3">
+                                        <h4>Power Supplies</h4>
+                                        <p>Status: <span id="powerSuppliesStatus"></span></p>
+                                        <p>Redundancy: <span id="powerSuppliesRedundancy"></span></p>
+                                        <ul id="powerSuppliesList"></ul>
+                                    </div>
+                                </div>
+                                <!-- Processor 标签页 -->
+                                <div class="tab-pane" id="tabs-processor">
+                                    <div class="mb-3">
+                                        <h4>Processor</h4>
+                                        <p>Status: <span id="processorStatus"></span></p>
+                                        <ul id="processorList"></ul>
+                                    </div>
+                                </div>
+                                <!-- Memory 标签页 -->
+                                <div class="tab-pane" id="tabs-memory">
+                                    <div class="mb-3">
+                                        <h4>Memory</h4>
+                                        <p>Status: <span id="memoryStatus"></span></p>
+                                        <ul id="memoryList"></ul>
+                                    </div>
+                                </div>
+                                <!-- Network 标签页 -->
+                                <div class="tab-pane" id="tabs-network">
+                                    <div class="mb-3">
+                                        <h4>Network</h4>
+                                        <p>Status: <span id="networkStatus"></span></p>
+                                        <ul id="networkList">
+                                            <li>Port Description: <span id="networkPortDescription"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- Storage 标签页 -->
+                                <div class="tab-pane" id="tabs-storage">
+                                    <div class="mb-3">
+                                        <h4>Storage</h4>
+                                        <p>Status: <span id="storageStatus"></span></p>
+                                        <ul id="storageList">
+                                            <li>Controller on System Board:</li>
+                                            <ul id="controllerList"></ul>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Disk Size List Modal -->
+    <div id="diskSizeListModal" class="modal modal-blur fade" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Disk Size List</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div>
+                <pre><code id="diskSizeListContent"></code></pre>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+            <button id="sendDiskSizeListBtn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Send Email to user</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Disk Clean Modal -->
+    <div id="diskCleanModal" class="modal modal-blur fade" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="modal-status bg-success"></div>
+          <div id="cleanupResultDiv" class="modal-body text-center py-4">
+            <!-- Download SVG icon from http://tabler-icons.io/i/circle-check -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-green icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M9 12l2 2l4 -4" /></svg>
+            <h3>Disk cleanup succedeed</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- iLO Reset Modal -->
+    <div id="iloResetModal" class="modal modal-blur fade" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="modal-status bg-success"></div>
+          <div class="modal-body text-center py-4">
+            <!-- Download SVG icon from http://tabler-icons.io/i/circle-check -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-green icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path><path d="M9 12l2 2l4 -4"></path></svg>
+            <h3>iLO reset succedeed</h3>
+              <div class="text-secondary">Reset ilo takes some time to complete. Please wait for 1 minute before performing other operations.</div>
+          </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PMC View Device List -->
+    <div id="pmcViewDeviceListModal" class="modal modal-blur fade" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-full-width modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">View device list</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+                {% comment %}<table class="table table-vcenter card-table">{% endcomment %}
+                <table id="deviceListTable" class="table table-hover table-sm">
+
+                  <thead>
+                    <tr>
+                      <th>Device Name</th>
+                      <th>iLO IP</th>
+                      <th>vCenter</th>
+                      <th>DCR</th>
+                      <th>CI Type</th>
+                      <th>Tier 2</th>
+                      <th>Tier 3</th>
+                      <th>Status</th>
+                      <th>Support Group</th>
+                      <th id="actionHeader">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="deviceListTableContent">
+
+                  </tbody>
+                </table>
+                <a id="addDeviceBtn" href="javascript:;" onclick="addRow()">Add device</a>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+            <button id="saveDeviceListBtn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PMC Operation Confirmation Modal -->
+    <div class="modal modal-blur fade" id="pmcOperationModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 id="pmcModalTittle" class="modal-title">PMC Operation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="newUserForm">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label">NT Account: {{ request.user_account.loginid }}</label>
+              <input id="pmcNTPassword" name="pmcNTPassword" type="password" class="form-control" placeholder="NT Password">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">RBAdmin Account: rb-admin\{{ request.user_account.loginid }}_rba</label>
+              <input id="pmcRBAdminPassword" name="pmcRBAdminPassword" type="password" class="form-control" placeholder="RBAdmin Password">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Please confirm before execution:</label>
+                <label class="form-check">
+                  <input id="pmcOperationConfirmation" class="form-check-input" type="checkbox">
+                  <span class="form-check-label">
+                      I understand this operation will <b id="operationConfirmText" style="color: red"></b> all servers in the device list.
+                  </span>
+                  <span class="form-check-description">
+                    My NT and RBAdmin account will be used to connect HPE iLO, vSphere, PAM API.
+                  </span>
+                </label>
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-link link-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button id="pmcOperationBtn" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+          Execute
+        </button>
+      </div>
+    </div>
+    </div>
+    </div>
+
+    <!-- PMC Operation Execution Log Modal -->
+    <div class="modal modal-blur fade" id="pmcOperationExecutionLogModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">PMC Execution Log</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <h4>Power on</h4>
+            <div><pre id="powerOnLog"></pre></div>
+            <h4>Power off</h4>
+            <div><pre id="powerOffLog"></pre></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hotfix List Modal -->
+    <div id="hotfixListModal" class="modal modal-blur fade" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Hotfix List</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div>
+                <pre><code id="hotfixListContent"></code></pre>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PMC Backup Schedule Cancel Modal -->
+    <div class="modal modal-blur fade" id="pmcBackupScheduleCancelModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="modal-title">Are you sure?</div>
+            <div>You are proceed to cancel this PMC backup schedule.</div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">Cancel</button>
+            <button id="pmcBackupScheduleCancelBtn" type="button" class="btn btn-danger" data-bs-dismiss="modal">Yes, cancel the schedule</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PMC Backup Schedule Change Modal-->
+    <div class="modal modal-blur fade" id="pmcBackupScheduleChangeModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Change schedule downtime</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row mb-3">
+              <label class="form-label">Schedule ID</label>
+              <div>
+                <input type="text" id="pmcBackupScheduleId" name="pmcBackupScheduleId" class="form-control" disabled>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label class="form-label">Change number</label>
+              <div>
+                <input type="text" id="pmcBackupScheduleChangeNumber" name="pmcBackupScheduleChangeNumber" class="form-control" disabled>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label required">Start time</label>
+              <div class="input-icon">
+                    <span class="input-icon-addon"><!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                           viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                           stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+                              d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path><path
+                              d="M16 3l0 4"></path><path d="M8 3l0 4"></path><path d="M4 11l16 0"></path><path
+                              d="M11 15l1 0"></path><path d="M12 15l0 3"></path></svg>
+                    </span>
+                    <input id="pmcBackupScheduleNewStartTime" name="pmcBackupScheduleNewStartTime" class="form-control" placeholder="Start time">
+              </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label required">End time</label>
+                <div class="input-icon">
+                  <span class="input-icon-addon"><!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                          viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                          stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path
+                            d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path><path
+                            d="M16 3l0 4"></path><path d="M8 3l0 4"></path><path d="M4 11l16 0"></path><path
+                            d="M11 15l1 0"></path><path d="M12 15l0 3"></path></svg>
+                  </span>
+                  <input id="pmcBackupScheduleNewEndTime" name="pmcBackupScheduleNewEndTime" class="form-control" placeholder="Select a date">
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+            <button type="button" id="pmcBackupScheduleChangeBtn" class="btn btn-primary" data-bs-dismiss="modal">Change</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
+<!-- Load JS -->
+<script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+<script src="{% static 'plugin/layui/layui.js' %}"></script>
+<!-- Tabler Core -->
+<script src="{% static 'plugin/tabler/js/tabler.min.js' %}" defer></script>
+
+<script type="text/javascript">
+    window.addEventListener('message', function (e) {
+        let pageBodyFrame = $('#pageBodyFrame');
+        pageBodyFrame.attr('height', e.data + 'px');
+    }, false);
+
+    window.addEventListener('beforeunload', function (e) {
+        // Save the last iFrame src
+        let lastIframeRoute = $('#pageBodyFrame').attr('src')
+        let d = new Date();
+        d.setTime(d.getTime()+(60*60));
+        let expires = "expires="+d.toGMTString();
+        document.cookie = 'lastIframeRoute=' + lastIframeRoute + '; ' + expires
+    });
+
+    function getCookie(cname) {
+        let name = cname + "=";
+        let ca = document.cookie.split(';');
+        for(let i=0; i<ca.length; i++) {
+            let c = ca[i].trim();
+            if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+        }
+        return "";
+    }
+
+    $(function (){
+        // Render iFrame to history url
+        iFrameRendering();
+        // Add active class to Navbar
+        navbarRendering();
+        // Initiate menu click
+        menuClick();
+    });
+
+    // Render iFrame to history url
+    function iFrameRendering(){
+        let lastIframeRoute = getCookie('lastIframeRoute');
+
+        if (lastIframeRoute !== '') {
+            $('#pageBodyFrame').attr('src', lastIframeRoute);
+        } else {
+            $('#pageBodyFrame').attr('src', '{% url 'main_home' %}');
+        }
+    }
+
+    // Initiate datetime plugin
+    function datetimeInitiate() {
+        layui.use(['laydate'], function () {
+            let laydate = layui.laydate;
+
+            // Maintenance date time
+            laydate.render({
+                elem: '#pmcBackupScheduleNewStartTime',
+                type: 'datetime',
+                lang: 'en'
+            });
+            laydate.render({
+                elem: '#pmcBackupScheduleNewEndTime',
+                type: 'datetime',
+                lang: 'en'
+            });
+        })
+    }
+
+    // Add active class to Navbar
+    function navbarRendering(){
+        let iFrameSrc = $('#pageBodyFrame').attr('src');
+        if (iFrameSrc == '/main/home_view/') {
+            $('#homeNavbar').addClass('active');
+        } else if (iFrameSrc == '/monitoring/host_status/' || iFrameSrc == '/monitoring/maintenance_mode/') {
+            $('#monitoringNavbar').addClass('active');
+        } else if (iFrameSrc == '/operation/cmdb_search/' || iFrameSrc == '/operation/email_service/' || iFrameSrc == '/operation/pam_credential/' || iFrameSrc == '/operation/ilo_health_check/' || iFrameSrc == '/operation/disk_utilization_check_index/' || iFrameSrc == '/operation/os_service_check_index/' || iFrameSrc == '/operation/win_hotfix_check_index/') {
+            $('#operationNavbar').addClass('active');
+        } else if (iFrameSrc == '/pmc/pmc_hardware_search/pmc_hardware_search_index/' || iFrameSrc == '/pmc/pmc_coordination/pmc_new_request_index/' || iFrameSrc == '/pmc/pmc_coordination/pmc_view_request_index/' || iFrameSrc == '/pmc/pmc_coordination/pmc_operation_index/' || iFrameSrc == '/pmc/pmc_backup_schedule/pmc_backup_schedule_index/') {
+            $('#pmcToolsNavbar').addClass('active');
+        } else if (iFrameSrc == '/user/teammates/') {
+            $('#teammatesNavbar').addClass('active');
+        } else if (iFrameSrc == '/main/faq_index/' || iFrameSrc == '/main/change_log_index/') {
+            $('#helpNavbar').addClass('active');
+        }
+    }
+
+    // Listening menu items click event
+    function menuClick() {
+
+        // Navbar onclick
+        $('.secondNavbar').on('click', function (){
+            $('.secondNavbar').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        // PMC sub-menu onclick
+        $('.dropdown-pmc-coordination').on('click', function (){
+            $('.nav-pmc-tools').removeClass('show');
+            $('#nav-pmc-tools').attr('aria-expanded', 'false');
+            $('#menu-pmc-tools').attr('data-bs-popper', 'static');
+        });
+
+        // Get iFrame element
+        let pageBodyFrame = $('#pageBodyFrame')
+
+        $('#mainHomeIndex').on('click', function (){
+            pageBodyFrame.attr('src', '{% url 'main_home' %}')
+            pageBodyFrame.attr('height', '0px');
+        });
+
+        $('#selfProfile').on('click', function (){
+            pageBodyFrame.attr('src', '{% url 'user_profile_index' %}')
+            pageBodyFrame.attr('height', '0px');
+        });
+
+        $('#hostStatusIndex').on('click', function (){
+            pageBodyFrame.attr('src', '{% url 'host_status_index' %}')
+            pageBodyFrame.attr('height', '0px');
+        });
+
+        $('#maintenanceIndex').on('click', function (){
+            pageBodyFrame.attr('src', '{% url 'maintenance_index' %}')
+            pageBodyFrame.attr('height', '0px');
+        });
+
+        $('#faqIndex').on('click', function (){
+            pageBodyFrame.attr('src', '{% url 'faq_index' %}')
+            pageBodyFrame.attr('height', '0px');
+        });
+
+        $('#changeLogIndex').on('click', function (){
+            pageBodyFrame.attr('src', '{% url 'change_log_index' %}')
+            pageBodyFrame.attr('height', '0px');
+        });
+
+        $('#cmdbSearchIndex').on('click', function (){
+            pageBodyFrame.attr('src', '{% url 'cmdb_search_index' %}')
+            pageBodyFrame.attr('height', '0px');
+        });
+
+        $('#emailServiceIndex').on('click', function (){
+            pageBodyFrame.attr('src', '{% url 'email_service_index' %}')
+            pageBodyFrame.attr('height', '0px');
+        });
+
+        $('#pamCredentialIndex').on('click', function (){
+            pageBodyFrame.attr('src', '{% url 'pam_credential_index' %}')
+            pageBodyFrame.attr('height', '0px');
+        });
+
+        $('#iloHealthCheckIndex').on('click', function (){
+            pageBodyFrame.attr('src', '{% url 'ilo_health_check_index' %}')
+            pageBodyFrame.attr('height', '0px');
+        });
+
+        $('#pmcNewRequestIndex').on('click', function (){
+            pageBodyFrame.attr('src', '{% url 'pmc_new_request_index' %}')
+            pageBodyFrame.attr('height', '0px');
+        });
+
+        $('#pmcViewRequestIndex').on('click', function (){
+            pageBodyFrame.attr('src', '{% url 'pmc_view_request_index' %}')
+            pageBodyFrame.attr('height', '0px');
+        });
+
+        $('#pmcOperationIndex').on('click', function (){
+            pageBodyFrame.attr('src', '{% url 'pmc_operation_index' %}')
+            pageBodyFrame.attr('height', '0px');
+        });
+
+        $('#pmcHardwareSearchIndex').on('click', function (){
+            pageBodyFrame.attr('src', '{% url 'pmc_hardware_search_index' %}')
+            pageBodyFrame.attr('height', '0px');
+        });
+
+        $('#teammatesIndex').on('click', function (){
+            pageBodyFrame.attr('src', '{% url 'teammates_index' %}')
+            pageBodyFrame.attr('height', '0px');
+        });
+
+        $('#diskUtilizationCheckIndex').on('click', function (){
+            pageBodyFrame.attr('src', '{% url 'disk_utilization_check_index' %}')
+            pageBodyFrame.attr('height', '0px');
+        });
+
+        $('#osServiceCheckIndex').on('click', function (){
+            pageBodyFrame.attr('src', '{% url 'os_service_check_index' %}')
+            pageBodyFrame.attr('height', '0px');
+        });
+
+        $('#winHotfixCheckIndex').on('click', function (){
+            pageBodyFrame.attr('src', '{% url 'win_hotfix_check_index' %}')
+            pageBodyFrame.attr('height', '0px');
+        });
+
+        $('#pmcBackupScheduleIndex').on('click', function (){
+            pageBodyFrame.attr('src', '{% url 'pmc_backup_schedule_index' %}')
+            pageBodyFrame.attr('height', '0px');
+        });
+
+    }
+
+    // New user add modal
+    function userAddModal(){
+        let newUserModal = new bootstrap.Modal(document.getElementById('newUserModal'), {
+            keyboard: true,
+            backdrop: true
+        });
+        // Clear the modal form data
+        // $('.pmcActivityModalItem').val('');
+        // Show the modal
+        newUserModal.show();
+
+        $('#createNewUserBtn').on('click', function (){
+            $('#createNewUserBtn').addClass('btn-loading');
+            $.ajax({
+                url: "{% url 'teammates_add' %}",
+                method: 'POST',
+                data: $('#newUserForm').serialize(),
+                dataType: 'json',
+                success: function (res) {
+                    if (res.status) {
+                        layer.msg('User added successfully.');
+                    } else {
+                        layer.msg('Error adding user: ' + res.error);
+                    }
+                    $('#createNewUserBtn').removeClass('btn-loading');
+                }
+            });
+        });
+    }
+
+    // PMC activity delete
+    function pmcActivityDelete(pmc_id){
+        let pmcActivityDeleteModal = new bootstrap.Modal(document.getElementById('pmcActivityDeleteModal'), {
+            keyboard: false,
+            backdrop: true
+        });
+
+        pmcActivityDeleteModal.show();
+
+        $('#pmcActivityDeleteBtn').off('click').on('click', function (){
+            if (pmc_id!=""&&pmc_id!=null&&pmc_id!=undefined) {
+                $.ajax({
+                    url: "{% url 'view_request_delete_activity' %}",
+                    method: 'POST',
+                    data: {
+                        "csrfmiddlewaretoken": "{{ csrf_token }}",
+                        'pmc_id': pmc_id,
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status) {
+                            layer.msg('Successfully deleted PMC: ' + pmc_id);
+                        } else {
+                            layer.msg('Error deleting PMC avtivity: ' + res.error);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    // PMC activity save
+    function pmcActivitySavedModal(pmc_id){
+        let pmcActivitySaveModal = new bootstrap.Modal(document.getElementById('pmcActivitySaveModal'), {
+            keyboard: false,
+            backdrop: true
+        });
+
+        pmcActivitySaveModal.show();
+
+        $('#pmcActivityEditBtn').on('click', function (){
+            if (pmc_id!=""&&pmc_id!=null&&pmc_id!=undefined) {
+                pmcActivitySaveModal.hide();
+                $('#pageBodyFrame').attr('src', '/pmc/pmc_coordination/pmc_edit_request_index/?pmc_id=' + pmc_id);
+                $('#pageBodyFrame').attr('height', '0px');
+            }
+        });
+    }
+
+    // Disk size list modal
+    function diskSizeListModal(disk_size_list_result){
+      let diskSizeListModal = new bootstrap.Modal(document.getElementById('diskSizeListModal'), {
+            keyboard: true,
+            backdrop: true
+        });
+
+        let hostName;
+        disk_size_dict = disk_size_list_result[0]
+        $("#diskSizeListContent").empty();
+        for (let details_attr in disk_size_dict) {
+            hostName = details_attr;
+            $('#diskSizeListContent').html(disk_size_dict[details_attr]);
+        }
+
+        $('#sendDiskSizeListBtn').off('click').on('click', function (){
+            $.ajax({
+                url: "{% url 'disk_utilization_send_email' %}",
+                method: 'POST',
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'host_name': hostName,
+                },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.status) {
+                        layer.msg('Email sent successfully.');
+                    } else {
+                        layer.msg('Request failed: ' + res.error);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    layer.msg('Request failed: ' + res.error);
+                }
+            });
+        });
+
+        diskSizeListModal.show();
+    }
+
+    // Disk clean modal
+    function diskCleanModal(disk_clean_result){
+        let diskCleanModal = new bootstrap.Modal(document.getElementById('diskCleanModal'), {
+            keyboard: true,
+            backdrop: true
+        });
+        //JSON.stringify(ilo_detail);
+        $(".diskCleanServerInfo").remove();
+        $('#cleanupResultDiv').append('<div class="text-secondary diskCleanServerInfo">Host name: ' + disk_clean_result[0].host_name + '</div>');
+        $('#cleanupResultDiv').append('<div class="text-secondary diskCleanServerInfo">IP Address: ' + disk_clean_result[0].RB_IPAddress + '</div>');
+        $('#cleanupResultDiv').append('<div class="text-secondary diskCleanServerInfo">Freed space: ' + disk_clean_result[0].freed_space + '</div>');
+        $('#cleanupResultDiv').append('<div class="text-secondary diskCleanServerInfo">Free space after cleanup: ' + disk_clean_result[0].free_space_c_after_clean + '</div>');
+
+        diskCleanModal.show();
+    }
+
+    // iLO Reset modal
+    function iloResetModal(){
+        let iloResetModal = new bootstrap.Modal(document.getElementById('iloResetModal'), {
+            keyboard: true,
+            backdrop: true
+        });
+
+        iloResetModal.show();
+    }
+
+    // iLO Detail modal
+    function iloDetailModal(ilo_detail){
+        let iloDetailModal = new bootstrap.Modal(document.getElementById('iloDetailModal'), {
+            keyboard: true,
+            backdrop: true
+        });
+        console.log(ilo_detail);
+
+        // BIOS 标签页
+        $('#biosStatus').text(ilo_detail.bios_hardware.status);
+
+        // Fans 标签页
+        $('#fansStatus').text(ilo_detail.fans.status);
+        $('#fansRedundancy').text(ilo_detail.fans.redundancy);
+
+        // Fans 列表
+        $('#fansList').empty();
+            for (let fan in ilo_detail.fans) {
+                if (fan !== 'status' && fan !== 'redundancy') {
+                    $('#fansList').append('<li>' + fan + ': ' + ilo_detail.fans[fan] + '</li>');
+                }
+            }
+
+        // Temperature 标签页
+        $('#temperatureStatus').text(ilo_detail.temperature.status);
+
+        // Power Supplies 标签页
+        $('#powerSuppliesStatus').text(ilo_detail.power_supplies.status);
+        $('#powerSuppliesRedundancy').text(ilo_detail.power_supplies.redundancy);
+
+        // Power Supplies 列表
+        $('#powerSuppliesList').empty();
+            for (let powerSupply in ilo_detail.power_supplies) {
+                if (powerSupply !== 'status' && powerSupply !== 'redundancy') {
+                    $('#powerSuppliesList').append('<li>' + powerSupply + ': ' + ilo_detail.power_supplies[powerSupply] + '</li>');
+                }
+            }
+
+        // Processor 标签页
+        $('#processorStatus').text(ilo_detail.processor.status);
+
+        // Processor 列表
+        $('#processorList').empty();
+            for (let processor in ilo_detail.processor) {
+                if (processor !== 'status') {
+                    $('#processorList').append('<li>' + processor + ': ' + ilo_detail.processor[processor] + '</li>');
+                }
+            }
+
+        // Memory 标签页
+        $('#memoryStatus').text(ilo_detail.memory.status);
+
+        // Memory 列表
+        $('#memoryList').empty();
+            for (let cpu in ilo_detail.memory) {
+                if (cpu !== 'status') {
+                    $('#memoryList').append('<li>' + cpu + ': <ul>');
+                    for (let socket in ilo_detail.memory[cpu]) {
+                        $('#memoryList ul').last().append('<li>' + socket + ': ' + ilo_detail.memory[cpu][socket] + '</li>');
+                    }
+                    $('#memoryList').append('</ul></li>');
+                }
+            }
+
+        // Network 标签页
+        $('#networkStatus').text(ilo_detail.network.status);
+
+        // Network 列表
+        $('#networkList').empty();
+            for (let network in ilo_detail.network) {
+                if (network !== 'status') {
+                    if (typeof ilo_detail.network[network] === 'object') {
+                        $('#networkList').append('<li>' + network + '</li>');
+                        for (let interface in ilo_detail.network[network]) {
+                            $('#networkList').append('<li>' + interface + ': ' + ilo_detail.network[network][interface] + '</li>');
+                        }
+                    } else {
+                        $('#networkList').append('<li>' + network + ': ' + ilo_detail.network[network] + '</li>');
+                    }
+                }
+            }
+
+        // Storage 标签页
+        $('#storageStatus').text(ilo_detail.storage.status);
+
+        // Storage 列表
+        $('#storageList').empty();
+            for (let controller in ilo_detail.storage) {
+                const controllerData = ilo_detail.storage[controller];
+
+                // 排除掉 status 为 Degraded 的项
+                if (controller !== 'status') {
+                    // 如果 controllerData 是对象，而不是字符串，则构建嵌套的列表
+                    if (typeof controllerData === 'object') {
+                        $('#storageList').append('<li>' + controller + ': <ul>');
+
+                        for (let item in controllerData) {
+                            if (item === 'logical_drives') {
+                                // 遍历 logical_drives 数组中的对象
+                                $('#storageList ul').last().append('<li>' + item + ': <ul>');
+
+                                for (let drive of controllerData[item]) {
+                                    $('#storageList ul ul').last().append('<li>');
+                                    for (let driveItem in drive) {
+                                        $('#storageList ul ul li').last().append(driveItem + ': ' + drive[driveItem] + ', ');
+                                    }
+                                    $('#storageList ul ul li').last().text(function(_, text) {
+                                        return text.slice(0, -2);
+                                    });
+                                    $('#storageList ul ul').last().append('</li>');
+                                }
+
+                                $('#storageList ul ul').last().append('</ul></li>');
+                            } else {
+                                $('#storageList ul').last().append('<li>' + item + ': ' + controllerData[item] + '</li>');
+                            }
+                        }
+
+                        $('#storageList').append('</ul></li>');
+                    } else {
+                        $('#storageList').append('<li>' + controller + ': ' + controllerData + '</li>');
+                    }
+                }
+            }
+
+        updateTabStyles(ilo_detail);
+
+        iloDetailModal.show();
+    }
+
+    // iLO Detail tab styles
+    function updateTabStyles(ilo_detail) {
+        // 检查BIOS标签页的status值
+        if (ilo_detail.bios_hardware.status !== 'OK') {
+            $('#bios_tab').addClass('text-danger');
+        } else {
+            $('#bios_tab').removeClass('text-danger');
+        }
+
+        // 检查Fans标签页的status值
+        if (ilo_detail.fans.status !== 'OK') {
+            $('#fans_tab').addClass('text-danger');
+        } else {
+            $('#fans_tab').removeClass('text-danger');
+        }
+
+        // 检查Temperature标签页的status值
+        if (ilo_detail.temperature.status !== 'OK') {
+            $('#temperature_tab').addClass('text-danger');
+        } else {
+            $('#temperature_tab').removeClass('text-danger');
+        }
+
+        // 检查Power标签页的status值
+        if (ilo_detail.power_supplies.status !== 'OK') {
+            $('#power_tab').addClass('text-danger');
+        } else {
+            $('#power_tab').removeClass('text-danger');
+        }
+
+        // 检查Processor标签页的status值
+        if (ilo_detail.processor.status !== 'OK') {
+            $('#processor_tab').addClass('text-danger');
+        } else {
+            $('#processor_tab').removeClass('text-danger');
+        }
+
+        // 检查Memory标签页的status值
+        if (ilo_detail.memory.status !== 'OK') {
+            $('#memory_tab').addClass('text-danger');
+        } else {
+            $('#memory_tab').removeClass('text-danger');
+        }
+
+        // 检查Network标签页的status值
+        if (ilo_detail.network.status !== 'OK') {
+            $('#network_tab').addClass('text-danger');
+        } else {
+            $('#network_tab').removeClass('text-danger');
+        }
+
+        // 检查Storage标签页的status值
+        if (ilo_detail.storage.status !== 'OK') {
+            $('#storage_tab').addClass('text-danger');
+        } else {
+            $('#storage_tab').removeClass('text-danger');
+        }
+    }
+
+    // PMC View device list modal
+    function pmcViewDeviceListModal(deivce_list, pmc_id, mode){
+        let pmcViewDeviceListModal = new bootstrap.Modal(document.getElementById('pmcViewDeviceListModal'), {
+            keyboard: false,
+            backdrop: true
+        });
+
+        $('#deviceListTableContent').empty();
+
+        console.log(deivce_list)
+        // Load the device list data deviceListTableContent
+        $.each(deivce_list, (index, device_item) => {
+            const tr = $('<tr>');
+            let i = 1;
+            for (let device_attr in device_item){
+                // Create input
+                let input_tag;
+                // tr元素添加td
+                if (i == 1) {
+                    if (mode == 'readonly') {
+                        input_tag = $(`<td>${ device_item['CI_NAME'] }</td>`);
+                    }else {
+                        input_tag = $(`<td contenteditable="true">${ device_item['CI_NAME'] }</td>`);
+                    }
+                } else if (i == 2) {
+                    if (mode == 'readonly') {
+                        input_tag = $(`<td>${ device_item['ILO_IP'] }</td>`);
+                    }else {
+                        input_tag = $(`<td contenteditable="true">${ device_item['ILO_IP'] }</td>`);
+                    }
+                } else if (i == 3) {
+                    if (mode == 'readonly') {
+                        input_tag = $(`<td>${ device_item['VCENTER'] }</td>`);
+                    }else {
+                        input_tag = $(`<td contenteditable="true">${ device_item['VCENTER'] }</td>`);
+                    }
+                } else if (i == 4) {
+                    if (mode == 'readonly') {
+                        input_tag = $(`<td>${ device_item['DCR'] }</td>`);
+                    }else {
+                        input_tag = $(`<td contenteditable="true">${ device_item['DCR'] }</td>`);
+                    }
+                } else if (i == 5) {
+                    if (mode == 'readonly') {
+                        input_tag = $(`<td>${ device_item['CI_TYPE'] }</td>`);
+                    }else {
+                        input_tag = $(`<td contenteditable="true">${ device_item['CI_TYPE'] }</td>`);
+                    }
+                } else if (i == 6) {
+                    if (mode == 'readonly') {
+                        input_tag = $(`<td>${ device_item['TIER_2'] }</td>`);
+                    }else {
+                        input_tag = $(`<td contenteditable="true">${ device_item['TIER_2'] }</td>`);
+                    }
+                } else if (i == 7) {
+                    if (mode == 'readonly') {
+                        input_tag = $(`<td>${ device_item['TIER_3'] }</td>`);
+                    }else {
+                        input_tag = $(`<td contenteditable="true">${ device_item['TIER_3'] }</td>`);
+                    }
+                } else if (i == 8) {
+                    if (mode == 'readonly') {
+                        input_tag = $(`<td>${ device_item['STATUS_REASON'] }</td>`);
+                    }else {
+                        input_tag = $(`<td contenteditable="true">${ device_item['STATUS_REASON'] }</td>`);
+                    }
+                } else if (i == 9) {
+                    if (mode == 'readonly') {
+                        input_tag = $(`<td>${ device_item['PRIMARY_SUPPORT_GROUP'] }</td>`);
+                    }else {
+                        input_tag = $(`<td contenteditable="true">${ device_item['PRIMARY_SUPPORT_GROUP'] }</td>`);
+                    }
+                } else {
+                    if (mode == 'readonly') {
+                        input_tag = $(`<td>${ device_item[device_attr] }</td>`);
+                    }else {
+                        input_tag = $(`<td contenteditable="true">${ device_item[device_attr] }</td>`);
+                    }
+                }
+                input_tag.appendTo(tr);
+                i++;
+            }
+            if (mode != 'readonly') {
+                $('<td><a href="javascript:;" style="color: red" onclick="deleteRow(this)">Delete</a></td>').appendTo(tr);
+            }
+            // 添加到列表元素中
+            tr.appendTo($('#deviceListTableContent'));
+        });
+
+        pmcViewDeviceListModal.show();
+
+        if (mode != 'readonly') {
+            $('#saveDeviceListBtn').removeClass('visually-hidden');
+            $('#addDeviceBtn').removeClass('visually-hidden');
+            $('#actionHeader').removeClass('visually-hidden');
+            // Remove last event when bind new event
+            $('#saveDeviceListBtn').off('click').on('click', function (){
+                if (pmc_id!=""&&pmc_id!=null&&pmc_id!=undefined) {
+
+                    // Get the device list from table
+                    let deviceListTable = document.getElementById("deviceListTable");
+
+                    // 创建一个空数组来保存字典数据
+                    let deviceListData = [];
+
+                    // 遍历表格的行（除去表头）
+                    for (let i = 1; i < deviceListTable.rows.length; i++) {
+                      let row = deviceListTable.rows[i];
+                      let rowData = {};
+
+                      // 遍历行的每一列
+                      for (let j = 0; j < row.cells.length; j++) {
+                        let cell = row.cells[j];
+                        let header = deviceListTable.rows[0].cells[j].innerHTML; // 假设表头数据在第一行
+
+                        // 使用表头作为键，单元格内容作为值，构建字典数据
+                        rowData[header] = cell.innerHTML;
+                      }
+
+                      // 将字典数据添加到数组中
+                      deviceListData.push(rowData);
+                    }
+
+                    $.ajax({
+                        url: "{% url 'edit_request_save_device_list' %}",
+                        method: 'POST',
+                        data: {
+                            "csrfmiddlewaretoken": "{{ csrf_token }}",
+                            'pmc_id': pmc_id,
+                            'device_list': JSON.stringify(deviceListData),
+                        },
+                        dataType: 'json',
+                        success: function (res) {
+                            if (res.status) {
+                                layer.msg('Device list saved successfully.');
+                            } else {
+                                layer.msg('Error saving device list: ' + res.error);
+                            }
+                        }
+                    });
+                }
+            });
+        } else {
+            $('#saveDeviceListBtn').addClass('visually-hidden');
+            $('#addDeviceBtn').addClass('visually-hidden');
+            $('#actionHeader').addClass('visually-hidden');
+        }
+    }
+
+    // Add a new row
+    function addRow() {
+      let newRowHtml = '<tr style="height: 30px;"><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td><a href="javascript:;" style="color: red" onclick="deleteRow(this)">Delete</a></td></tr>';
+      $('#deviceListTableContent').append(newRowHtml);
+    }
+
+    // Delete a row
+    function deleteRow(button) {
+      let row = button.parentNode.parentNode;
+      let table = row.parentNode.parentNode;
+      table.deleteRow(row.rowIndex);
+    }
+
+    // PMC activity print to PDF
+    function pmcActivityPrint() {
+        $('.printHiddenArea').addClass('visually-hidden');
+        window.print();
+        $('.printHiddenArea').removeClass('visually-hidden');
+    }
+
+    // PMC operation Modal
+    function pmcOperationModal(pmc_id, data_center_room, mode){
+        if (mode == 'poweron') {
+            $('#pmcModalTittle').prop('style', 'color: green;');
+            $('#pmcModalTittle').html('POWER ON: ' + data_center_room);
+            $('#operationConfirmText').html('POWER ON');
+        } else if (mode == 'poweroff') {
+            $('#pmcModalTittle').prop('style', 'color: red;');
+            $('#pmcModalTittle').html('POWER OFF: ' + data_center_room);
+            $('#operationConfirmText').html('POWER OFF');
+        } else {
+            return;
+        }
+        $('#pmcOperationBtn').addClass('disabled');
+        $('#pmcNTPassword').val('');
+        $('#pmcRBAdminPassword').val('');
+        $('#pmcOperationConfirmation').prop('checked', false);
+
+        $('#pmcOperationConfirmation').change(function() {
+            if ($(this).is(':checked')) {
+              $('#pmcOperationBtn').removeClass('disabled');
+            } else {
+              $('#pmcOperationBtn').addClass('disabled');
+            }
+        });
+
+        let pmcOperationModal = new bootstrap.Modal(document.getElementById('pmcOperationModal'), {
+            keyboard: false,
+            backdrop: true
+        });
+
+        pmcOperationModal.show();
+
+        $('#pmcOperationBtn').off('click').on('click', function (){
+            if (pmc_id != "" && pmc_id != null && pmc_id != undefined) {
+                $.ajax({
+                    url: "{% url 'pmc_operation_execute' %}",
+                    method: 'POST',
+                    data: {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        'pmc_id': pmc_id,
+                        'nt_password': $('#pmcNTPassword').val(),
+                        'rbadmin_password': $('#pmcRBAdminPassword').val(),
+                        'mode': mode,
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status) {
+                            layer.msg('Request sent successfully, check execution log for more details.');
+                        } else {
+                            layer.msg('Request failed: ' + res.error);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        layer.msg('Request failed: ' + res.error);
+                    }
+                });
+            }
+        });
+    }
+
+    function pmcOperationExecutionLogModal(pmc_id){
+        $('#powerOnLog').empty();
+        $('#powerOffLog').empty();
+
+        $.ajax({
+            url: "{% url 'pmc_operation_execution_log' %}",
+            method: 'POST',
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'pmc_id': pmc_id,
+            },
+            dataType: 'json',
+            success: function (res) {
+                if (res.status) {
+                    if (res.pmc_operation_logs.poweron_log.length > 0) {
+                        $.each(res.pmc_operation_logs.poweron_log, (index, details_item) => {
+                            $('#powerOnLog').append(details_item.trim()).append('<br>');
+                        });
+                    } else {
+                        $('#powerOnLog').empty();
+                    }
+
+                    if (res.pmc_operation_logs.poweroff_log.length > 0) {
+                        $.each(res.pmc_operation_logs.poweroff_log, (index, details_item) => {
+                            $('#powerOffLog').append(details_item.trim()).append('<br>');
+                        });
+                    } else {
+                        $('#powerOffLog').empty();
+                    }
+
+                    let pmcOperationExecutionLogModal = new bootstrap.Modal(document.getElementById('pmcOperationExecutionLogModal'), {
+                        keyboard: false,
+                        backdrop: true
+                    });
+
+                    pmcOperationExecutionLogModal.show();
+                } else {
+                    layer.msg('Error retrieving PMC execution log: ' + res.error);
+                }
+            }
+        });
+    }
+
+
+    // Disk size list modal
+    function hotfixListModal(hotfix_list_result){
+      let hotfixListModal = new bootstrap.Modal(document.getElementById('hotfixListModal'), {
+            keyboard: true,
+            backdrop: true
+        });
+
+        let hostName;
+        hotfix_dict = hotfix_list_result[0]
+        $("#hotfixListContent").empty();
+        for (let details_attr in hotfix_dict) {
+            hostName = details_attr;
+            $('#hotfixListContent').html(hotfix_dict[details_attr]);
+        }
+
+        hotfixListModal.show();
+    }
+
+
+    // PMC backup schedule cancel
+    function pmcBackupScheduleCancel(schedule_id, change_number){
+        let pmcBackupScheduleCancelModal = new bootstrap.Modal(document.getElementById('pmcBackupScheduleCancelModal'), {
+            keyboard: false,
+            backdrop: true
+        });
+
+        pmcBackupScheduleCancelModal.show();
+
+        $('#pmcBackupScheduleCancelBtn').off('click').on('click', function (){
+            if (schedule_id!=""&&schedule_id!=null&&schedule_id!=undefined) {
+                $.ajax({
+                    url: "{% url 'pmc_backup_schedule_cancel_schedule' %}",
+                    method: 'POST',
+                    data: {
+                        "csrfmiddlewaretoken": "{{ csrf_token }}",
+                        'change_number': change_number,
+                        'schedule_id': schedule_id,
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status) {
+                            layer.msg('Successfully canceled backup schedule: ' + schedule_id);
+                        } else {
+                            layer.msg('Error cancel backup schedule: ' + res.error);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+
+    // PMC backup schedule change
+    function pmcBackupScheduleChange(schedule_id, change_number, start_time, end_time) {
+        let pmcBackupScheduleChangeModal = new bootstrap.Modal(document.getElementById('pmcBackupScheduleChangeModal'), {
+            keyboard: false,
+            backdrop: true
+        });
+
+        // Initiate the layui datetime
+        datetimeInitiate();
+
+        // Set the schedule info to change form
+        $('#pmcBackupScheduleId').val(schedule_id);
+        $('#pmcBackupScheduleChangeNumber').val(change_number);
+        $('#pmcBackupScheduleNewStartTime').val(start_time);
+        $('#pmcBackupScheduleNewEndTime').val(end_time);
+
+        pmcBackupScheduleChangeModal.show();
+
+        $('#pmcBackupScheduleChangeBtn').off('click').on('click', function (){
+            if (schedule_id!=""&&schedule_id!=null&&schedule_id!=undefined) {
+                $.ajax({
+                    url: "{% url 'pmc_backup_schedule_change_schedule' %}",
+                    method: 'POST',
+                    data: {
+                        "csrfmiddlewaretoken": "{{ csrf_token }}",
+                        'change_number': change_number,
+                        'schedule_id': schedule_id,
+                        'start_time': $('#pmcBackupScheduleNewStartTime').val(),
+                        'end_time': $('#pmcBackupScheduleNewEndTime').val(),
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status) {
+                            layer.msg('Successfully changed backup schedule: ' + schedule_id);
+                        } else {
+                            layer.msg('Error change backup schedule: ' + res.error);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+</script>
+</html>

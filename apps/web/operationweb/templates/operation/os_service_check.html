@@ -1,0 +1,257 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>GOC Automation Platform</title>
+    <!-- CSS files -->
+    <link href="{% static 'plugin/layui/css/layui.css' %}" rel="stylesheet"/>
+    <link href="{% static 'plugin/tabler/css/tabler.min.css' %}" rel="stylesheet"/>
+    <style>
+      @import url('{% static 'plugin/tabler/css/inter.css' %}');
+      :root {
+      	--tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+      }
+      body {
+      	font-feature-settings: "cv03", "cv04", "cv11";
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="page-wrapper">
+        <!-- Page header -->
+        <div class="page-header d-print-none">
+          <div class="container-xl">
+            <div class="row g-2 align-items-center">
+              <div class="col">
+                <!-- Page pre-title -->
+                <div class="page-pretitle">
+                  Operation Tools
+                </div>
+                <h2 class="page-title">
+                  OS service check
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Page Body -->
+        <div class="page-body">
+          <div class="container-xl">
+            <div class="row row-cards">
+                <!-- Page content: maintenance configuration area -->
+                <form id="osServiceCheckForm" onsubmit="return false">
+                    {% csrf_token %}
+                    <div class="col-md-12">
+                      <div class="card">
+                        <div class="card-header">
+                          <h3 class="card-title">OS service check</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3 row">
+                                <label class="col-1 col-form-label">Host name</label>
+                                <div class="col-4">
+                                    <div class="input-group">
+                                        <input type="text" name="hostName" id="hostName" class="form-control" placeholder="Host name with domain">
+                                        <input type="text" name="operationTag" id="operationTag" class="form-control visually-hidden" value="1">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-1 col-form-label">Password</label>
+                                <div class="col-4">
+                                    <input type="password" name="ntPassword" id="ntPassword" class="form-control" placeholder="Your NT account password">
+                                    <div class="invalid-feedback">Password can't be empty!</div>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-1 col-form-label">Service</label>
+                                <div class="col-4">
+                                    <select name="serviceName" id="serviceName" class="form-select">
+                                        <option value="netlogon">Netlogon</option>
+                                        <option value="lanmanserver">LanmanServer</option>
+                                        <option value="w32time">W32Time</option>
+                                        <option value="eventlog">Eventlog</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end">
+                          <button id="osServiceCheckBtn" type="button" class="btn btn-primary">Check</button>
+                        </div>
+                      </div>
+                    </div>
+                </form>
+
+                <!-- Page content: Execute results area -->
+                <div id="osServiceCheckTable" class="col-md-12">
+                  <div class="card">
+                      <div class="card-header">
+                        <h3 class="card-title">Service overview</h3>
+                      </div>
+                      <div class="table-responsive">
+                        <table class="table card-table table-vcenter text-nowrap datatable">
+                          <thead>
+                            <tr>
+                                <th>HOST NAME</th>
+                                <th>SERVICE</th>
+                                <th>STATUS</th>
+                                <th>STARTUP TYPE</th>
+                                <th>ACTION</th>
+                            </tr>
+                          </thead>
+                          <!-- Host status table content -->
+                          <tbody id="osServiceCheckContent">
+                            <tr>
+                                <td id="tableHostName"></td>
+                                <td id="tableServiceName"></td>
+                                <td id="tableServiceStatus"></td>
+                                <td id="tableStartupType"></td>
+                                <td id="tableAction"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+    <!-- Load JS -->
+    <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'plugin/layui/layui.js' %}"></script>
+    <script src="{% static 'plugin/tabler/js/tabler.min.js' %}" defer></script>
+    <!-- Auto adjust iFrame height -->
+    <script type="text/javascript">
+
+        // Initiate function
+        $(function () {
+            // OS Service check initiation
+            osServiceCheck();
+            // iFrame height initiation
+            refreshHeight();
+            // iFrame height resize according to hostStatusTable height
+            osServiceCheckTableResize();
+        });
+
+        // iFrame height initiation
+        function refreshHeight(){
+          top.postMessage(document.body.scrollHeight + 100, '*');
+        }
+
+        // iFrame height resize according to hostStatusTable height
+        function osServiceCheckTableResize(){
+            let originalBodyHeight = document.body.scrollHeight + 100;
+            let originalServiceCheckTableHeight = document.getElementById('osServiceCheckTable').clientHeight;
+            let resizeTimer = null;
+            const osServiceCheckTableObserver = new ResizeObserver(entries => {
+                entries.forEach(entry => {
+                    if(resizeTimer){
+                        clearTimeout(resizeTimer);
+                    }
+                    resizeTimer = setTimeout(function(){
+                        let differenceHeight = entry.contentRect.height - originalServiceCheckTableHeight;
+                        top.postMessage(originalBodyHeight + differenceHeight, '*');
+                    },100)
+                });
+            });
+
+            const osServiceCheckTable = document.getElementById('osServiceCheckTable');
+            osServiceCheckTableObserver.observe(osServiceCheckTable);
+        }
+
+        // Validate comment and hostlist input
+        function inputValidate() {
+            // Clear error msg
+            $('#hostName,#ntPassword').removeClass('is-invalid')
+
+            let valitdateFlag = true;
+            // Validate if the input is empty
+            $.each($('#hostName,#ntPassword'), function (key, value) {
+                // key, series for selected element
+                // valuses current element
+    　　　　　　　 // $(values).attr("attribute name"); Get the attr value via this way
+                if ($(value).val() == '') {
+                    $(value).addClass('is-invalid')
+                    valitdateFlag = false
+                }
+            });
+
+            return valitdateFlag
+        }
+
+        // iLO status search Ajax request
+        function osServiceCheck(){
+            $('#osServiceCheckBtn').on('click', function () {
+                // Input validation
+                if (inputValidate()) {
+                    // Add loading bar
+                    $('#osServiceCheckTable').append('<div id="loadingBar" class="progress progress-sm"><div class="progress-bar progress-bar-indeterminate"></div></div>');
+                    // Add button disabled class
+                    $('#osServiceCheckBtn').addClass('btn-loading');
+
+                    // send request by ajax
+                    $.ajax({
+                        url: "{% url 'os_service_check_execute' %}",
+                        method: 'POST',
+                        data: $('#osServiceCheckForm').serialize(),
+                        dataType: 'json',
+                        success: function (res) {
+                            if (res.status) {
+                                $('#tableHostName').html(res.data[0]);
+                                $('#tableServiceName').html(res.data[1]);
+                                $('#tableServiceStatus').html(res.data[2]);
+                                $('#tableStartupType').html(res.data[3]);
+                                let ntPassword = $('#ntPassword').val();
+                                let service = $('#serviceName').val();
+                                let actionButton = `<button id="osServiceRestartBtn" type="button" class="btn btn-primary btn-sm" onclick="osServiceRestart('${ res.data[0] }','${ ntPassword }','${ service }')">Restart</button>`;
+                                $('#tableAction').html(actionButton);
+                            } else {
+                                // Show failure message
+                                layer.msg(res.error);
+                            }
+                            // Remove loading bar
+                            $('#loadingBar').remove();
+                            // Remove button disabled class
+                            $('#osServiceCheckBtn').removeClass('btn-loading');
+                        }
+                    });
+                }
+            });
+        }
+
+        function osServiceRestart(hostName, ntPassword, service){
+            // Add button disabled class
+            $('#osServiceRestartBtn').addClass('btn-loading');
+            // send request by ajax
+            $.ajax({
+                url: "{% url 'os_service_check_execute' %}",
+                method: 'POST',
+                data: {
+                    "csrfmiddlewaretoken": "{{ csrf_token }}",
+                    'hostName': hostName,
+                    'ntPassword': ntPassword,
+                    'serviceName': service,
+                    'operationTag': 2
+                },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.status) {
+                        layer.msg('Service ' + res.data[1] + ' restart ' + res.data[3] + ', please check the status again.', {time: 4000});
+                    } else {
+                        // Show failure message
+                        layer.msg(res.error);
+                    }
+                    // Remove button disabled class
+                    $('#osServiceRestartBtn').removeClass('btn-loading');
+                }
+            });
+        }
+    </script>
+</html>

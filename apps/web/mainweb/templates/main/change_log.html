@@ -1,0 +1,269 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>GOC Automation Platform</title>
+    <!-- CSS files -->
+    <link href="{% static 'plugin/tabler/css/tabler.min.css' %}" rel="stylesheet"/>
+    <style>
+      @import url('{% static 'plugin/tabler/css/inter.css' %}');
+      :root {
+      	--tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+      }
+      body {
+      	font-feature-settings: "cv03", "cv04", "cv11";
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="page-wrapper">
+        <!-- Page header -->
+        <div class="page-header d-print-none">
+          <div class="container-xl">
+            <div class="row g-2 align-items-center">
+              <div class="col">
+                <!-- Page pre-title -->
+                <div class="page-pretitle">
+                  HELP
+                </div>
+                <h2 class="page-title">
+                  Change log
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Page body -->
+        <div class="page-body">
+          <div class="container-xl">
+            <div class="card card-lg">
+              <div class="card-body">
+                <div class="markdown">
+                  <div>
+                    <div class="d-flex mb-3">
+                      <h1 class="m-0">Changelog</h1>
+                    </div>
+                  </div>
+                  <div class="mb-4">
+                    <h2 class="mb-2">
+                      <span>1.2.7</span> –
+                      <small>Apr 26, 2024</small>
+                    </h2>
+                    <ul>
+                      <li>All services migrated to docker-compose deployment.</li>
+                    </ul>
+                  </div>
+                  <div class="mb-4">
+                    <h2 class="mb-2">
+                      <span>1.2.6</span> –
+                      <small>Apr 23, 2024</small>
+                    </h2>
+                    <ul>
+                      <li>fixed some known bugs in <code class="language-plaintext highlighter-rouge">PMC coordination</code> module.</li>
+                      <li>fixed some known bugs in <code class="language-plaintext highlighter-rouge">Hardware Search</code> module.</li>
+                      <li>fixed some known bugs in cmdb data update in <code class="language-plaintext highlighter-rouge">Apscheduler</code> module.</li>
+                      <li>fixed some known bugs in user's avatar display.</li>
+                      <li><code class="language-plaintext highlighter-rouge">iLO Health Check</code> was migrated to jumphost as a service, it's able to get SL4 zones iLO status.</li>
+                    </ul>
+                  </div>
+                  <div class="mb-4">
+                    <h2 class="mb-2">
+                      <span>1.2.5</span> –
+                      <small>Mar 28, 2024</small>
+                    </h2>
+                    <ul>
+                      <li>fixed some known bugs in <code class="language-plaintext highlighter-rouge">PMC operation</code> module.</li>
+                      <li>fixed some known bugs in <code class="language-plaintext highlighter-rouge">PMC coordination</code> module.</li>
+                      <li>fixed some known bugs in <code class="language-plaintext highlighter-rouge">Apscheduler</code> module.</li>
+                      <li>new add&delete row function in PMC activity edit in <code class="language-plaintext highlighter-rouge">PMC coordination</code> module.</li>
+                      <li>new AIA&RMP functions in <code class="language-plaintext highlighter-rouge">NOC Tools</code> module.</li>
+                    </ul>
+                  </div>
+                  <div class="mb-4">
+                    <h2 class="mb-2">
+                      <span>1.2.4</span> –
+                      <small>Jan 02, 2024</small>
+                    </h2>
+                    <ul>
+                      <li>fixed some known bugs in <code class="language-plaintext highlighter-rouge">PMC operation</code> module.</li>
+                      <li>fixed some known bugs in <code class="language-plaintext highlighter-rouge">PMC coordination</code> module.</li>
+                        <li>new <code class="language-plaintext highlighter-rouge">OS Service Check</code> module.</li>
+                    </ul>
+                  </div>
+                  <div class="mb-4">
+                    <h2 class="mb-2">
+                      <span>1.2.3</span> –
+                      <small>Dec 05, 2023</small>
+                    </h2>
+                    <ul>
+                      <li>fixed some known bugs in <code class="language-plaintext highlighter-rouge">Dashboard</code> module.</li>
+                      <li>fixed some known bugs in <code class="language-plaintext highlighter-rouge">PMC coordination</code> module.</li>
+                    </ul>
+                  </div>
+                  <div class="mb-4">
+                    <h2 class="mb-2">
+                      <span>1.2.2</span> –
+                      <small>Nov 29, 2023</small>
+                    </h2>
+                    <ul>
+                      <li>add new Emial template in <code class="language-plaintext highlighter-rouge">Email service</code> mail list.</li>
+                      <li>fixed some known bugs in <code class="language-plaintext highlighter-rouge">ilo health check</code> module.</li>
+                      <li>fixed some known bugs in <code class="language-plaintext highlighter-rouge">PMC coordination</code> module.</li>
+                      <li>add PMC start&end time copy in <code class="language-plaintext highlighter-rouge">PMC coordination</code> module.</li>
+                    </ul>
+                  </div>
+                  <div class="mb-4">
+                    <h2 class="mb-2">
+                      <span>1.2.1</span> –
+                      <small>Nov 08, 2023</small>
+                    </h2>
+                    <ul>
+                      <li>fixed some known bugs in <code class="language-plaintext highlighter-rouge">Email service</code> module.</li>
+                      <li>fixed some known bugs in <code class="language-plaintext highlighter-rouge">Apscheduler</code> module.</li>
+                      <li>fixed some known bugs in <code class="language-plaintext highlighter-rouge">PMC coordination</code> module.</li>
+                      <li>new <code class="language-plaintext highlighter-rouge">PMC operation</code> module.</li>
+                    </ul>
+                  </div>
+                  <div class="mb-4">
+                    <h2 class="mb-2">
+                      <span>1.2.0</span> –
+                      <small>Sep 28, 2023</small>
+                    </h2>
+                    <ul>
+                      <li>fixed some known bugs in <code class="language-plaintext highlighter-rouge">Get device list</code> function.</li>
+                      <li>new <code class="language-plaintext highlighter-rouge">Disk Utilization Check</code> function, disk C utilization in windows server in BCN cloud be checked and cleaned up.</li>
+                      <li>new <code class="language-plaintext highlighter-rouge">Active Hosts chart</code> in Dashboard, total amount for unix and windows server will be statisticed every 24 hours.</li>
+                    </ul>
+                  </div>
+                  <div class="mb-4">
+                    <h2 class="mb-2">
+                      <span>1.1.9</span> –
+                      <small>Sep 12, 2023</small>
+                    </h2>
+                    <ul>
+                      <li>new <code class="language-plaintext highlighter-rouge">iLO health check</code> function, contains hardware device components health check and AHS log download.</li>
+                      <li>update <code class="language-plaintext highlighter-rouge">PMC Tools</code>, fixed some bug in <code class="language-plaintext highlighter-rouge">View requests</code> and fits some needs from users.</li>
+                      <li>update <code class="language-plaintext highlighter-rouge">Dashboard</code> page, removed some useless charts and added <code class="language-plaintext highlighter-rouge">PMC tasks in 7 days</code> chart.</li>
+                      <li>update <code class="language-plaintext highlighter-rouge">Dashboard</code> page, new <code class="language-plaintext highlighter-rouge">GOC Locations</code> map.</li>
+                    </ul>
+                  </div>
+                  <div class="mb-4">
+                    <h2 class="mb-2">
+                      <span>1.1.8</span> –
+                      <small>Sep 07, 2023</small>
+                    </h2>
+                    <ul>
+                      <li>update <code class="language-plaintext highlighter-rouge">PMC Tools</code>, added some little function for activity edit.</li>
+                      <li>update <code class="language-plaintext highlighter-rouge">PMC Tools</code>, fixed same ITSP Number activity could be saved bug.</li>
+                    </ul>
+                  </div>
+                  <div class="mb-4">
+                    <h2 class="mb-2">
+                      <span>1.1.7</span> –
+                      <small>Sep 01, 2023</small>
+                    </h2>
+                    <ul>
+                      <li>update <code class="language-plaintext highlighter-rouge">PMC Tools</code>, new workflow and new device list function added.</li>
+                      <li>update <code class="language-plaintext highlighter-rouge">PAM credential</code> function, history search results will be save into Redis for next time usage.</li>
+                      <li>new <code class="language-plaintext highlighter-rouge">Hardware search</code> function, hardware devices information like iLO IP address, local contacts etc. is able to search out directly.</li>
+                    </ul>
+                  </div>
+                  <div class="mb-4">
+                    <h2 class="mb-2">
+                      <span>1.1.6</span> –
+                      <small>July 28, 2023</small>
+                    </h2>
+                    <ul>
+                      <li>Optimize host info data source, all the data coming from CMDB Oracle database standard views now.</li>
+                      <li>new <code class="language-plaintext highlighter-rouge">PMC Tools</code> tab, contains PMC coordination -> New/View Request function.</li>
+                      <li>update <code class="language-plaintext highlighter-rouge">Host status</code> host search function.</li>
+                      <li>update <code class="language-plaintext highlighter-rouge">Email service</code> host search and Email send flow.</li>
+                      <li>update <code class="language-plaintext highlighter-rouge">Maintenance mode</code> host search and host info search.</li>
+                      <li>Remove <code class="language-plaintext highlighter-rouge">Host details</code> function, it was replaced by <code class="language-plaintext highlighter-rouge">CMDB search</code> function.</li>
+                    </ul>
+                  </div>
+                  <div class="mb-4">
+                    <h2 class="mb-2">
+                      <span>1.1.5</span> –
+                      <small>May 26, 2023</small>
+                    </h2>
+                    <ul>
+                      <li>update <code class="language-plaintext highlighter-rouge">CMDB search</code> function, add new attribute 'master of system'.</li>
+                      <li>adjust <code class="language-plaintext highlighter-rouge">CMDB search</code> web ui.</li>
+                    </ul>
+                  </div>
+                  <div class="mb-4">
+                    <h2 class="mb-2">
+                      <span>1.1.4</span> –
+                      <small>May 17, 2023</small>
+                    </h2>
+                    <ul>
+                      <li>new <code class="language-plaintext highlighter-rouge">CMDB search</code> function, we can search for CI items from ITCW Standard View now.</li>
+                      <li>update <code class="language-plaintext highlighter-rouge">Maintenance mode</code> function, add limitation for the host number and error message alerting.</li>
+                      <li>update <code class="language-plaintext highlighter-rouge">Host status</code> function, add limitation for the host number and error message alerting.</li>
+                      <li>update <code class="language-plaintext highlighter-rouge">Host details</code> function, add limitation for the host number and error message alerting.</li>
+                      <li>update <code class="language-plaintext highlighter-rouge">Email service</code> function, add limitation for the host number and error message alerting.</li>
+                      <li>update <code class="language-plaintext highlighter-rouge">PAM credential</code> function, add limitation for the host number and error message alerting.</li>
+                    </ul>
+                  </div>
+                  <div class="mb-4">
+                    <h2 class="mb-2">
+                      <span>1.1.3</span> –
+                      <small>May 10, 2023</small>
+                    </h2>
+                    <ul>
+                      <li>update <code class="language-plaintext highlighter-rouge">Maintenance mode</code> page, add input validation.</li>
+                      <li>update <code class="language-plaintext highlighter-rouge">Host status</code> page, add input validation.</li>
+                      <li>update <code class="language-plaintext highlighter-rouge">Host details</code> page, add input validation.</li>
+                      <li>new <code class="language-plaintext highlighter-rouge">PAM credential search</code> function.</li>
+                      <li>add <code class="language-plaintext highlighter-rouge">disalbed</code> class for all buttons during loading status.</li>
+                    </ul>
+                  </div>
+                  <div class="mb-4">
+                    <h2 class="mb-2">
+                      <span>1.1.2</span> –
+                      <small>April 04, 2023</small>
+                    </h2>
+                    <ul>
+                      <li>update <code class="language-plaintext highlighter-rouge">Main</code> page, add redirect to changelog page.</li>
+                      <li>update <code class="language-plaintext highlighter-rouge">Dashboard</code> page, add js and Apex chart to load API requests data.</li>
+                      <li>new <code class="language-plaintext highlighter-rouge">API Requests</code> chart.</li>
+                      <li>new <code class="language-plaintext highlighter-rouge">Changelog</code> page.</li>
+                    </ul>
+                  </div>
+                  <div class="mb-4">
+                    <h2 class="mb-2">
+                      <span>1.1.1</span> –
+                      <small>March 14, 2023</small>
+                    </h2>
+                    <p class="strong">Initial beta release of GOC Automation Platform v1.1.0! Lots more coming soon though 😁</p>
+                    <ul>
+                      <li>update <code class="language-plaintext highlighter-rouge">Bootstrap to v5.3.0</code></li>
+                      <li>update other dependencies.</li>
+                      <li>update new web UI for the platform.</li>
+                      <li>fix Email service send email bug.</li>
+                      <li>fix Host status search for status bug.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+    <!-- Load JS -->
+    <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'plugin/tabler/js/tabler.min.js' %}" defer></script>
+    <!-- Auto adjust iFrame height -->
+    <script type="text/javascript">
+        window.onload = function () {
+            top.postMessage(document.body.scrollHeight + 300,'*')
+        }
+    </script>
+</html>
