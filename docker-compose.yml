@@ -12,38 +12,40 @@ services:
     expose:
       - "6379"
     restart: always
+    networks:
+      - mynetwork
   
-  mysql:
-    image: mysql:5.7.39
+  db:
+    image: mysql:8.0
+    container_name: mysql_mike
+    environment:
+      MYSQL_ROOT_PASSWORD: '123456'
+      MYSQL_DATABASE: 'mike'
+      MYSQL_USER: 'myuser'
+      MYSQL_PASSWORD: 'mypassword'
     ports:
       - "3306:3306"
-    expose:
-      - "3306"
-    environment:
-      - MYSQL_ROOT_PASSWORD=Abcd@1234
-      - MYSQL_DATABASE=GOCAutomation_DB
-    volumes:
-      - /goc_automation_platform_docker/compose/mysql/data:/var/lib/mysql # 挂载数据库数据
-      - /goc_automation_platform_docker/compose/mysql/conf/my.cnf:/etc/my.cnf # 挂载配置文件
-      - /goc_automation_platform_docker/compose/mysql/logs:/var/log/mysql # 挂载日志
-    restart: always
+    networks:
+      - mynetwork
   
   web:
-    image: goc_automation_web:1.2
-    ports:
-      - "9999:9999"
-    expose:
-      - "9999"
+    build: .
+    command: bash -c "python manage.py runserver 0.0.0.0:8222"
     volumes:
-      - /net/szhvm00574/fs0/gocautomation_site/goc_automation:/goc_automation # 挂载项目代码
+      - .:/app
     environment:
-      - DEBUG=False
-    restart: always
+      - DEBUG=0
+      - DJANGO_ALLOWED_HOSTS=localhost
+      - DATABASE_URL=mysql://root:123456@db:3306/goc
+    ports:
+      - "8222:8222"
     depends_on:
       - mysql
       - redis
     tty: true
     stdin_open: true
+    networks:
+      - mynetwork
 
   nginx:
     image: nginx:1.14.1
@@ -60,3 +62,5 @@ services:
     depends_on:
       - web
     restart: always
+    networks:
+      - mynetwork

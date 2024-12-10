@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/ychanglong/bosch.git'
+                git 'https://github.com/ychanglong/YCL.git'
             }
         }
         stage('Build') {
