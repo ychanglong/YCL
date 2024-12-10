@@ -1,7 +1,7 @@
 FROM python:3.8
 
 ENV HTTP_PROXY=http://rb-proxy-sl.bosch.com:8080
-ENV HTTPS_PROXY=http://rb-proxy-sl.bosch.com:8080
+ENV HTTPS_PROXY=https://rb-proxy-sl.bosch.com:8080
 
 ENV PYTHONUNBUFFERED 1
 
