@@ -37,9 +37,7 @@ RUN python3 -m virtualenv venv
 
 RUN . /app/venv/bin/activate
 
-RUN pip install -r /goc_automation/requirements.txt
-
-RUN pip install mysqlclient
+RUN pip install -r /app/requirements.txt
 
 
 CMD ["bash", "-c", "python manage.py runserver 0.0.0.0:8222"]
