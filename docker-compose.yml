@@ -22,7 +22,7 @@ services:
       MYSQL_USER: 'myuser'
       MYSQL_PASSWORD: 'mypassword'
     ports:
-      - "3306:3306"
+      - "3307:3307"
   
   web:
     build: .
@@ -32,7 +32,7 @@ services:
     environment:
       - DEBUG=0
       - DJANGO_ALLOWED_HOSTS=localhost
-      - DATABASE_URL=mysql://root:123456@db:3306/goc
+      - DATABASE_URL=mysql://root:123456@db:3307/goc
     ports:
       - "8333:8333"
     depends_on:
