@@ -8,9 +8,9 @@ services:
       - /goc_automation_platform_docker/compose/redis/data:/data
       #- /goc_automation_platform_docker/compose/redis/conf/redis.conf:/etc/redis/redis.conf
     ports:
-      - "6379:6379"
+      - "6380:6380"
     expose:
-      - "6379"
+      - "6380"
     restart: always
   
   db:
@@ -26,7 +26,7 @@ services:
   
   web:
     build: .
-    command: bash -c "python manage.py runserver 0.0.0.0:8222"
+    command: bash -c "python manage.py runserver 0.0.0.0:8333"
     volumes:
       - .:/app
     environment:

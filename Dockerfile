@@ -40,4 +40,4 @@ RUN . /app/venv/bin/activate
 RUN pip install -r /app/requirements.txt
 
 
-CMD ["bash", "-c", "python manage.py runserver 0.0.0.0:8222"]
+CMD ["bash", "-c", "python manage.py runserver 0.0.0.0:8333"]
