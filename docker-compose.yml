@@ -12,8 +12,6 @@ services:
     expose:
       - "6379"
     restart: always
-    networks:
-      - mynetwork
   
   db:
     image: mysql:8.0
@@ -25,8 +23,6 @@ services:
       MYSQL_PASSWORD: 'mypassword'
     ports:
       - "3306:3306"
-    networks:
-      - mynetwork
   
   web:
     build: .
@@ -44,8 +40,6 @@ services:
       - redis
     tty: true
     stdin_open: true
-    networks:
-      - mynetwork
 
   nginx:
     image: nginx:1.14.1
@@ -62,5 +56,3 @@ services:
     depends_on:
       - web
     restart: always
-    networks:
-      - mynetwork
