@@ -1,4 +1,0 @@
-Django==3.2.5
-django-bootstrap4==3.0.1
-django-crispy-forms==1.12.0
-requests==2.26.0
