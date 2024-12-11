@@ -188,7 +188,7 @@ def host_status_search(host_list):
 
         for resp in resps:
                 try:
-                        if resp.status is 200:
+                        if resp.status == 200:
                                 host_data = resp.json()
                                 if 'results' in host_data.keys():
                                         results = host_data['results']
