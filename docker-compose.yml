@@ -30,11 +30,12 @@ services:
   
   web:
     build: .
-    command: bash -c "python manage.py runserver 0.0.0.0:9999"
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:9999"
     volumes:
       - .:/app
       - /var/lib/jenkins/workspace:/var/lib/jenkins/workspace
     environment:
+      - DB_HOST=mysql_goc
       - DEBUG=0
       - DJANGO_ALLOWED_HOSTS=localhost
       - DATABASE_URL=mysql://root:123456@db:3307/goc
