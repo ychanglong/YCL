@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.9
 
 ENV HTTP_PROXY=http://rb-proxy-sl.bosch.com:8080
 ENV HTTPS_PROXY=https://rb-proxy-sl.bosch.com:8080
@@ -39,10 +39,8 @@ RUN . /app/venv/bin/activate
 
 RUN pip install -r /app/requirements.txt
 
-CMD ["bash", "-c", "python manage.py runserver 0.0.0.0:9999"]
-
-##CMD ["/bin/bash", "-c", "uwsgi", "--ini", "/goc_automation/GOC_Automation/uwsgi.ini"]
-#COPY start.sh /
-##CMD ["/bin/bash", "-c", "./start.sh"]
-#RUN chmod +x /start.sh
-#ENTRYPOINT ["/start.sh"]
+#CMD ["/bin/bash", "-c", "uwsgi", "--ini", "/goc_automation/GOC_Automation/uwsgi.ini"]
+COPY start.sh /
+#CMD ["/bin/bash", "-c", "./start.sh"]
+RUN chmod +x /start.sh
+ENTRYPOINT ["/start.sh"]

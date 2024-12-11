@@ -44,16 +44,18 @@ services:
     tty: true
     stdin_open: true
 
-#  nginx:
-#    image: nginx:1.14.1
-#    ports:
-#      - "80:80"
-#    expose:
-#      - "80"
-#    volumes:
-#      - .:/app # 挂载项目代码
-#      - /var/lib/jenkins/workspace/logs/:/var/log/nginx/ # 挂载日志
-#      - /var/lib/jenkins/workspace/nginx.conf/:/etc/nginx/ # 挂载配置文件
-#    depends_on:
-#      - web
-#    restart: always
+  nginx:
+    image: nginx:1.14.1
+    ports:
+      - "80:80"
+      - "443:443"
+    expose:
+      - "80"
+      - "443"
+    volumes:
+      - .:/app # 挂载项目代码
+      - /var/lib/jenkins/workspace/logs/:/var/log/nginx/ # 挂载日志
+      - /var/lib/jenkins/workspace/nginx.conf/:/etc/nginx/ # 挂载配置文件
+    depends_on:
+      - web
+    restart: always
