@@ -29,6 +29,7 @@ services:
     command: bash -c "python manage.py runserver 0.0.0.0:9999"
     volumes:
       - .:/app
+      - /var/lib/jenkins/workspace:/var/lib/jenkins/workspace
     environment:
       - DEBUG=0
       - DJANGO_ALLOWED_HOSTS=localhost
