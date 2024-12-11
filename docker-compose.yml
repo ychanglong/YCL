@@ -48,10 +48,8 @@ services:
     image: nginx:1.14.1
     ports:
       - "80:80"
-      - "443:443"
     expose:
       - "80"
-      - "443"
     volumes:
       - .:/app # 挂载项目代码
       - /var/lib/jenkins/workspace/logs/:/var/log/nginx/ # 挂载日志
