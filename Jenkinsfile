@@ -21,9 +21,10 @@ pipeline {
                     sh 'echo "123456" | sudo -S docker-compose -f docker-compose.yml up -d'
 
                     // 等待 MySQL 启动，确保数据库准备好接受连接
-                    sleep(30)  // 根据 MySQL 启动时间调整秒数
+                    sleep(10)  // 根据 MySQL 启动时间调整秒数
 
                     // 运行 Django 数据库迁移
+                    sh 'echo "123456" | sudo -S docker-compose exec web python manage.py makemigrations'
                     sh 'echo "123456" | sudo -S docker-compose exec web python manage.py migrate'
                 }
             }
