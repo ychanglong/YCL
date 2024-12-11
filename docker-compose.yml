@@ -26,7 +26,7 @@ services:
   
   web:
     build: .
-    command: bash -c "python manage.py runserver 0.0.0.0:8333"
+    command: bash -c "python manage.py runserver 0.0.0.0:9999"
     volumes:
       - .:/app
     environment:
@@ -34,7 +34,7 @@ services:
       - DJANGO_ALLOWED_HOSTS=localhost
       - DATABASE_URL=mysql://root:123456@db:3307/goc
     ports:
-      - "8333:8333"
+      - "9999:9999"
     depends_on:
       - db
       - redis
