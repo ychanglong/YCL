@@ -44,11 +44,11 @@ services:
   nginx:
     image: nginx:1.14.1
     ports:
-      - "81:81"
-      - "445:445"
+      - "80:80"
+      - "443:443"
     expose:
-      - "81"
-      - "445"
+      - "80"
+      - "443"
     volumes:
       - /net/szhvm00574/fs0/gocautomation_site/goc_automation:/app # 挂载项目代码
       - /goc_automation_platform_docker/compose/nginx/log:/var/log/nginx # 挂载日志
