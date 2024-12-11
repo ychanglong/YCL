@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4ebf93d9-4a13-48cd-a307-21ad561ab764" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/apps/web/monitoringweb/scripts/icinga_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/web/monitoringweb/scripts/icinga_request.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/GOCAutomation.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/GOCAutomation.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +66,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1733813923871</updated>
-      <workItem from="1733813927048" duration="16820000" />
+      <workItem from="1733813927048" duration="17593000" />
     </task>
     <servers />
   </component>

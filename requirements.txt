@@ -16,3 +16,4 @@ Pillow
 lxml
 lxml-html-clean
 uwsgi
+jwt
