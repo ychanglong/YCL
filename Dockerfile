@@ -39,8 +39,10 @@ RUN . /app/venv/bin/activate
 
 RUN pip install -r /app/requirements.txt
 
-#CMD ["/bin/bash", "-c", "uwsgi", "--ini", "/goc_automation/GOC_Automation/uwsgi.ini"]
-COPY start.sh /
-#CMD ["/bin/bash", "-c", "./start.sh"]
-RUN chmod +x /start.sh
-ENTRYPOINT ["/start.sh"]
+CMD ["bash", "-c", "python manage.py runserver 0.0.0.0:9999"]
+
+##CMD ["/bin/bash", "-c", "uwsgi", "--ini", "/goc_automation/GOC_Automation/uwsgi.ini"]
+#COPY start.sh /
+##CMD ["/bin/bash", "-c", "./start.sh"]
+#RUN chmod +x /start.sh
+#ENTRYPOINT ["/start.sh"]
