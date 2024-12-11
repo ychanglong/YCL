@@ -8,9 +8,9 @@ services:
       - /var/lib/jenkins/workspace/redis/data:/data
       #- /goc_automation_platform_docker/compose/redis/conf/redis.conf:/etc/redis/redis.conf
     ports:
-      - "6380:6380"
+      - "6379:6379"
     expose:
-      - "6380"
+      - "6379"
     restart: always
     networks:
       - my_network
