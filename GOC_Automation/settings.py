@@ -104,11 +104,11 @@ WSGI_APPLICATION = 'GOC_Automation.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bosch',
+        'NAME': 'goc',
         'USER': 'root',
         'PASSWORD': '123456',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'HOST': 'db',
+        'PORT': '3307',
     }
 }
 
