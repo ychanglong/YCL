@@ -12,6 +12,8 @@ services:
     expose:
       - "6380"
     restart: always
+    networks:
+      - my_network
   
   db:
     image: mysql:8.0
@@ -23,6 +25,8 @@ services:
       MYSQL_PASSWORD: 'mypassword'
     ports:
       - "3307:3307"
+    networks:
+      - my_network
   
   web:
     build: .
@@ -43,6 +47,8 @@ services:
       - redis
     tty: true
     stdin_open: true
+    networks:
+      - my_network
 
 #  nginx:
 #    image: nginx:1.14.1
@@ -57,3 +63,9 @@ services:
 #    depends_on:
 #      - web
 #    restart: always
+#    networks:
+#      - my_network
+
+networks:
+  my_network:
+    driver: bridge
