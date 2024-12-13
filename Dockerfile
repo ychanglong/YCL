@@ -33,6 +33,8 @@ RUN echo $(cat /etc/resolv.conf)
 
 RUN pip install virtualenv --proxy http://rb-proxy-sl.bosch.com:8080 -v
 
+RUN pip install mysqlclient
+
 RUN python3 -m virtualenv venv
 
 RUN . /app/venv/bin/activate
