@@ -107,7 +107,7 @@ DATABASES = {
         'NAME': 'goc',
         'USER': 'root',
         'PASSWORD': '123456',
-        'HOST': 'mysql_goc',
+        'HOST': 'db',
         'PORT': '3306',
     }
 }
