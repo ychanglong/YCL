@@ -18,7 +18,7 @@ pipeline {
             steps {
                 script {
                     // 启动 Docker 容器
-                    sh 'echo "123456" | sudo -S docker-compose -f docker-compose.yml up -d'
+                    sh 'echo "123456" | sudo -S docker-compose -f docker-compose.yml up -d --no-recreate'
                 }
             }
         }
