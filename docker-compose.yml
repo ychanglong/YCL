@@ -18,6 +18,8 @@ services:
   db:
     image: mysql:8.0
     container_name: db
+    volumes:
+      - /goc/mysql/data/:/var/lib/mysql/
     environment:
       MYSQL_ROOT_PASSWORD: '123456'
       MYSQL_DATABASE: 'goc'
