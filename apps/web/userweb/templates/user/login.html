@@ -198,7 +198,7 @@
                       , success: function (res) {
                           // Show error according to response code
                           console.log(res.code)
-                          if (res.code == 0) {
+                          if (res.code === 0) {
                               window.location.replace("{% url 'main' %}");
                           } else {
                               addErrorMsg('loginErrorAlertArea', res.error);
