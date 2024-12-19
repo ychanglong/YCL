@@ -6,7 +6,11 @@ RUN mkdir -p /goc_automation
 
 WORKDIR /goc_automation
 
-RUN /usr/local/bin/python -m pip install --upgrade pip
+RUN pip install virtualenv --proxy http://rb-proxy-sl.bosch.com:8080 -v
+
+RUN python3 -m virtualenv venv
+
+RUN . /goc_automation/venv/bin/activate
 
 COPY requirements.txt /goc_automation/
 
