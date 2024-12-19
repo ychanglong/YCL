@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.9
 
 RUN mkdir -p /etc/pip.conf.d \
     && echo "[global]" > /etc/pip.conf \
