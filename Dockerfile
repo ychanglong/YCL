@@ -1,12 +1,17 @@
 FROM python:3.8
 
-COPY pip.conf /root/.pip/pip.conf
+RUN mkdir -p /etc/pip.conf.d \
+    && echo "[global]" > /etc/pip.conf \
+    && echo "index-url = https://pypi.org/simple/" >> /etc/pip.conf \
+    && echo "[index]" >> /etc/pip.conf \
+    && echo "index = https://pypi.org/simple/" >> /etc/pip.conf \
+    && echo "proxy = http://rb-proxy-sl.bosch.com:8080" >> /etc/pip.conf \
 
 RUN mkdir -p /goc_automation
 
 WORKDIR /goc_automation
 
-RUN pip install virtualenv --proxy http://rb-proxy-sl.bosch.com:8080 -v
+RUN pip install virtualenv
 
 RUN python3 -m virtualenv venv
 
