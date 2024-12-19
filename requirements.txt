@@ -18,3 +18,4 @@ lxml
 lxml-html-clean
 uwsgi
 msg-parser==1.2.0
+jwt
