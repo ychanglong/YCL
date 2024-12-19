@@ -1,0 +1,553 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>GOC Automation Platform</title>
+    <!-- CSS files -->
+    <link href="{% static 'plugin/layui/css/layui.css' %}" rel="stylesheet"/>
+    <link href="{% static 'plugin/tabler/css/tabler-vendors.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'plugin/tabler/css/tabler.min.css' %}" rel="stylesheet"/>
+    <style>
+        @import url('{% static 'plugin/tabler/css/inter.css' %}');
+        :root {
+            --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+        }
+        body {
+            font-feature-settings: "cv03", "cv04", "cv11";
+        }
+        .container-fluid{
+            margin-top: 30px;
+        }
+        .truncate {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 150px; /* 自定义字段的最大宽度 */
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+    <div class="page-wrapper">
+        <!-- Page header -->
+        <div class="page-header d-print-none">
+            <div class="container-xl">
+                <div class="row g-2 align-items-center">
+                    <div class="col">
+                        <!-- Page pre-title -->
+                        <div class="page-pretitle">
+                            PMC Tools
+                        </div>
+                        <h2 class="page-title">
+                            View Request
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page Body -->
+        <div class="page-body">
+            <div class="container-xl">
+                <div class="row row-cards">
+                    <!-- Page content: search area -->
+                    <form id="viewRequestForm">
+                        {% csrf_token %}
+                        <div class="col-lg-12">
+                            <div class="row row-cards">
+                                <!-- Search Request By -->
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Search Request By</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row row-cards">
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Status</label>
+                                                        <div class="input-group mb-3">
+                                                            <select id="searchPMCStatus" name="searchPMCStatus" class="form-select searchArea" multiple>
+                                                                <option value="0">New</option>
+                                                                <option value="1">In Progress</option>
+                                                                <option value="2">Pending</option>
+                                                                <option value="3">Scheduled</option>
+                                                                <option value="4">Completed</option>
+                                                                <option value="5">Cancelled</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Region</label>
+                                                        <div class="input-group mb-3">
+                                                            <div class="input-group input-group-flat">
+                                                              <input id="searchRegion" name="searchRegion" type="text" class="form-control searchArea">
+                                                              <span class="input-group-text">
+                                                                <a href="#" class="link-secondary clearSearch" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/x -->
+                                                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                                                                </a>
+                                                              </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Site</label>
+                                                        <div class="input-group mb-3">
+                                                            <div class="input-group input-group-flat">
+                                                              <input id="searchLocationCode" name="searchLocationCode" type="text" class="form-control searchArea">
+                                                              <span class="input-group-text">
+                                                                <a href="#" class="link-secondary clearSearch" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/x -->
+                                                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                                                                </a>
+                                                              </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer text-end">
+                                            <button id="pmcActivitySearchBtn" type="button" class="btn btn-primary">Search</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- View Request -->
+                                <div id="pmcActivityTable" class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">View Request</h3>
+                                        </div>
+                                        <div class="card-body border-bottom py-3">
+                                            <div class="d-flex">
+                                                <div class="text-muted">
+                                                    Show
+                                                    <div class="mx-2 d-inline-block">
+                                                        <input type="text" class="form-control form-control-sm" value="10" size="3" aria-label="Invoices count" disabled>
+                                                    </div>
+                                                    entries
+                                                </div>
+                                                <div class="ms-auto text-muted">
+                                                    Search:
+                                                    <div class="ms-2 d-inline-block">
+                                                        <input id="tableSearchContent" type="text" class="form-control form-control-sm"
+                                                               aria-label="Search invoice">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table id="list" class="table table-hover card-table table-vcenter text-nowrap dataTable" >
+                                                <thead>
+                                                <tr>
+                                                    <th>Change ID</th>
+                                                    <th>Region</th>
+                                                    <th>Site</th>
+                                                    <th>DCR</th>
+                                                    <th>Status</th>
+                                                    <th>Start Time (UTC+0)</th>
+                                                    <th>End Time (UTC+0)</th>
+                                                    <th>SAN</th>
+                                                    <th>Class</th>
+                                                    <th>PMC Coordinator</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="pmcActivityContent"></tbody>
+                                            </table>
+                                        </div>
+                                        <div class="card-footer d-flex align-items-center">
+                                            <p class="m-0 text-muted">Showing <span id="startEntryNumber">*</span> to <span id="endEntryNumber">*</span> of <span id="totalEntries">**</span> entries</p>
+                                            <!-- PMC activity pagination content -->
+                                            <ul id="pmcActivityPagination" class="pagination m-0 ms-auto"></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<!-- Load JS -->
+<script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+<script src="{% static 'plugin/layui/layui.js' %}"></script>
+<script src="{% static 'plugin/tabler/libs/tom-select/dist/js/tom-select.base.min.js' %}"></script>
+<script src="{% static 'plugin/tabler/js/tabler.min.js' %}" defer></script>
+<script src="{% static 'js/moment.min.js' %}"></script>
+<script src="{% static 'js/moment-timezone-with-data.min.js' %}"></script>
+<!-- Auto adjust iFrame height -->
+<script type="text/javascript">
+
+    var userTimezone = "{{ request.user_account.timezone }}";
+
+    // Initiate function
+    $(function () {
+        // iFrame height initiation
+        refreshHeight();
+        // iFrame height resize according to hostStatusTable height
+        pmcActivityTableResize();
+        // Monitor enter key down
+        enterKeyDown();
+        // PMC Activity search
+        pmcActivitySearch();
+        // Initiate datetime plugin
+        datetimeInitiate();
+        // Initiate form selection
+        formSelectInitiation();
+        // Clear search
+        clearSearch();
+    });
+
+    // iFrame height initiation
+    function refreshHeight() {
+        top.postMessage(document.body.scrollHeight + 100, '*');
+    }
+
+    // iFrame height resize according to hostStatusTable height
+    function pmcActivityTableResize(){
+        let originalBodyHeight = document.body.scrollHeight + 500;
+        let originalActivityTableHeight = document.getElementById('pmcActivityTable').clientHeight;
+        let resizeTimer = null;
+        const pmcActivityTableObserver = new ResizeObserver(entries => {
+            entries.forEach(entry => {
+                if(resizeTimer){
+                    clearTimeout(resizeTimer);
+                }
+                resizeTimer = setTimeout(function(){
+                    let differenceHeight = entry.contentRect.height - originalActivityTableHeight;
+                    top.postMessage(originalBodyHeight + differenceHeight, '*');
+                },100)
+            });
+        });
+
+        const pmcActivityTable = document.getElementById('pmcActivityTable');
+        pmcActivityTableObserver.observe(pmcActivityTable);
+    }
+
+    // Monitor the Enter key down
+    function enterKeyDown() {
+        // Monitor Enter keydown trigger search
+        $('.searchArea').keydown(function (event) {
+            // 13 is Enter
+            if (event.keyCode == 13) {
+                $('#pmcActivitySearchBtn').trigger('click');
+            }
+        });
+    }
+
+    // Clear button initiation
+    function clearSearch(){
+        $('.clearSearch').on('click', function (){
+            let inputItsp = $(this).parents()[0]
+            $(inputItsp).prev().val('').focus();
+        });
+    }
+
+    // Initiate datetime plugin
+    function datetimeInitiate() {
+        layui.use(['laydate'], function () {
+            let laydate = layui.laydate;
+
+            // Maintenance date time
+            laydate.render({
+                elem: '#pmcStartTime',
+                type: 'datetime',
+                lang: 'en'
+            });
+            laydate.render({
+                elem: '#pmcEndTime',
+                type: 'datetime',
+                lang: 'en'
+            });
+        })
+    }
+
+    function formSelectInitiation(){
+        searchPMCStatusSelector = new TomSelect(el = $('#searchPMCStatus'), {
+    		copyClassesToDropdown: false,
+    		dropdownParent: 'body',
+    		controlInput: '<input>',
+    		render:{
+    			item: function(data,escape) {
+    				if( data.customProperties ){
+    					return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+    				}
+    				return '<div>' + escape(data.text) + '</div>';
+    			},
+    			option: function(data,escape){
+    				if( data.customProperties ){
+    					return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+    				}
+    				return '<div>' + escape(data.text) + '</div>';
+    			},
+    		},
+    	});
+    }
+
+    // PMC activity search
+    function pmcActivitySearch(){
+        $('#pmcActivitySearchBtn').on('click', function (){
+            // Add disabled class to button
+            $('#pmcActivitySearchBtn').addClass('btn-loading');
+            // Add loading bar
+            $('#pmcActivityTable').append('<div id="loadingBar" class="progress progress-sm"><div class="progress-bar progress-bar-indeterminate"></div></div>');
+
+            $.ajax({
+                url: "{% url 'view_request_search_activity' %}",
+                method: 'POST',
+                data: $('#viewRequestForm').serialize(),
+                dataType: 'json',
+                success: function (res) {
+                    if (res.status) {
+                        if (res.data.length > 0) {
+                            // Searching results pagination
+                            pmcActivityPagination(res.data);
+                            pmcActivityTableSearch(res.data);
+                        } else {
+                            $('#pmcActivityContent').empty();
+                            $('#pmcActivityPagination').empty();
+                            // 显示条目数
+                            $('#totalEntries').html(res.data.length);
+                            $('#startEntryNumber').html(res.data.length);
+                            $('#endEntryNumber').html(res.data.length);
+                        }
+                    } else {
+                        layer.msg('Error searching PMC avtivity: ' + res.error);
+                    }
+                    // Remove disabled class to button
+                    $('#pmcActivitySearchBtn').removeClass('btn-loading');
+                    $('#loadingBar').remove();
+                }
+            });
+        });
+
+        $('#pmcActivitySearchBtn').click();
+    }
+    
+    // Host details table search
+    function pmcActivityTableSearch(pmc_activity_list) {
+        // 声明变量
+        let tableSearchContent, filter;
+        tableSearchContent = $('#tableSearchContent');
+
+        tableSearchContent.on('keyup', function () {
+            let filter_pmc_activity_list = []
+            filter = tableSearchContent.val().toUpperCase();
+            $.each(pmc_activity_list, (index, pmc_activity_item) => {
+                if ((pmc_activity_item.change_number.toUpperCase().indexOf(filter) > -1) || (pmc_activity_item.region.toUpperCase().indexOf(filter) > -1)
+                    || (pmc_activity_item.location_code.toUpperCase().indexOf(filter) > -1) || (pmc_activity_item.data_center_room.toUpperCase().indexOf(filter) > -1)
+                    || (pmc_activity_item.status.toUpperCase().indexOf(filter) > -1) || (pmc_activity_item.start_time.toUpperCase().indexOf(filter) > -1)
+                    || (pmc_activity_item.end_time.toUpperCase().indexOf(filter) > -1) || (pmc_activity_item.pmc_coordinator.toString().toUpperCase().indexOf(filter) > -1)) {
+                    filter_pmc_activity_list.push(pmc_activity_item)
+                }
+            });
+            pmcActivityPagination(filter_pmc_activity_list)
+        });
+    }
+
+    // Host status searching results pagination
+    function pmcActivityPagination(pmc_activity_list){
+        const size = 10,
+              page = Math.ceil(pmc_activity_list.length / size),
+              pagerCount = 8;
+
+        // Current selected page number
+        let current = 1;
+
+        // 创建显示内容列表
+        const pmcActivityContent = $('#pmcActivityContent');
+
+        const showContent = () => {
+            // 每次遍历新内容 首先清空
+            pmcActivityContent.html("");
+            $.each(pmc_activity_list, (index, activity_item) => {
+                // 遍历计算方法 当前为第1页 一页10个 第一页的数据就是 0 - 10(不包含) 第二页为 10 - 20(不包含) 以此类推
+                if (index >= (current - 1) * size && index < current * size) {
+                    const tr = $('<tr>')
+                    for (let activity_attr in activity_item){
+                        // tr元素添加内容
+                        if (activity_attr != 'pmc_id'){
+                            if (activity_attr == 'change_number'){
+                                let change_link = `<a href="https://rb-smt.de.bosch.com/arsys/forms/smt-backend/CHG%3AInfrastructure+Change/Best+Practice+View/?qual=%27Change+ID*%2B%27%3D%22${ activity_item[activity_attr] }%22" target="_blank">${ activity_item[activity_attr] }</a>`
+                                $('<td>').attr('id', activity_attr).html(change_link).appendTo(tr);
+                            } else if (activity_attr == 'start_time' || activity_attr == 'end_time') {
+                                // Get PMC start&end date time (UTC+0)
+                                let dateTimeInUserTimezone = moment.tz(activity_item[activity_attr], userTimezone);
+                                let dateTimeInUTC = dateTimeInUserTimezone.clone().utc().format("YYYY-MM-DD HH:mm:ss");
+
+                                $('<td>').attr('id', activity_attr).text(dateTimeInUTC.substring(0, dateTimeInUTC.length - 3)).appendTo(tr);
+                            } else if (activity_attr == 'data_center_room' || activity_attr == 'pmc_coordinator') {
+                                $(`<td class="truncate" title="${ activity_item[activity_attr] }">`).attr('id', activity_attr).text(activity_item[activity_attr]).appendTo(tr);
+                            } else {
+                                $('<td>').attr('id', activity_attr).text(activity_item[activity_attr]).appendTo(tr);
+                            }
+                        }
+                    }
+                    let actionButton = `<td>
+                                            <button type="button" class="btn btn-primary btn-sm" onclick="pmcActivityEdit(${ activity_item['pmc_id'] })">Edit</button>
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="pmcActivityDelete(${ activity_item['pmc_id'] })">Delete</button>
+                                        </td>`;
+                    tr.append(actionButton);
+                    // 添加到列表元素中
+                    tr.appendTo(pmcActivityContent);
+                }
+            });
+        };
+
+        // 创建分页列表
+        const pmcActivityPagination = $("#pmcActivityPagination");
+
+        // 显示总条目数
+        $('#totalEntries').html(pmc_activity_list.length)
+
+        const createPagination = () => {
+
+            // 显示第一页
+            showContent();
+
+            $('#startEntryNumber').html(size * (current - 1) + 1);
+            if (pmc_activity_list.length >= size && current !== page) {
+                $('#endEntryNumber').html(size * (current - 1) + 10);
+            } else {
+                $('#endEntryNumber').html(pmc_activity_list.length)
+            }
+
+            // 刚开始就要有左按钮
+            // 当前页数不为1就为可点击态
+            let lis = `<li class="page-item ${current == 1 ? "disabled" : ""}">
+                          <a class="page-link pagePrev" href="javascript:;" tabindex="-1" ${current == 1 ? 'aria-disabled="true"' : ''}>
+                              <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                   viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                   stroke-linecap="round" stroke-linejoin="round">
+                                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                  <path d="M15 6l-6 6l6 6"/>
+                              </svg>
+                          </a>
+                       </li>`;
+
+            if (current < 1 || current > page) {
+                throw `The minimum current page number is 1, maximum is ${page}`;
+                // 当前页数小于1或者大于总页数了就抛出错误
+            } else if (pagerCount < 5) {
+                throw "The pagerCount minimum value is 5";
+                // 小于5 分页无意义
+            } else if (page <= pagerCount) {
+                // 如果总页数小于了要显示的数字按钮个数 就直接遍历了 不需要显示省略按钮
+                for (let i = 1; i <= page; i++) {
+                    lis += `<li class="page-item ${
+                        i == current ? "active" : ""
+                    }"><a class="page-link pageNumber" href="javascript:;">${i}</a></li>`;
+                }
+            } else {
+                // 定义两个参数
+                // 用来保存当前选中分页前后的显示数字按钮(不包括省略前后的和选中的) 刚好是以下计算方法
+                // 有问题 pagerCount 为偶数 显示小数点 将beforeNumber向下取整就可以了
+                let beforeNumber = Math.floor(current - (pagerCount - 3) / 2),
+                    afterNumber = current + (pagerCount - 3) / 2;
+
+                // 提出问题: 选中页数为1 显示了0
+                // 解决 当页数为1 将beforeNumber改为1 afterNumber为除去省略号后面的一个按钮
+                // 同理解决current == page
+                // 又有问题 点击前三个应该不分页 到 4(针对pagerCount参数来说) 了该分页 同理求得current == page
+                if (current >= 1 && current < pagerCount - 1) {
+                    beforeNumber = 1;
+                    afterNumber = pagerCount - 1;
+                } else if (current <= page && current > page - (pagerCount - 2)) {
+                    beforeNumber = page - (pagerCount - 2);
+                    afterNumber = page;
+                }
+
+                for (let i = beforeNumber; i <= afterNumber; i++) {
+                    lis += `<li class="page-item ${i == current ? "active" : ""}">
+                                <a class="page-link pageNumber" href="javascript:;">${i}</a>
+                            </li>`;
+                }
+            }
+
+            // 最后拼接右按钮
+            // 当前页数不是总页数就为可点击态
+            lis += `<li class="page-item ${current == page ? "disabled" : ""}">
+                      <a class="page-link pageNext" href="javascript:;" ${current == page ? 'aria-disabled="true"' : ''}>
+                          <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                               viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                               stroke-linecap="round" stroke-linejoin="round">
+                              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                              <path d="M9 6l6 6l-6 6"/>
+                          </svg>
+                      </a>
+                    </li>`
+
+            pmcActivityPagination.html(lis);
+
+            // 点击数字按钮
+            $(".pageNumber").on("click", function() {
+                    // item.innerHTML为字符串 需要转为数字
+                    current = parseInt($(this).html());
+
+                    $('#startEntryNumber').html(size * (current - 1) + 1);
+                    if (pmc_activity_list.length >= size && current !== page){
+                        $('#endEntryNumber').html(size * (current - 1) + 10);
+                    } else {
+                        $('#endEntryNumber').html(pmc_activity_list.length)
+                    }
+                    createPagination();
+            });
+
+            // 下一页
+            $(".pageNext").on("click", function() {
+                if (current !== page) {
+                    current++;
+
+                    $('#startEntryNumber').html(size * (current - 1) + 1);
+                    if (pmc_activity_list.length >= size && current !== page){
+                        $('#endEntryNumber').html(size * (current - 1) + 10);
+                    } else {
+                        $('#endEntryNumber').html(pmc_activity_list.length)
+                    }
+                    createPagination();
+                }
+            });
+
+            // 上一页
+            $(".pagePrev").on("click", function() {
+                if (current !== 1) {
+                    current--;
+
+                    $('#startEntryNumber').html(size * (current - 1) + 1);
+                    if (pmc_activity_list.length >= size && current !== page){
+                        $('#endEntryNumber').html(size * (current - 1) + 10);
+                    } else {
+                        $('#endEntryNumber').html(pmc_activity_list.length)
+                    }
+                    createPagination();
+                }
+            });
+        };
+
+        createPagination();
+    }
+
+    // PMC activity delete
+    function pmcActivityDelete(pmc_id){
+        window.parent.pmcActivityDelete(pmc_id);
+    }
+
+    // PMC activity deit
+    function pmcActivityEdit(pmc_id){
+        window.location.href = '/pmc/pmc_coordination/pmc_edit_request_index/?pmc_id=' + pmc_id;
+    }
+
+</script>
+</html>

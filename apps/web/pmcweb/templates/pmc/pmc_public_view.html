@@ -1,0 +1,177 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>GOC Automation Platform</title>
+    <link rel="shortcut icon"  href="{% static 'image/goc_favicon.ico' %}" >
+    <!-- CSS files -->
+    <link href="{% static 'plugin/layui/css/layui.css' %}" rel="stylesheet"/>
+    <link href="{% static 'plugin/tabler/css/tabler-vendors.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'plugin/tabler/css/tabler.min.css' %}" rel="stylesheet"/>
+    <style>
+        @import url('{% static 'plugin/tabler/css/inter.css' %}');
+        :root {
+            --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+        }
+        body {
+            font-feature-settings: "cv03", "cv04", "cv11";
+        }
+        .container-fluid{
+            margin-top: 30px;
+        }
+        .truncate {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 150px; /* 自定义字段的最大宽度 */
+        }
+        a {
+          text-decoration: none; /* 取消下划线 */
+        }
+        a:hover {
+          text-decoration: none; /* 悬停时依然没有下划线 */
+        }
+    </style>
+</head>
+  <body class=" d-flex flex-column">
+    {% csrf_token %}
+    <div class="page page-center">
+      <div class="container container-lg py-4">
+        <h1>
+          <a href="https://rb-goc-automation-test.bosch.com/" target="_blank">
+            <!-- BOSCH LOGO -->
+            <img src="{% static 'image/bosch_logo.png' %}" style="margin: 10px;" width="110" height="32" alt="" class="navbar-brand-image">
+            <!-- GOC Automation Platform LOGO-->
+            <img src="{% static 'image/goc_automation_platform_logo.png' %}" style="margin: 10px;" height="55" alt="" class="navbar-brand-image">
+          </a>
+        </h1>
+        <div class="text-center mb-4">
+          <!-- <a href="." class="navbar-brand navbar-brand-autodark"><img src="{% static 'image/goc_automation_platform_logo.png' %}" height="55" alt=""></a> -->
+          <h1 class="mt-5">Ongoing PMC Overview</h1>
+          <p class="text-secondary">This page shows all the PMCs that are currently being planned. If you have any questions, please contact the PMC coordinator MAO Monica (BD/ISA-GOC3).</p>
+        </div>
+        <div class="card card-md">
+            <div id="pmcActivityTable" class="table-responsive">
+              <table class="table table-vcenter table-mobile-md card-table">
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th>Change ID</th>
+                    <th>Region</th>
+                    <th>Site</th>
+                    <th>DCR</th>
+                    <th>Status</th>
+                    <th>Start time (UTC+0)</th>
+                    <th>End time (UTC+0)</th>
+                    <th>Start with shutdown</th>
+                    <th>Class</th>
+                    <th>PMC Coordinator</th>
+                  </tr>
+                </thead>
+                <tbody id="pmcActivityContent">
+
+                </tbody>
+              </table>
+        </div>
+      </div>
+    </div>
+    <footer class="footer footer-transparent d-print-none">
+      <div class="container-xl">
+        <div class="row text-center align-items-center flex-row-reverse">
+          <div class="col-lg-auto ms-lg-auto">
+            <ul class="list-inline list-inline-dots mb-0">
+              <li class="list-inline-item"><a href="javascript:;" class="link-secondary">Documentation</a></li>
+              <li class="list-inline-item"><a href="javascript:;" class="link-secondary">License</a></li>
+              <li class="list-inline-item"><a href="mailto:CI-Server-Operation-Center@cn.bosch.com" target="_blank" class="link-secondary" rel="noopener">Contact us</a></li>
+            </ul>
+          </div>
+          <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+            <ul class="list-inline list-inline-dots mb-0">
+              <li class="list-inline-item">
+                Copyright &copy;
+                <a href="." class="link-secondary">Robert Bosch GmbH</a>.
+                All rights reserved.
+              </li>
+              <li class="list-inline-item">
+                <a href="#" class="link-secondary" rel="noopener">
+                  v1.3.1
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- Load JS -->
+    <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'plugin/layui/layui.js' %}"></script>
+    <script src="{% static 'plugin/tabler/libs/tom-select/dist/js/tom-select.base.min.js' %}"></script>
+    <script src="{% static 'plugin/tabler/js/tabler.min.js' %}" defer></script>
+    <script>
+      // Initiate function
+      $(function () {
+        searchPMCActivityData();
+      });
+
+      function searchPMCActivityData() {
+        // Add loading bar
+        $('#pmcActivityTable').append('<div id="loadingBar" class="progress progress-sm"><div class="progress-bar progress-bar-indeterminate"></div></div>');
+        $.ajax({
+              url: "{% url 'pmc_public_view_search_activity' %}",
+              method: 'POST',
+              data: {
+                  "csrfmiddlewaretoken": "{{ csrf_token }}",
+              },
+              dataType: 'json',
+              success: function (res) {
+                  if (res.status) {
+                      if (res.data.length > 0) {
+                          // Searching results pagination
+                          loadPMCDataTable(res.data);
+                      } else {
+                          $('#pmcActivityContent').empty();
+                      }
+                  } else {
+                      layer.msg('Error loading PMC avtivity: ' + res.error);
+                  }
+                  $('#loadingBar').remove();
+              }
+        });
+      }
+
+
+      function loadPMCDataTable(pmc_activity_list) {
+        let pmcActivityContent = $('#pmcActivityContent');
+
+        // 每次遍历新内容 首先清空
+        pmcActivityContent.html("");
+
+        $.each(pmc_activity_list, (index, activity_item) => {
+          const tr = $('<tr>')
+          $('<td>').text(index + 1).appendTo(tr);
+          for (let activity_attr in activity_item){
+              // tr元素添加内容
+              if (activity_attr != 'pmc_id'){
+                  if (activity_attr == 'change_number'){
+                      let change_link = `<a href="https://rb-smt.de.bosch.com/arsys/forms/smt-backend/CHG%3AInfrastructure+Change/Best+Practice+View/?qual=%27Change+ID*%2B%27%3D%22${ activity_item[activity_attr] }%22" target="_blank">${ activity_item[activity_attr] }</a>`
+                      $('<td>').attr('id', activity_attr).html(change_link).appendTo(tr);
+                  } else if (activity_attr == 'start_time' || activity_attr == 'end_time') {
+                      $('<td>').attr('id', activity_attr).text(activity_item[activity_attr].substring(0, activity_item[activity_attr].length - 3)).appendTo(tr);
+                  } else if (activity_attr == 'data_center_room' || activity_attr == 'pmc_coordinator') {
+                      $(`<td class="truncate" title="${ activity_item[activity_attr] }">`).attr('id', activity_attr).text(activity_item[activity_attr]).appendTo(tr);
+                  } else {
+                      $('<td>').attr('id', activity_attr).text(activity_item[activity_attr]).appendTo(tr);
+                  }
+              }
+          }
+          // 添加到列表元素中
+          tr.appendTo(pmcActivityContent);
+        });
+      }
+
+    </script>
+  </body>
+</html>

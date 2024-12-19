@@ -1,0 +1,528 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>GOC Automation Platform</title>
+    <!-- CSS files -->
+    <link href="{% static 'plugin/layui/css/layui.css' %}" rel="stylesheet"/>
+    <link href="{% static 'plugin/tabler/css/tabler.min.css' %}" rel="stylesheet"/>
+    <style>
+      @import url('{% static 'plugin/tabler/css/inter.css' %}');
+      :root {
+      	--tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+      }
+      body {
+      	font-feature-settings: "cv03", "cv04", "cv11";
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="page-wrapper">
+        <!-- Page header -->
+        <div class="page-header d-print-none">
+          <div class="container-xl">
+            <div class="row g-2 align-items-center">
+              <div class="col">
+                <!-- Page pre-title -->
+                <div class="page-pretitle">
+                  Monitoring
+                </div>
+                <h2 class="page-title">
+                  Host status search
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Page Body -->
+        <div class="page-body">
+          <div class="container-xl">
+            <div class="row row-cards">
+                <!-- Page content: search area -->
+                <form id="hostStatusForm" onsubmit="return false">
+                    {% csrf_token %}
+                    <div class="col-lg-12">
+                      <div class="row row-cards">
+                        <!-- First step -->
+                        <div class="col-4">
+                          <div class="card">
+                            <div class="card-header">
+                              <h3 class="card-title">1st step: search by host name</h3>
+                            </div>
+                            <div class="card-body">
+                              <div class="row row-cards">
+                                <div class="col-md-12">
+                                  <div class="mb-3">
+                                    <label class="form-label">Host name</label>
+                                    <div id="hostNameDiv" class="input-icon mb-3">
+                                        <input type="text" name="hostName" id="hostName" class="form-control" placeholder="Input host name here.">
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="card-footer text-end">
+                              <button id="hostSearch" type="button" class="btn btn-primary">Search >></button>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Second step -->
+                        <div class="col-8">
+                          <div class="card">
+                            <div class="card-header">
+                              <h3 class="card-title">2nd step: search status by host list</h3>
+                            </div>
+                            <div class="card-body">
+                              <div class="row row-cards">
+                                  <div class="col-md-12">
+                                      <div class="mb-3 mb-0">
+                                        <label class="form-label required">Host list</label>
+                                        <textarea name="hostList" id="hostList" class="form-control" rows="5" placeholder="Please input host name here, separated by comma. (e.g., szhsoc01,szhsoc02)"></textarea>
+                                        <div class="invalid-feedback">Host list can't be empty!</div>
+                                      </div>
+                                  </div>
+                            </div>
+                          </div>
+                            <div class="card-footer text-end">
+                              <button id="hostStatusSearch" type="button" class="btn btn-primary">Host status search</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </form>
+
+                <!-- Page content: status table area -->
+                <div id="hostStatusTable" class="col-12">
+                  <div class="card">
+                      <div class="card-header">
+                        <h3 class="card-title">Host status</h3>
+                      </div>
+                      <div class="card-body border-bottom py-3">
+                        <div class="d-flex">
+                          <div class="text-muted">
+                            Show
+                            <div class="mx-2 d-inline-block">
+                              <input type="text" class="form-control form-control-sm" value="10" size="3" disabled>
+                            </div>
+                            entries
+                          </div>
+                          <div class="ms-auto text-muted">
+                            Search:
+                            <div class="ms-2 d-inline-block">
+                              <input type="text" id="tableSearchContent" class="form-control form-control-sm">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="table-responsive">
+                        <table class="table card-table table-vcenter text-nowrap datatable">
+                          <thead>
+                            <tr>
+                              <th class="w-1">No. <!-- Download SVG icon from http://tabler-icons.io/i/chevron-up -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-sm icon-thick" width="24"
+                                     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M6 15l6 -6l6 6"/>
+                                </svg>
+                              </th>
+                              <th>Host name</th>
+                              <th>Connection status</th>
+                              <th>Down&Up time</th>
+                              <th>Network zone</th>
+                              <th>OS type</th>
+                              <th>Duty class</th>
+                            </tr>
+                          </thead>
+                          <!-- Host status table content -->
+                          <tbody id="hostStatusContent"></tbody>
+                        </table>
+                      </div>
+                      <div class="card-footer d-flex align-items-center">
+                        <p class="m-0 text-muted">Showing <span id="startEntryNumber">*</span> to <span id="endEntryNumber">*</span> of <span id="totalEntries">**</span> entries</p>
+                        <!-- Host status pagination content -->
+                        <ul id="hostStatusPagination" class="pagination m-0 ms-auto"></ul>
+                      </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+    <!-- Load JS -->
+    <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'plugin/layui/layui.js' %}"></script>
+    <script src="{% static 'plugin/tabler/js/tabler.min.js' %}" defer></script>
+    <!-- Auto adjust iFrame height -->
+    <script type="text/javascript">
+
+        // Initiate function
+        $(function () {
+            // Host search initiation
+            hostSearch();
+            // Host status search initiation
+            hostStatusSearch();
+            // Monitor enter key down
+            enterKeyDown();
+            // iFrame height initiation
+            refreshHeight();
+            // iFrame height resize according to hostStatusTable height
+            hostStatusTableResize();
+        });
+
+        // iFrame height initiation
+        function refreshHeight(){
+          top.postMessage(document.body.scrollHeight + 100, '*');
+        }
+
+
+        // iFrame height resize according to hostStatusTable height
+        function hostStatusTableResize(){
+            let originalBodyHeight = document.body.scrollHeight + 100;
+            let originalStatusTableHeight = document.getElementById('hostStatusTable').clientHeight;
+            let resizeTimer = null;
+            const hostStatusTableObserver = new ResizeObserver(entries => {
+                entries.forEach(entry => {
+                    if(resizeTimer){
+                        clearTimeout(resizeTimer);
+                    }
+                    resizeTimer = setTimeout(function(){
+                        let differenceHeight = entry.contentRect.height - originalStatusTableHeight;
+                        top.postMessage(originalBodyHeight + differenceHeight, '*');
+                    },100)
+                });
+            });
+
+            const hostStatusTable = document.getElementById('hostStatusTable');
+            hostStatusTableObserver.observe(hostStatusTable);
+        }
+
+
+        // Monitor enterKey down
+        function enterKeyDown(){
+            // Monitor Enter keydown trigger search
+            $('#hostName').keydown(function (event) {
+                // 13 is Enter
+                if (event.keyCode == 13) {
+                    $('#hostSearch').trigger('click');
+                }
+            });
+        }
+
+
+        // Validate comment and hostlist input
+        function inputValidate() {
+            // Clear error msg
+            $('#hostList').removeClass('is-invalid')
+
+            let valitdateFlag = true;
+            // Validate if the input is empty
+            $.each($('#hostList'), function (key, value) {
+                // key, series for selected element
+                // valuses current element
+    　　　　　　　 // $(values).attr("attribute name"); Get the attr value via this way
+                if ($(value).attr('id') == 'hostList') {
+                    if ($(value).val() == '') {
+                        $(value).addClass('is-invalid')
+                        valitdateFlag = false
+                    }
+                }
+            });
+
+            return valitdateFlag
+        }
+
+
+        // Search for host list by input keyword
+        function hostSearch() {
+            $("#hostSearch").on('click', function () {
+
+                // Disable host search button
+                $("#hostSearch").addClass('disabled')
+                // Add loading bar
+                $('#hostNameDiv').append('<span id="hostNameLoading" class="input-icon-addon"><div class="spinner-border spinner-border-sm text-muted" role="status"></div></span>');
+
+                // Get the search content
+                let searchContent = $('#hostName').val()
+                // Do nothing if input is empty
+                if (searchContent == '') {
+                    $('#hostList').val('');
+                    // Remove loading bar
+                    $('#hostNameLoading').remove()
+                    // Remove disabled class for host search button
+                    $("#hostSearch").removeClass('disabled')
+                    return
+                }
+                // send request by ajax
+                $.ajax({
+                    url: "{% url 'host_search' %}",
+                    method: 'POST',
+                    data: $('#hostStatusForm').serialize(),
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status) {
+                            $('#hostList').val(res.data['result']);
+                        }
+                        // Remove loading bar
+                        $('#hostNameLoading').remove()
+                        // Remove disabled class for host search button
+                        $("#hostSearch").removeClass('disabled')
+                    }
+                });
+            });
+        }
+
+
+        // Search for host status by host list
+        function hostStatusSearch() {
+            $('#hostStatusSearch').on('click', function (){
+                if (inputValidate()) {
+                    // Disable the host details search button
+                    $('#hostStatusSearch').addClass('btn-loading')
+                    // Add loading bar
+                    $('#hostStatusTable').append('<div id="loadingBar" class="progress progress-sm"><div class="progress-bar progress-bar-indeterminate"></div></div>');
+
+                    $.ajax({
+                        url: "{% url 'host_status_search' %}",
+                        method: 'POST',
+                        data: $('#hostStatusForm').serialize(),
+                        dataType: 'json',
+                        success: function (res) {
+                            if (res.status) {
+                                if (res.data.length > 0) {
+                                    // Searching results pagination
+                                    hostStatusPagination(res.data);
+                                    hostStatusTableSearch(res.data);
+                                } else {
+                                    $('#hostStatusContent').empty();
+                                    $('#hostStatusPagination').empty();
+                                    // 显示条目数
+                                    $('#totalEntries').html(res.data.length);
+                                    $('#startEntryNumber').html(res.data.length);
+                                    $('#endEntryNumber').html(res.data.length);
+                                }
+                            } else {
+                                // Show failure message
+                                layer.msg(res.error);
+                            }
+                            // Remove loading bar
+                            $('#loadingBar').remove();
+                            // Remove the disabled class for host details search button
+                            $('#hostStatusSearch').removeClass('btn-loading')
+                        }
+                    });
+                }
+            });
+        }
+
+
+        // Host status table search
+        function hostStatusTableSearch(host_status_list) {
+            // 声明变量
+            let tableSearchContent, filter;
+            tableSearchContent = $('#tableSearchContent');
+
+            tableSearchContent.on('keyup', function () {
+                let filter_host_status_list = []
+                filter = tableSearchContent.val().toUpperCase();
+                $.each(host_status_list, (index, host_status_item) => {
+                    if ((host_status_item.host_name.toUpperCase().indexOf(filter) > -1) || (host_status_item.host_connection_status.toUpperCase().indexOf(filter) > -1)
+                        || (host_status_item.host_network_zone.toUpperCase().indexOf(filter) > -1) || (host_status_item.host_os_type.toUpperCase().indexOf(filter) > -1)
+                        || (host_status_item.host_duty_class.toUpperCase().indexOf(filter) > -1)) {
+                        filter_host_status_list.push(host_status_item)
+                    }
+                });
+                hostStatusPagination(filter_host_status_list)
+            });
+        }
+
+
+        // Host status searching results pagination
+        function hostStatusPagination(host_status_list){
+            const size = 10,
+                  page = Math.ceil(host_status_list.length / size),
+                  pagerCount = 8;
+
+            // Current selected page number
+            let current = 1;
+
+            // 创建显示内容列表
+            const hostStatusContent = $('#hostStatusContent');
+
+            const showContent = () => {
+                // 每次遍历新内容 首先清空
+                hostStatusContent.html("");
+                $.each(host_status_list, (index, status_item) => {
+                    // 遍历计算方法 当前为第1页 一页10个 第一页的数据就是 0 - 10(不包含) 第二页为 10 - 20(不包含) 以此类推
+                    if (index >= (current - 1) * size && index < current * size) {
+                        const tr = $('<tr>')
+                        $('<td>').text(index + 1).appendTo(tr);
+                        for (let status_attr in status_item){
+                            if (status_attr == 'host_connection_status' && status_item[status_attr].indexOf('SSH OK') != -1) {
+                                // td元素添加内容
+                                let td = $('<td>').attr('id', status_attr).text(' ' + status_item[status_attr]);
+                                $('<span>').attr('class', 'badge bg-success me-1').prependTo(td)
+                                // tr元素添加内容
+                                td.appendTo(tr)
+                            } else if (status_attr == 'host_connection_status' && status_item[status_attr].indexOf('SSH OK') == -1){
+                                // td元素添加内容
+                                let td = $('<td>').attr('id', status_attr).text(' ' + status_item[status_attr]);
+                                $('<span>').attr('class', 'badge bg-danger me-1').prependTo(td)
+                                // tr元素添加内容
+                                td.appendTo(tr)
+                            } else {
+                                // tr元素添加内容
+                                $('<td>').attr('id', status_attr).text(status_item[status_attr]).appendTo(tr);
+                            }
+                        }
+                        // 添加到列表元素中
+                        tr.appendTo(hostStatusContent);
+                    }
+                });
+            };
+
+            // 创建分页列表
+            const hostStatusPagination = $("#hostStatusPagination");
+
+            // 显示总条目数
+            $('#totalEntries').html(host_status_list.length)
+
+            const createPagination = () => {
+
+                // 显示第一页
+	            showContent();
+
+                $('#startEntryNumber').html(size * (current - 1) + 1);
+                if (host_status_list.length >= size && current !== page) {
+                    $('#endEntryNumber').html(size * (current - 1) + 10);
+                } else {
+                    $('#endEntryNumber').html(host_status_list.length)
+                }
+
+                // 刚开始就要有左按钮
+                // 当前页数不为1就为可点击态
+                let lis = `<li class="page-item ${current == 1 ? "disabled" : ""}">
+                              <a class="page-link pagePrev" href="javascript:;" tabindex="-1" ${current == 1 ? 'aria-disabled="true"' : ''}>
+                                  <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                       viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                       stroke-linecap="round" stroke-linejoin="round">
+                                      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                      <path d="M15 6l-6 6l6 6"/>
+                                  </svg>
+                              </a>
+                           </li>`;
+
+                if (current < 1 || current > page) {
+                    throw `The minimum current page number is 1, maximum is ${page}`;
+                    // 当前页数小于1或者大于总页数了就抛出错误
+                } else if (pagerCount < 5) {
+                    throw "The pagerCount minimum value is 5";
+                    // 小于5 分页无意义
+                } else if (page <= pagerCount) {
+                    // 如果总页数小于了要显示的数字按钮个数 就直接遍历了 不需要显示省略按钮
+                    for (let i = 1; i <= page; i++) {
+                        lis += `<li class="page-item ${
+                            i == current ? "active" : ""
+                        }"><a class="page-link pageNumber" href="javascript:;">${i}</a></li>`;
+                    }
+                } else {
+                    // 定义两个参数
+                    // 用来保存当前选中分页前后的显示数字按钮(不包括省略前后的和选中的) 刚好是以下计算方法
+                    // 有问题 pagerCount 为偶数 显示小数点 将beforeNumber向下取整就可以了
+                    let beforeNumber = Math.floor(current - (pagerCount - 3) / 2),
+                        afterNumber = current + (pagerCount - 3) / 2;
+
+                    // 提出问题: 选中页数为1 显示了0
+                    // 解决 当页数为1 将beforeNumber改为1 afterNumber为除去省略号后面的一个按钮
+                    // 同理解决current == page
+                    // 又有问题 点击前三个应该不分页 到 4(针对pagerCount参数来说) 了该分页 同理求得current == page
+                    if (current >= 1 && current < pagerCount - 1) {
+                        beforeNumber = 1;
+                        afterNumber = pagerCount - 1;
+                    } else if (current <= page && current > page - (pagerCount - 2)) {
+                        beforeNumber = page - (pagerCount - 2);
+                        afterNumber = page;
+                    }
+
+                    for (let i = beforeNumber; i <= afterNumber; i++) {
+                        lis += `<li class="page-item ${i == current ? "active" : ""}">
+                                    <a class="page-link pageNumber" href="javascript:;">${i}</a>
+                                </li>`;
+                    }
+                }
+
+                // 最后拼接右按钮
+                // 当前页数不是总页数就为可点击态
+                lis += `<li class="page-item ${current == page ? "disabled" : ""}">
+                          <a class="page-link pageNext" href="javascript:;" ${current == page ? 'aria-disabled="true"' : ''}>
+                              <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                   viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                   stroke-linecap="round" stroke-linejoin="round">
+                                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                  <path d="M9 6l6 6l-6 6"/>
+                              </svg>
+                          </a>
+                        </li>`
+
+                hostStatusPagination.html(lis);
+
+                // 点击数字按钮
+                $(".pageNumber").on("click", function() {
+                        // item.innerHTML为字符串 需要转为数字
+                        current = parseInt($(this).html());
+
+                        $('#startEntryNumber').html(size * (current - 1) + 1);
+                        if (host_status_list.length >= size && current !== page){
+                            $('#endEntryNumber').html(size * (current - 1) + 10);
+                        } else {
+                            $('#endEntryNumber').html(host_status_list.length)
+                        }
+                        createPagination();
+                });
+
+                // 下一页
+                $(".pageNext").on("click", function() {
+                    if (current !== page) {
+                        current++;
+
+                        $('#startEntryNumber').html(size * (current - 1) + 1);
+                        if (host_status_list.length >= size && current !== page){
+                            $('#endEntryNumber').html(size * (current - 1) + 10);
+                        } else {
+                            $('#endEntryNumber').html(host_status_list.length)
+                        }
+                        createPagination();
+                    }
+                });
+
+                // 上一页
+                $(".pagePrev").on("click", function() {
+                    if (current !== 1) {
+                        current--;
+
+                        $('#startEntryNumber').html(size * (current - 1) + 1);
+                        if (host_status_list.length >= size && current !== page){
+                            $('#endEntryNumber').html(size * (current - 1) + 10);
+                        } else {
+                            $('#endEntryNumber').html(host_status_list.length)
+                        }
+                        createPagination();
+                    }
+                });
+            };
+
+            createPagination();
+        }
+
+    </script>
+
+</html>

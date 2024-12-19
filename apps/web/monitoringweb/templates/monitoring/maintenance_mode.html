@@ -1,0 +1,318 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>GOC Automation Platform</title>
+    <!-- CSS files -->
+    <link href="{% static 'plugin/layui/css/layui.css' %}" rel="stylesheet"/>
+    <link href="{% static 'plugin/tabler/css/tabler.min.css' %}" rel="stylesheet"/>
+    <style>
+      @import url('{% static 'plugin/tabler/css/inter.css' %}');
+      :root {
+      	--tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+      }
+      body {
+      	font-feature-settings: "cv03", "cv04", "cv11";
+      }
+
+      .form-hint {
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="page-wrapper">
+        <!-- Page header -->
+        <div class="page-header d-print-none">
+          <div class="container-xl">
+            <div class="row g-2 align-items-center">
+              <div class="col">
+                <!-- Page pre-title -->
+                <div class="page-pretitle">
+                  Monitoring
+                </div>
+                <h2 class="page-title">
+                  Maintenance mode
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Page Body -->
+        <div class="page-body">
+          <div class="container-xl">
+            <div class="row row-cards">
+                <!-- Page content: maintenance configuration area -->
+                <form id="maintenanceForm" onsubmit="return false">
+                    {% csrf_token %}
+                    <div class="col-md-12">
+                      <div class="card">
+                        <div class="card-header">
+                          <h3 class="card-title">Maintenance mode for Windows&Linux hosts</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3 row">
+                                <label class="col-1 col-form-label">Host name</label>
+                                <div class="col-4">
+                                    <div class="input-group">
+                                        <input type="text" name="hostName" id="hostName" class="form-control"
+                                               placeholder="Search for host name">
+                                        <button type="button" id="hostSearch" class="btn">Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-1 col-form-label">Action</label>
+                                <div class="col-4">
+                                    <select name="maintenanceAction" id="maintenanceAction" onchange="actionOnchange(this)" class="form-select">
+                                        <option value="1">Start Maintenance</option>
+                                        <option value="2">Stop Maintenance</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="timeFrameDiv" class="mb-3 row">
+                                <label class="col-1 col-form-label">Time frame</label>
+                                <div class="col-3">
+                                    <div class="input-icon mb-2">
+                                      <input name="dateTimeFrom" id="dateTimeFrom" class="form-control " placeholder="Maintenance start time" id="datepicker-icon">
+                                      <span class="input-icon-addon"><!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path><path d="M16 3l0 4"></path><path d="M8 3l0 4"></path><path d="M4 11l16 0"></path><path d="M11 15l1 0"></path><path d="M12 15l0 3"></path></svg>
+                                      </span>
+                                    </div>
+                                    <small class="form-hint">It's required for ICINGA2 maintenance mode setting, timezone is {{ request.user_account.timezone }}.</small>
+                                </div>
+                                <div class="col-3">
+                                    <div class="input-icon mb-2">
+                                      <input name="dateTimeTo" id="dateTimeTo" class="form-control " placeholder="Maintenance end time" id="datepicker-icon">
+                                      <span class="input-icon-addon"><!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path><path d="M16 3l0 4"></path><path d="M8 3l0 4"></path><path d="M4 11l16 0"></path><path d="M11 15l1 0"></path><path d="M12 15l0 3"></path></svg>
+                                      </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="commentDiv" class="mb-3 row">
+                                <label class="col-1 col-form-label required">Comment</label>
+                                <div class="col-6">
+                                    <input type="text" name="comment" id="comment" class="form-control" placeholder="Maintenance comment">
+                                    <div class="invalid-feedback">Maintenance comment can't be empty!</div>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label class="col-1 col-form-label required">Host list</label>
+                                <div class="col-7">
+                                    <textarea name="hostList" id="hostList" class="form-control" rows="6"
+                                      placeholder="Please input server name here, separated by comma. (e.g., szhsoc01,szhsoc02)"></textarea>
+                                    <div class="invalid-feedback">Host list can't be empty!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end">
+                          <button id="maintenanceExecute" type="button" class="btn btn-primary">Execute</button>
+                        </div>
+                      </div>
+                    </div>
+                </form>
+
+                <!-- Page content: Execute results area -->
+                <div id="executeResultsDiv" class="col-md-12">
+                  <div class="card">
+                      <div class="card-header">
+                        <h3 class="card-title">Execute results</h3>
+                      </div>
+                      <div class="card-body border-bottom py-3">
+                          <div class="row">
+                              <div id="successfulServersDiv" class="text-muted">
+                                {% comment %}<strong>Successful servers:</strong>
+                                <div id="successfulServersBlock" class="mx-2 d-inline-block">
+                                </div>{% endcomment %}
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div id="failedServersDiv" class="text-muted">
+                                {% comment %}<strong>Failed servers:</strong>
+                                <div id="failedServersBlock" class="ms-2 d-inline-block">
+                                </div>{% endcomment %}
+                              </div>
+                          </div>
+                      </div>
+                      <div class="card-footer d-flex align-items-center">
+                        <p class="m-0 text-muted">Totally <span id="executedServerNumber">*</span> hosts executed.</p>
+                      </div>
+                  </div>
+                </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </body>
+    <!-- Load JS -->
+    <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'plugin/layui/layui.js' %}"></script>
+    <script src="{% static 'plugin/tabler/js/tabler.min.js' %}" defer></script>
+    <!-- Auto adjust iFrame height -->
+    <script type="text/javascript">
+        window.onload = function () {
+            top.postMessage(document.body.scrollHeight + 300,'*')
+        }
+
+
+        // Initiate function
+        $(function () {
+            // Host name search function initiation
+            hostSearch();
+            // Datetime plugin initiation
+            datetimeInitiate();
+            // Set maintenance mode function initiation
+            setMaintenanceMode();
+            // Monitor enter key down
+            enterKeyDown();
+        });
+
+
+        function enterKeyDown(){
+            // Monitor Enter keydown trigger search
+            $('#hostName').keydown(function (event) {
+                // 13 is Enter
+                if (event.keyCode == 13) {
+                    $('#hostSearch').trigger('click');
+                }
+            });
+        }
+
+
+        // Validate comment and hostlist input
+        function inputValidate() {
+            // Clear error msg
+            $('#comment,#hostList').removeClass('is-invalid')
+
+            let valitdateFlag = true;
+            // Validate if the input is empty
+            $.each($('#comment,#hostList'), function (key, value) {
+                // key, series for selected element
+                // valuses current element
+    　　　　　　　 // $(values).attr("attribute name"); Get the attr value via this way
+
+                if (($(value).attr('id') == 'comment' && $('#maintenanceAction') == 1) || $(value).attr('id') == 'hostList') {
+                    if ($(value).val() == '') {
+                        $(value).addClass('is-invalid')
+                        valitdateFlag = false
+                    }
+                }
+            });
+
+            return valitdateFlag
+        }
+
+
+        // Control div when action change
+        function actionOnchange(obj) {
+            let select_value = obj.options[obj.selectedIndex].value;
+            if (select_value == 1) {
+                $('#timeFrameDiv').removeClass('visually-hidden')
+                $('#commentDiv').removeClass('visually-hidden')
+            } else if (select_value == 2) {
+                $('#timeFrameDiv').addClass('visually-hidden')
+                $('#commentDiv').addClass('visually-hidden')
+            }
+        }
+
+
+        // Initiate datetime plugin
+        function datetimeInitiate() {
+            layui.use(['element', 'form', 'laydate'], function () {
+                let element = layui.element;
+                let form = layui.form;
+                let laydate = layui.laydate;
+
+                // Maintenance date time
+                laydate.render({
+                    elem: '#dateTimeFrom',
+                    type: 'datetime',
+                    lang: 'en'
+                });
+                laydate.render({
+                    elem: '#dateTimeTo',
+                    type: 'datetime',
+                    lang: 'en'
+                });
+            })
+        }
+
+        // Host name search
+        function hostSearch() {
+            $("#hostSearch").on('click', function () {
+
+                // Disable host search button
+                $("#hostSearch").addClass('disabled');
+                // Get the search content
+                let searchContent = $('#hostName').val();
+                // Do nothing if input is empty
+                if (searchContent == '') {
+                    $('#hostList').val('');
+                    // Remove disabled class for host search button
+                    $("#hostSearch").removeClass('disabled');
+                    return
+                }
+                // send request by ajax
+                $.ajax({
+                    url: "{% url 'host_search' %}",
+                    method: 'POST',
+                    data: $('#maintenanceForm').serialize(),
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status) {
+                            $('#hostList').val(res.data['result']);
+                        }
+                        // Remove disabled class for host search button
+                        $("#hostSearch").removeClass('disabled');
+                    }
+                });
+            });
+        }
+
+
+        // Maintenance mode Ajax request
+        function setMaintenanceMode() {
+            $('#maintenanceExecute').on('click', function () {
+                if (inputValidate()) {
+                    // Disable the host details search button
+                    $('#maintenanceExecute').addClass('btn-loading');
+                    // Add loading bar
+                    $('#executeResultsDiv').append('<div id="loadingBar" class="progress progress-sm"><div class="progress-bar progress-bar-indeterminate"></div></div>');
+
+                    $('#successfulServersDiv').empty();
+                    $('#failedServersDiv').empty();
+                    $.ajax({
+                        url: "{% url 'maintenance_execute' %}",
+                        method: 'POST',
+                        data: $('#maintenanceForm').serialize(),
+                        dataType: 'json',
+                        success: function (res) {
+                            if (res.status) {
+                                // Adding execute results
+                                $('#successfulServersDiv').append(`<strong>Successful hosts: </strong><div class="mx-2 d-inline-block">${res.data['success_servers'] == '' ? "no successful hosts." : res.data['success_servers']}</div>`);
+                                $('#failedServersDiv').append(`<strong>Failed hosts: </strong><div class="mx-2 d-inline-block">${res.data['failed_servers'] == '' ? "no failed hosts." : res.data['failed_servers']}</div>`);
+                                $('#executedServerNumber').html(res.total);
+                            } else {
+                                // Show failure message
+                                layer.msg(res.error);
+                            }
+                            // Remove loading bar
+                            $('#loadingBar').remove();
+                            // Remove the disabled class for host details search button
+                            $('#maintenanceExecute').removeClass('btn-loading')
+                        }
+                    });
+                }
+            });
+        }
+
+    </script>
+</html>
