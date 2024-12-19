@@ -29,7 +29,8 @@ services:
     restart: always
 
   web:
-    image: goc_automation_web:1.2
+    build: .
+    command: bash -c "python manage.py runserver 0.0.0.0:9999"
     ports:
       - "9999:9999"
     expose:
