@@ -209,8 +209,9 @@
 
           $('#sso_login_btn').on('click', function () {
             let clientId = 'cc7e4667-ee68-4548-880d-e44f551c4c68';
-            let REDIRECT_URL = 'https://rb-goc-automation-test.bosch.com/user/login/'
-            window.location.href = `https://login.microsoftonline.com/0ae51e19-07c8-4e4b-bb6d-648ee58410f4/oauth2/v2.0/authorize?client_id=${clientId}&response_type=id_token&redirect_uri=${REDIRECT_URL}&scope=openid email profile&nonce=${Math.floor(Math.random()*100000)+1}`;
+            let REDIRECT_URL = 'https://szhsoc01.apac.bosch.com/user/login/'
+            window.location.href = `https://login.microsoftonline.com
+            /0ae51e19-07c8-4e4b-bb6d-648ee58410f4/oauth2/v2.0/authorize?client_id=${clientId}&response_type=id_token&redirect_uri=${REDIRECT_URL}&scope=openid email profile&nonce=${Math.floor(Math.random()*100000)+1}`;
           });
         }
     </script>

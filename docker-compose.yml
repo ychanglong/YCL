@@ -50,8 +50,10 @@ services:
     image: nginx:1.14.1
     ports:
       - "80:80"
+      - "443:443"
     expose:
       - "80"
+      - "443"
     volumes:
       - /net/szhsoc01/fs0/gocautomation_site/goc_automation:/goc_automation # 挂载项目代码
       - /goc_automation_platform_docker/compose/nginx/log:/var/log/nginx # 挂载日志
