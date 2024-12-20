@@ -35,8 +35,6 @@ services:
       - "9999:9999"
     expose:
       - "9999"
-    volumes:
-      - /net/szhsoc01/fs0/gocautomation_site/goc_automation:/goc_automation # 挂载项目代码
     environment:
       - DEBUG=False
     restart: always
