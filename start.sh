@@ -1,2 +1,2 @@
 #!/bin/bash
-uwsgi --ini /goc_automation/GOC_Automation/uwsgi.ini
+uwsgi --ini /var/lib/jenkins/workspace/goc_master/GOC_Automation/uwsgi.ini
