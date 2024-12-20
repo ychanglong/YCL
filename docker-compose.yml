@@ -35,6 +35,8 @@ services:
       - "9999:9999"
     expose:
       - "9999"
+    volumes:
+      - /var/lib/jenkins/workspace/goc_master:/goc_automation # 挂载项目代码
     environment:
       - DEBUG=False
     restart: always
